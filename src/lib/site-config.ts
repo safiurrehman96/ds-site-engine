@@ -20,4 +20,42 @@ import { siteConfig as raw } from '../../client/site.config';
 
 export const siteConfig = defineSiteConfig(raw);
 
+/**
+ * Placeholder facts are allowed, but never quietly.
+ *
+ * A payload may carry stand-in values so a site can be built and reviewed before
+ * onboarding finishes. The danger is not the placeholder — it is forgetting it, so
+ * every one announces itself on every build, by field path.
+ *
+ * Set DS_STRICT=1 to make that fatal. Any deploy pipeline should: the failure mode
+ * this prevents is a real customer calling a fake phone number.
+ */
+const PLACEHOLDER = 'PLACEHOLDER';
+
+function placeholderPaths(value: unknown, path: string[] = []): string[] {
+  if (typeof value === 'string') {
+    return value.includes(PLACEHOLDER) ? [`${path.join('.')} = ${JSON.stringify(value)}`] : [];
+  }
+  if (Array.isArray(value)) {
+    return value.flatMap((v, i) => placeholderPaths(v, [...path, String(i)]));
+  }
+  if (value && typeof value === 'object') {
+    return Object.entries(value).flatMap(([k, v]) => placeholderPaths(v, [...path, k]));
+  }
+  return [];
+}
+
+const placeholders = placeholderPaths(siteConfig);
+
+if (placeholders.length) {
+  const report =
+    `${placeholders.length} placeholder value(s) in client/site.config.ts — this payload is not launch-ready:\n` +
+    placeholders.map((p) => `  · ${p}`).join('\n');
+
+  if (process.env.DS_STRICT === '1') {
+    throw new Error(`${report}\n\nDS_STRICT=1 is set, so this is a build failure.`);
+  }
+  console.warn(`\n⚠️  ${report}\n`);
+}
+
 export default siteConfig;

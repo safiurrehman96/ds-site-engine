@@ -77,6 +77,23 @@ inferred, because a wrong guess there builds cleanly and reads like nonsense.
 hero video, 600KB per image), then `pnpm use <slug> && pnpm build`. Every missing or
 malformed field fails the build by name.
 
+### Building before the facts arrive
+
+Onboarding rarely completes before someone wants to see the site. Two supports for that:
+
+```
+pnpm run placeholders <slug>   # generate stand-in logo, hero video, poster, images
+```
+
+and stand-in values in `site.config.ts` containing the string `PLACEHOLDER`. Both are
+deliberately, visibly fake — flat grey images, `example.com` booking URLs, a footer
+that reads `PLACEHOLDER, NJ 00000`. A plausible stand-in survives review and reaches
+production; an ugly one cannot.
+
+Every placeholder is listed on each build, and **`DS_STRICT=1` turns that warning into
+a build failure** — set it in any deploy pipeline. `intake.json` stays the honest
+record: a field that is null there has not been supplied, whatever the config says.
+
 ## Deploying
 
 Each client is a separate application on the host, all pointing at **the same repo and
