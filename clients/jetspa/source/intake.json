@@ -1,6 +1,5 @@
 {
   "slug": "jetspa",
-
   "business": {
     "name": "JetSpa",
     "legalName": null,
@@ -12,23 +11,19 @@
     "region": "the Northeast",
     "footerNote": null
   },
-
   "contact": {
     "phone": "+17148370004",
     "phoneDisplay": "(714) 837-0004",
     "email": "karangogna86@gmail.com",
     "address": null
   },
-
   "serviceArea": {
     "baseCity": null,
     "baseState": "NJ",
     "radiusMiles": null,
     "label": "the Northeast — NY, NJ, PA, CT, MD, DE, and VA"
   },
-
   "hours": null,
-
   "socials": {
     "facebook": null,
     "instagram": "https://www.instagram.com/jet_spa",
@@ -36,56 +31,154 @@
     "youtube": null,
     "reviewUrl": null
   },
-
   "ghl": {
     "bookingUrls": [
-      { "label": "Piston Aircraft", "url": null },
-      { "label": "Turboprop Aircraft", "url": null },
-      { "label": "Light Corporate Jet", "url": null },
-      { "label": "Midsize Corporate Jet", "url": null },
-      { "label": "Large Corporate Jet", "url": null },
-      { "label": "Super Corporate Jet / Boeing Business Jet", "url": null }
+      {
+        "label": "Piston Aircraft",
+        "url": null
+      },
+      {
+        "label": "Turboprop Aircraft",
+        "url": null
+      },
+      {
+        "label": "Light Corporate Jet",
+        "url": null
+      },
+      {
+        "label": "Midsize Corporate Jet",
+        "url": null
+      },
+      {
+        "label": "Large Corporate Jet",
+        "url": null
+      },
+      {
+        "label": "Super Corporate Jet / Boeing Business Jet",
+        "url": null
+      }
     ],
     "quoteUrl": null,
     "embed": false
   },
-
-  "tracking": { "gtmId": null },
-
-  "theme": { "preset": "chrome", "accentColor": "#1f6f8b" },
-
+  "tracking": {
+    "gtmId": null
+  },
+  "theme": {
+    "preset": "stealth",
+    "accentColor": "#1f6f8b"
+  },
   "modules": {
     "howItWorks": true,
     "credentialBadge": null,
     "blogUrl": null
   },
-
   "legal": {
     "effectiveDate": null,
     "source": "client",
     "governingState": "New Jersey"
   },
-
   "pages": {
     "services": [
-      { "name": "Aircraft Ceramic Coating", "slug": "aircraft-ceramic-coating", "order": 1, "shortDescription": null, "kind": "service" },
-      { "name": "Aircraft Interior Detailing", "slug": "aircraft-interior-detailing", "order": 2, "shortDescription": null, "kind": "service" },
-      { "name": "Aircraft Exterior Detailing", "slug": "aircraft-exterior-detailing", "order": 3, "shortDescription": null, "kind": "service" },
-      { "name": "Brightwork Polishing", "slug": "brightwork-polishing", "order": 4, "shortDescription": null, "kind": "service" },
-      { "name": "De-Ice Boot Refurbishment", "slug": "de-ice-boot-refurbishment", "order": 5, "shortDescription": null, "kind": "service" },
-      { "name": "AOG Emergency Aircraft Cleaning", "slug": "aog-emergency-cleaning", "order": 6, "shortDescription": null, "kind": "service" },
-      { "name": "Corporate Jet Detailing", "slug": "corporate-jet-detailing", "order": 7, "shortDescription": null, "kind": "segment" },
-      { "name": "Turboprop Aircraft Detailing", "slug": "turboprop-aircraft-detailing", "order": 8, "shortDescription": null, "kind": "segment" },
-      { "name": "Piston Aircraft Detailing", "slug": "piston-aircraft-detailing", "order": 9, "shortDescription": null, "kind": "segment" }
+      {
+        "name": "Aircraft Ceramic Coating",
+        "slug": "aircraft-ceramic-coating",
+        "order": 1,
+        "shortDescription": null,
+        "kind": "service"
+      },
+      {
+        "name": "Aircraft Interior Detailing",
+        "slug": "aircraft-interior-detailing",
+        "order": 2,
+        "shortDescription": null,
+        "kind": "service"
+      },
+      {
+        "name": "Aircraft Exterior Detailing",
+        "slug": "aircraft-exterior-detailing",
+        "order": 3,
+        "shortDescription": null,
+        "kind": "service"
+      },
+      {
+        "name": "Brightwork Polishing",
+        "slug": "brightwork-polishing",
+        "order": 4,
+        "shortDescription": null,
+        "kind": "service"
+      },
+      {
+        "name": "De-Ice Boot Refurbishment",
+        "slug": "de-ice-boot-refurbishment",
+        "order": 5,
+        "shortDescription": null,
+        "kind": "service"
+      },
+      {
+        "name": "AOG Emergency Aircraft Cleaning",
+        "slug": "aog-emergency-cleaning",
+        "order": 6,
+        "shortDescription": null,
+        "kind": "service"
+      },
+      {
+        "name": "Corporate Jet Detailing",
+        "slug": "corporate-jet-detailing",
+        "order": 7,
+        "shortDescription": null,
+        "kind": "segment"
+      },
+      {
+        "name": "Turboprop Aircraft Detailing",
+        "slug": "turboprop-aircraft-detailing",
+        "order": 8,
+        "shortDescription": null,
+        "kind": "segment"
+      },
+      {
+        "name": "Piston Aircraft Detailing",
+        "slug": "piston-aircraft-detailing",
+        "order": 9,
+        "shortDescription": null,
+        "kind": "segment"
+      }
     ],
     "areas": [
-      { "name": "Teterboro Airport (KTEB)", "slug": "aircraft-detailing-teterboro", "order": 1, "state": null, "shortName": "KTEB", "isHeadquarters": false },
-      { "name": "Morristown Airport (KMMU)", "slug": "aircraft-detailing-morristown", "order": 2, "state": null, "shortName": "KMMU", "isHeadquarters": false },
-      { "name": "Lehigh Valley Airport (KABE)", "slug": "aircraft-detailing-allentown", "order": 3, "state": null, "shortName": "KABE", "isHeadquarters": false },
-      { "name": "White Plains Airport (KHPN)", "slug": "aircraft-detailing-white-plains", "order": 4, "state": null, "shortName": "KHPN", "isHeadquarters": false }
+      {
+        "name": "Teterboro Airport (KTEB)",
+        "slug": "aircraft-detailing-teterboro",
+        "order": 1,
+        "state": null,
+        "shortName": "KTEB",
+        "isHeadquarters": false
+      },
+      {
+        "name": "Morristown Airport (KMMU)",
+        "slug": "aircraft-detailing-morristown",
+        "order": 2,
+        "state": null,
+        "shortName": "KMMU",
+        "isHeadquarters": false
+      },
+      {
+        "name": "Lehigh Valley Airport (KABE)",
+        "slug": "aircraft-detailing-allentown",
+        "order": 3,
+        "state": null,
+        "shortName": "KABE",
+        "isHeadquarters": false
+      },
+      {
+        "name": "White Plains Airport (KHPN)",
+        "slug": "aircraft-detailing-white-plains",
+        "order": 4,
+        "state": null,
+        "shortName": "KHPN",
+        "isHeadquarters": false
+      }
     ]
   },
-
   "assets": {
     "logo": null,
     "heroVideo": null,
@@ -93,18 +186,18 @@
     "introImage": null,
     "beforeAfter": []
   },
-
   "tokens": {},
   "redirects": [],
-
-  "source": { "type": "notion-export", "path": "source/Website Pages" },
-
+  "source": {
+    "type": "notion-export",
+    "path": "source/Website Pages"
+  },
   "notes": [
     "Owner confirmed as Karan Gogna. Resolves {{custom_values.business_owner}}, which appears in the About page copy; the rest of the site keeps company-front framing.",
     "The phone number is a 714 area code (Orange County, CA) for a business operating out of NJ/NY/PA airports. Mobile numbers travel, so this is not necessarily wrong — but a local 201/862/973 number reads as more credible to a Teterboro flight department, and area code is one of the few local-SEO signals a service business has. Worth raising with the client.",
+    "theme: preset 'stealth' chosen by Detailer Systems (near-black, condensed uppercase display, sharp corners). accentColor #1f6f8b is still the original proposal and has not been confirmed with the client; contrast is validated at build.",
     "The contact email is a personal Gmail address, and it will render publicly on Privacy Policy, Terms of Service, and Request a Quote as the business contact. jetspa.co already exists as a domain; a karan@jetspa.co style address would cost nothing and match the credential-heavy positioning the copy leans on.",
     "websiteUrl: the domain jetspa.co is stated in the client's Privacy Policy as 'http://jetspa.co'. Recorded here as https — confirm the canonical scheme and whether www redirects.",
-    "theme: 'chrome' + #1f6f8b is a proposal, not an observation. Preset choice and accent are the only design decisions in this file; confirm with the client before the first build. Contrast is validated at build time.",
     "legal.source is 'client': JetSpa supplied its own Privacy Policy and Terms of Service with aviation-specific insurance, warranty, and AOG liability clauses. That text has NOT been through Detailer Systems' legal review.",
     "areas are airports, not cities, so `state` is deliberately null on all four — this drives both the '{name}, {ST}' label suppression and Place (not City) in LocalBusiness JSON-LD.",
     "isHeadquarters is false on all four airports: the export never states which field the business is based out of. Set one if KTEB (or another) is the home base.",

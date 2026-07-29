@@ -87,9 +87,7 @@ export const siteConfig = {
   },
 
   theme: {
-    // Proposal, not an observation: chrome (dark blue-silver, metallic) suits the
-    // corporate-aviation audience. Confirm before launch; contrast is validated here.
-    preset: 'chrome' as const,
+    preset: 'stealth' as const,
     accentColor: '#1f6f8b',
   },
 
