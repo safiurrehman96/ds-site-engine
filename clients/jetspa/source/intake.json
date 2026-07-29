@@ -4,7 +4,7 @@
   "business": {
     "name": "JetSpa",
     "legalName": null,
-    "owner": null,
+    "owner": "Karan Gogna",
     "tagline": null,
     "blurb": null,
     "websiteUrl": "https://jetspa.co",
@@ -14,9 +14,9 @@
   },
 
   "contact": {
-    "phone": null,
-    "phoneDisplay": null,
-    "email": null,
+    "phone": "+17148370004",
+    "phoneDisplay": "(714) 837-0004",
+    "email": "karangogna86@gmail.com",
     "address": null
   },
 
@@ -100,7 +100,9 @@
   "source": { "type": "notion-export", "path": "source/Website Pages" },
 
   "notes": [
-    "Onboarding notes name the founder as 'Karan' (first name only, never appears in the page copy itself, which is company-front framing). Confirm the full name before it is used to resolve {{custom_values.business_owner}}.",
+    "Owner confirmed as Karan Gogna. Resolves {{custom_values.business_owner}}, which appears in the About page copy; the rest of the site keeps company-front framing.",
+    "The phone number is a 714 area code (Orange County, CA) for a business operating out of NJ/NY/PA airports. Mobile numbers travel, so this is not necessarily wrong — but a local 201/862/973 number reads as more credible to a Teterboro flight department, and area code is one of the few local-SEO signals a service business has. Worth raising with the client.",
+    "The contact email is a personal Gmail address, and it will render publicly on Privacy Policy, Terms of Service, and Request a Quote as the business contact. jetspa.co already exists as a domain; a karan@jetspa.co style address would cost nothing and match the credential-heavy positioning the copy leans on.",
     "websiteUrl: the domain jetspa.co is stated in the client's Privacy Policy as 'http://jetspa.co'. Recorded here as https — confirm the canonical scheme and whether www redirects.",
     "theme: 'chrome' + #1f6f8b is a proposal, not an observation. Preset choice and accent are the only design decisions in this file; confirm with the client before the first build. Contrast is validated at build time.",
     "legal.source is 'client': JetSpa supplied its own Privacy Policy and Terms of Service with aviation-specific insurance, warranty, and AOG liability clauses. That text has NOT been through Detailer Systems' legal review.",
