@@ -1,0 +1,121 @@
+{
+  "slug": "kleen",
+
+  "business": {
+    "name": "Kleen Car Care",
+    "legalName": null,
+    "owner": null,
+    "tagline": "Mobile auto detailing that comes to you.",
+    "blurb": "Kleen Car Care is Northern Virginia's mobile detailing service. Based in Sterling, VA, we bring professional auto, motorcycle, ATV, and golf cart detailing directly to your driveway across the DMV area.",
+    "websiteUrl": "https://kleencarcare.com",
+    "category": "Mobile Auto Detailing",
+    "region": "Northern Virginia",
+    "footerNote": "Our mobile detailing team comes to you — no drop-off, no waiting."
+  },
+
+  "contact": {
+    "phone": "+18775208638",
+    "phoneDisplay": "(877) 520-8638",
+    "email": "hashim@kleencarcare.com",
+    "address": {
+      "street": "13251 Overcup Oak Ct",
+      "city": "Herndon",
+      "state": "VA",
+      "zip": "20171"
+    }
+  },
+
+  "serviceArea": {
+    "baseCity": "Sterling",
+    "baseState": "VA",
+    "radiusMiles": 50,
+    "label": "Northern Virginia and the greater DMV area"
+  },
+
+  "hours": [
+    { "days": "Monday - Saturday", "hours": "9 AM - 9 PM" },
+    { "days": "Sunday", "hours": "Appointments Only" }
+  ],
+
+  "socials": {
+    "facebook": "https://www.facebook.com/profile.php?id=61562012772268",
+    "instagram": "https://www.instagram.com/kleencarcare",
+    "tiktok": "https://www.tiktok.com/@kleen_detailing",
+    "youtube": null,
+    "reviewUrl": null
+  },
+
+  "ghl": {
+    "bookingUrls": [
+      { "label": "Sedan / Compact Car", "url": "https://links.detailersystems.com/booking/mGZ1WBfSBBfTWWAPMjVT/sc/6a4c2539c0f4c7c30577be1d" },
+      { "label": "SUV / Truck", "url": "https://links.detailersystems.com/booking/mGZ1WBfSBBfTWWAPMjVT/sc/6a56eb5ac59a4a677474d213" },
+      { "label": "Motorcycle", "url": "https://links.detailersystems.com/booking/mGZ1WBfSBBfTWWAPMjVT/sc/6a56eb6c3e61c6ec8a82f83f" },
+      { "label": "Golf Cart", "url": "https://links.detailersystems.com/booking/mGZ1WBfSBBfTWWAPMjVT/sc/6a56eb6244b18d99a8de442b" },
+      { "label": "ATV", "url": "https://links.detailersystems.com/booking/mGZ1WBfSBBfTWWAPMjVT/sc/6a56eb66e7d56902aaef62bb" }
+    ],
+    "quoteUrl": null,
+    "embed": false
+  },
+
+  "tracking": { "gtmId": "GTM-NCFZRGGB" },
+
+  "theme": { "preset": "fresh", "accentColor": "#1a7f6b" },
+
+  "modules": {
+    "howItWorks": true,
+    "credentialBadge": null,
+    "blogUrl": "https://kleencarcare.com/blog"
+  },
+
+  "legal": {
+    "effectiveDate": "July 2026",
+    "source": "template",
+    "governingState": null
+  },
+
+  "pages": {
+    "services": [
+      { "name": "Auto Detailing", "slug": "auto-detailing", "order": 1, "shortDescription": null, "kind": "service" },
+      { "name": "Motorcycle Detailing", "slug": "motorcycle-detailing", "order": 2, "shortDescription": null, "kind": "service" },
+      { "name": "ATV Detailing", "slug": "atv-detailing", "order": 3, "shortDescription": null, "kind": "service" },
+      { "name": "Golf Cart Detailing", "slug": "golf-cart-detailing", "order": 4, "shortDescription": null, "kind": "service" }
+    ],
+    "areas": [
+      { "name": "Sterling", "slug": "sterling-va", "order": 1, "state": "VA", "shortName": null, "isHeadquarters": true },
+      { "name": "Ashburn", "slug": "ashburn-va", "order": 2, "state": "VA", "shortName": null, "isHeadquarters": false },
+      { "name": "Great Falls", "slug": "great-falls-va", "order": 3, "state": "VA", "shortName": null, "isHeadquarters": false },
+      { "name": "Leesburg", "slug": "leesburg-va", "order": 4, "state": "VA", "shortName": null, "isHeadquarters": false },
+      { "name": "Vienna", "slug": "vienna-va", "order": 5, "state": "VA", "shortName": null, "isHeadquarters": false },
+      { "name": "Tysons Corner", "slug": "tysons-corner-va", "order": 6, "state": "VA", "shortName": null, "isHeadquarters": false },
+      { "name": "Falls Church", "slug": "falls-church-va", "order": 7, "state": "VA", "shortName": null, "isHeadquarters": false },
+      { "name": "Alexandria", "slug": "alexandria-va", "order": 8, "state": "VA", "shortName": null, "isHeadquarters": false },
+      { "name": "Manassas", "slug": "manassas-va", "order": 9, "state": "VA", "shortName": null, "isHeadquarters": false }
+    ]
+  },
+
+  "assets": {
+    "logo": { "file": "logo.jpg" },
+    "heroVideo": {
+      "file": "hero.webm",
+      "fallbackFile": "hero.mp4",
+      "poster": { "file": "hero-poster.jpg", "alt": "Mobile detailing in progress — Kleen Car Care in Sterling, VA" }
+    },
+    "socialImage": { "file": "social.jpg", "alt": "Freshly detailed vehicle — Kleen Car Care in Sterling, VA" },
+    "introImage": { "file": "intro.jpg", "alt": "Detailer working on a customer vehicle on-site — Kleen Car Care in Sterling, VA" },
+    "beforeAfter": []
+  },
+
+  "tokens": {},
+  "redirects": [],
+
+  "source": { "type": "scrape", "path": null },
+
+  "notes": [
+    "Backfilled from the existing payload after the intake contract was defined, as a check that the schema covers a client that already builds. Kleen is the engine's test fixture, not a migration — see PHASE-0-NOTES.md.",
+    "ghl.quoteUrl is null because the live quote form is a native GHL page-builder form with no standalone embed URL. site.config.ts currently holds a placeholder that passes URL validation while pointing nowhere — null is the honest representation.",
+    "business.owner is unknown; the contact email suggests 'Hashim' but the live site never names an owner, and a name inferred from an email address is a guess.",
+    "socials.reviewUrl unknown: /faqs links a 'Leave Us A Review' button whose destination is not resolvable from the rendered page.",
+    "Mailing address is Herndon while the brand markets from Sterling. Both are correct and both appear on the live site — hence serviceArea.baseCity differing from contact.address.city.",
+    "The hero poster shows a person wearing another company's branding ('VELOCITY AUTO DETAILING'). Acceptable for a fixture; must never be reused for a real client."
+  ]
+}

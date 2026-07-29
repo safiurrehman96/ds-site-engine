@@ -1,0 +1,116 @@
+{
+  "slug": "jetspa",
+
+  "business": {
+    "name": "JetSpa",
+    "legalName": null,
+    "owner": null,
+    "tagline": null,
+    "blurb": null,
+    "websiteUrl": "https://jetspa.co",
+    "category": "Aircraft Detailing",
+    "region": "the Northeast",
+    "footerNote": null
+  },
+
+  "contact": {
+    "phone": null,
+    "phoneDisplay": null,
+    "email": null,
+    "address": null
+  },
+
+  "serviceArea": {
+    "baseCity": null,
+    "baseState": "NJ",
+    "radiusMiles": null,
+    "label": "the Northeast — NY, NJ, PA, CT, MD, DE, and VA"
+  },
+
+  "hours": null,
+
+  "socials": {
+    "facebook": null,
+    "instagram": null,
+    "tiktok": null,
+    "youtube": null,
+    "reviewUrl": null
+  },
+
+  "ghl": {
+    "bookingUrls": [
+      { "label": "Piston Aircraft", "url": null },
+      { "label": "Turboprop Aircraft", "url": null },
+      { "label": "Light Corporate Jet", "url": null },
+      { "label": "Midsize Corporate Jet", "url": null },
+      { "label": "Large Corporate Jet", "url": null },
+      { "label": "Super Corporate Jet / Boeing Business Jet", "url": null }
+    ],
+    "quoteUrl": null,
+    "embed": false
+  },
+
+  "tracking": { "gtmId": null },
+
+  "theme": { "preset": "chrome", "accentColor": "#1f6f8b" },
+
+  "modules": {
+    "howItWorks": true,
+    "credentialBadge": null,
+    "blogUrl": null
+  },
+
+  "legal": {
+    "effectiveDate": null,
+    "source": "client",
+    "governingState": "New Jersey"
+  },
+
+  "pages": {
+    "services": [
+      { "name": "Aircraft Ceramic Coating", "slug": "aircraft-ceramic-coating", "order": 1, "shortDescription": null, "kind": "service" },
+      { "name": "Aircraft Interior Detailing", "slug": "aircraft-interior-detailing", "order": 2, "shortDescription": null, "kind": "service" },
+      { "name": "Aircraft Exterior Detailing", "slug": "aircraft-exterior-detailing", "order": 3, "shortDescription": null, "kind": "service" },
+      { "name": "Brightwork Polishing", "slug": "brightwork-polishing", "order": 4, "shortDescription": null, "kind": "service" },
+      { "name": "De-Ice Boot Refurbishment", "slug": "de-ice-boot-refurbishment", "order": 5, "shortDescription": null, "kind": "service" },
+      { "name": "AOG Emergency Aircraft Cleaning", "slug": "aog-emergency-cleaning", "order": 6, "shortDescription": null, "kind": "service" },
+      { "name": "Corporate Jet Detailing", "slug": "corporate-jet-detailing", "order": 7, "shortDescription": null, "kind": "segment" },
+      { "name": "Turboprop Aircraft Detailing", "slug": "turboprop-aircraft-detailing", "order": 8, "shortDescription": null, "kind": "segment" },
+      { "name": "Piston Aircraft Detailing", "slug": "piston-aircraft-detailing", "order": 9, "shortDescription": null, "kind": "segment" }
+    ],
+    "areas": [
+      { "name": "Teterboro Airport (KTEB)", "slug": "aircraft-detailing-teterboro", "order": 1, "state": null, "shortName": "KTEB", "isHeadquarters": false },
+      { "name": "Morristown Airport (KMMU)", "slug": "aircraft-detailing-morristown", "order": 2, "state": null, "shortName": "KMMU", "isHeadquarters": false },
+      { "name": "Lehigh Valley Airport (KABE)", "slug": "aircraft-detailing-allentown", "order": 3, "state": null, "shortName": "KABE", "isHeadquarters": false },
+      { "name": "White Plains Airport (KHPN)", "slug": "aircraft-detailing-white-plains", "order": 4, "state": null, "shortName": "KHPN", "isHeadquarters": false }
+    ]
+  },
+
+  "assets": {
+    "logo": null,
+    "heroVideo": null,
+    "socialImage": null,
+    "introImage": null,
+    "beforeAfter": []
+  },
+
+  "tokens": {},
+  "redirects": [],
+
+  "source": { "type": "notion-export", "path": "source/Website Pages" },
+
+  "notes": [
+    "Onboarding notes name the founder as 'Karan' (first name only, never appears in the page copy itself, which is company-front framing). Confirm the full name before it is used to resolve {{custom_values.business_owner}}.",
+    "websiteUrl: the domain jetspa.co is stated in the client's Privacy Policy as 'http://jetspa.co'. Recorded here as https — confirm the canonical scheme and whether www redirects.",
+    "theme: 'chrome' + #1f6f8b is a proposal, not an observation. Preset choice and accent are the only design decisions in this file; confirm with the client before the first build. Contrast is validated at build time.",
+    "legal.source is 'client': JetSpa supplied its own Privacy Policy and Terms of Service with aviation-specific insurance, warranty, and AOG liability clauses. That text has NOT been through Detailer Systems' legal review.",
+    "areas are airports, not cities, so `state` is deliberately null on all four — this drives both the '{name}, {ST}' label suppression and Place (not City) in LocalBusiness JSON-LD.",
+    "isHeadquarters is false on all four airports: the export never states which field the business is based out of. Set one if KTEB (or another) is the home base.",
+    "9 service pages, of which 3 are aircraft-class segment pages (corporate jet / turboprop / piston) that sell a customer segment rather than a distinct service. They share the services collection and route.",
+    "Booking is organised by aircraft class, not vehicle type — 6 calendars, all still to be built in GHL.",
+    "Pricing rule from the client: no dollar amounts, tiers, or starting prices on any live page. Pricing is disclosed by phone, quote form, or the booking calendar.",
+    "8 service pages carry a [BEFORE/AFTER IMAGE SECTION] placeholder in the export; assets.beforeAfter is empty until real photography exists. Generated aircraft imagery is a poor fit for this audience — wrong airframes and garbled registrations are obvious to owners and flight departments.",
+    "Trust signals repeated site-wide and treated as facts: ADA (Aircraft Detailing Association) certification, OEM-approved chemistry, $200K general liability + $1.5M hangar liability insurance, badge access at all four airports. Verify each before publishing; none is verifiable from the export.",
+    "Morristown's ICAO is KMMU (the onboarding call said 'MMA', which is wrong)."
+  ]
+}

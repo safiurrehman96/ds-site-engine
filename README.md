@@ -30,31 +30,52 @@ stay put — the link moves instead.
 
 ```
 clients/<slug>/
-  site.config.ts        # facts: brand, contact, hours, GHL links, theme, SEO tokens
+  source/
+    intake.json         # THE INPUT — every fact the site needs, in one file
+    Website Pages/      # the content export, where one exists
+  site.config.ts        # generated from intake.json; plain data, imports nothing
   _redirects            # optional 301s, staged into public/ by pnpm use
   assets/               # logo, hero video + poster, social image, page images
   content/
     home.md  about.md  faqs.md  booking.md  get-quote.md  booking-confirmed.md
     services/*.md  areas/*.md
-    legal/                # optional authored Privacy/ToS; empty = generated template
+    legal/              # optional authored Privacy/ToS; empty = generated template
 ```
 
-1. `mkdir -p clients/<slug>` and copy an existing payload as the shape reference.
-2. In `site.config.ts`, import the schema as `'../../src/config-schema'` — two levels
-   up, because Vite resolves the symlink to the real path before resolving imports.
-3. Drop assets in. Budgets are enforced at build: 1536KB hero video, 600KB per image.
-4. `pnpm use <slug> && pnpm build`. Every missing field fails the build by name.
+**1. Fill the intake.** Copy `scripts/intake.template.json` to
+`clients/<slug>/source/intake.json`. It covers business facts, contact and NAP, service
+area, hours, socials, GHL calendars and forms, tracking, theme, legal, the full page
+inventory, and the site-level assets — everything `site.config.ts` and the merge-field
+resolver need. Field docs live in `scripts/intake-schema.mjs`.
 
-For a client arriving as a Notion export, run the importer first:
+Anything not yet known is `null` — never a guess, and never a placeholder that looks
+real. An invented phone number passes validation and ships; a null one fails the build
+until someone chases it.
+
+**2. Check it.**
 
 ```
-pnpm run import -- --client facts.json          # dry run: reports what will not map
-pnpm run import -- --client facts.json --write  # emit the reviewed intermediate
+pnpm run intake <slug>      # or --all
 ```
 
-It resolves `{{custom_values.*}}` merge fields, rewrites Notion links to site paths,
-and reports what a human still has to place. It does **not** guess how prose maps onto
-`packages` / `addons` / `processSteps` — that is authored, not inferred.
+Separates three things: schema errors (the file is wrong), facts still needed before the
+site can build, and optional fields deliberately left empty.
+
+**3. Import the content**, where it arrived as an export:
+
+```
+pnpm run import <slug>              # dry run: reports what will not map
+pnpm run import <slug> -- --write   # emit the reviewed intermediate to .import/
+```
+
+It resolves `{{custom_values.*}}` merge fields from the same intake file, rewrites Notion
+links to site paths, and reports what a human still has to place. It does **not** guess
+how prose maps onto `packages` / `addons` / `processSteps` — that is authored, not
+inferred, because a wrong guess there builds cleanly and reads like nonsense.
+
+**4. Author the payload**, drop the assets in (budgets are enforced at build: 1536KB
+hero video, 600KB per image), then `pnpm use <slug> && pnpm build`. Every missing or
+malformed field fails the build by name.
 
 ## Deploying
 

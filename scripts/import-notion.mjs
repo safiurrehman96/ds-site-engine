@@ -1,9 +1,9 @@
 /**
  * Notion export → payload intermediate.
  *
- *   pnpm run import                                  dry run against example/
- *   pnpm run import -- --in example --out .import    write the intermediate
- *   pnpm run import -- --client path/to/client.json  supply the facts explicitly
+ *   pnpm run import jetspa                dry run against clients/jetspa/source/
+ *   pnpm run import jetspa -- --write     write the intermediate to .import/
+ *   pnpm run import -- --in <dir>         ad-hoc run against any export directory
  *
  * WHAT THIS DOES
  * Only the deterministic half of an import: parse the Notion property block, resolve
@@ -19,26 +19,19 @@
  * from it.
  *
  * CLIENT FACTS
- * Merge fields resolve from a JSON file (--client, else <in>/client-info.json):
+ * Merge fields resolve from the client's intake file — clients/<slug>/source/intake.json,
+ * the same file `pnpm run intake` validates and that site.config.ts is written from. One
+ * source of truth: a fact corrected there is corrected everywhere.
  *
- *   {
- *     "brand":   { "name": "JetSpa", "owner": "Karan ..." },
- *     "site":    { "url": "https://jetspa.co" },
- *     "contact": { "phone": "+1...", "phoneDisplay": "(201) ...", "email": "..." },
- *     "serviceArea": { "label": "the Northeast" },
- *     "hours":   "Mon-Fri 8am-6pm",
- *     "socials": { "facebook": "https://...", "instagram": "...", "tiktok": "...",
- *                  "youtube": "...", "review": "https://g.page/..." },
- *     "quotePath": "/get-quote",
- *     "socialImage": "./assets/social.jpg"
- *   }
- *
- * Anything absent is not invented: the token stays unresolved and is reported, which
- * is the whole point of running this before authoring rather than after.
+ * A fact that is still null resolves nothing. The token is left intact and reported,
+ * rather than filled with something plausible — an invented value reads as real and
+ * survives review, while an unresolved one fails the build (src/content.config.ts
+ * rejects any `{{` in prose).
  */
 import { readdir, readFile, writeFile, mkdir, rm } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
+import { intakeSchema, tokenMaps } from './intake-schema.mjs';
 
 const args = process.argv.slice(2);
 const flag = (name, fallback) => {
@@ -46,67 +39,42 @@ const flag = (name, fallback) => {
   return i !== -1 && args[i + 1] && !args[i + 1].startsWith('--') ? args[i + 1] : fallback;
 };
 
-const IN = flag('in', 'example');
+/** A bare argument is a client slug: everything else is derived from it. */
+const SLUG = args.find((a) => !a.startsWith('-') && args[args.indexOf(a) - 1]?.startsWith('--') !== true);
+
+const IN = flag('in', SLUG ? path.join('clients', SLUG, 'source') : null);
 const OUT = flag('out', '.import');
-const CLIENT = flag('client', path.join(IN, 'client-info.json'));
+const INTAKE = flag('intake', SLUG ? path.join('clients', SLUG, 'source', 'intake.json') : null);
 // Dry run is the default: this reads a client's content and should not scatter files
 // on a first, exploratory run.
 const DRY = args.includes('--dry-run') || !args.includes('--write');
 
-const PAGES_DIR = path.join(IN, 'Website Pages');
+const PAGES_DIR = IN ? path.join(IN, 'Website Pages') : null;
 
 /** Notion exports suffix every filename with a 32-char page id. */
 const NOTION_ID = /\s+[0-9a-f]{32}$/;
 
 /* ------------------------------------------------------------------ client facts */
 
-async function loadClient() {
-  if (!existsSync(CLIENT)) {
-    console.warn(
-      `! No client facts at ${CLIENT} — every {{custom_values.*}} token will be reported unresolved.\n` +
-        `  Pass --client <file.json>; see the header of this script for the shape.`,
-    );
-    return {};
-  }
-  return JSON.parse(await readFile(CLIENT, 'utf8'));
-}
-
 /**
- * Two maps, not one.
- *
- * `prose` is what a token becomes in visible copy; `href` is what the same token
- * becomes inside a link destination. business_phone is the case that forces this:
- * the display form "(201) 555-0100" is unusable in `tel:`, and the E.164 form is
- * wrong in a sentence. A single blind replace gets one of the two wrong every time.
+ * The intake file, parsed through the same schema `pnpm run intake` uses — so a
+ * malformed one is rejected here identically rather than half-applied.
  */
-function tokenMaps(c) {
-  const s = c.socials ?? {};
-  const prose = {
-    business_name: c.brand?.name,
-    business_owner: c.brand?.owner,
-    business_phone: c.contact?.phoneDisplay ?? c.contact?.phone,
-    business_email: c.contact?.email,
-    business_website_url: c.site?.url,
-    business_hours: c.hours,
-    service_location: c.serviceArea?.label,
-    social_sharing: c.socialImage,
-    quote_page_link: c.quotePath ?? '/get-quote',
-    gmb_review_link: s.review,
-    // GHL's own field names carry the triple-s typo; both spellings appear in exports.
-    businesss_facebook: s.facebook,
-    business_facebook: s.facebook,
-    businesss_instagram: s.instagram,
-    business_instagram: s.instagram,
-    businesss_tiktok: s.tiktok,
-    business_tiktok: s.tiktok,
-    businesss_youtube: s.youtube,
-    business_youtube: s.youtube,
-  };
+async function loadIntake() {
+  if (!INTAKE || !existsSync(INTAKE)) {
+    console.warn(
+      `! No intake at ${INTAKE ?? '(none given)'} — every {{custom_values.*}} token will be\n` +
+        `  reported unresolved. Run: pnpm run import <slug>`,
+    );
+    return null;
+  }
 
-  const href = { ...prose, business_phone: c.contact?.phone ?? c.contact?.phoneDisplay };
-
-  const clean = (o) => Object.fromEntries(Object.entries(o).filter(([, v]) => v != null));
-  return { prose: clean(prose), href: clean(href) };
+  const parsed = intakeSchema.safeParse(JSON.parse(await readFile(INTAKE, 'utf8')));
+  if (!parsed.success) {
+    console.error(`✗ ${INTAKE} is invalid — run \`pnpm run intake ${SLUG ?? ''}\` for detail.`);
+    process.exit(1);
+  }
+  return parsed.data;
 }
 
 /* ---------------------------------------------------------------------- parsing */
@@ -208,13 +176,14 @@ function extractFaqs(sectionBody) {
 /* -------------------------------------------------------------------------- run */
 
 async function main() {
-  if (!existsSync(PAGES_DIR)) {
+  if (!PAGES_DIR || !existsSync(PAGES_DIR)) {
     console.error(`✗ No "Website Pages" directory under ${IN}/`);
     process.exit(1);
   }
 
-  const client = await loadClient();
-  const maps = tokenMaps(client);
+  const intake = await loadIntake();
+  // No intake: every token reports unresolved rather than silently vanishing.
+  const maps = intake ? tokenMaps(intake) : { prose: {}, href: {} };
 
   const files = (await readdir(PAGES_DIR)).filter((f) => f.endsWith('.md')).sort();
   const raws = await Promise.all(

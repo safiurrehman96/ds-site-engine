@@ -1,0 +1,91 @@
+{
+  "_readme": [
+    "Copy to clients/<slug>/source/intake.json and fill in. Validate with: pnpm run intake <slug>",
+    "Use null for any fact nobody has supplied yet. Never a guess, never a placeholder that",
+    "looks real — an invented phone number passes validation and ships; a null one fails the",
+    "build until someone chases it. Field docs live in scripts/intake-schema.mjs."
+  ],
+
+  "slug": "",
+
+  "business": {
+    "name": "",
+    "legalName": null,
+    "owner": null,
+    "tagline": null,
+    "blurb": null,
+    "websiteUrl": null,
+    "category": "",
+    "region": "",
+    "footerNote": null
+  },
+
+  "contact": {
+    "phone": null,
+    "phoneDisplay": null,
+    "email": null,
+    "address": null
+  },
+
+  "serviceArea": {
+    "baseCity": null,
+    "baseState": null,
+    "radiusMiles": null,
+    "label": null
+  },
+
+  "hours": null,
+
+  "socials": {
+    "facebook": null,
+    "instagram": null,
+    "tiktok": null,
+    "youtube": null,
+    "reviewUrl": null
+  },
+
+  "ghl": {
+    "bookingUrls": null,
+    "quoteUrl": null,
+    "embed": false
+  },
+
+  "tracking": { "gtmId": null },
+
+  "theme": { "preset": "fresh", "accentColor": "#000000" },
+
+  "modules": {
+    "howItWorks": true,
+    "credentialBadge": null,
+    "blogUrl": null
+  },
+
+  "legal": {
+    "effectiveDate": null,
+    "source": "template",
+    "governingState": null
+  },
+
+  "pages": {
+    "services": [
+      { "name": "", "slug": "", "order": 1, "shortDescription": null, "kind": "service" }
+    ],
+    "areas": [
+      { "name": "", "slug": "", "order": 1, "state": null, "shortName": null, "isHeadquarters": false }
+    ]
+  },
+
+  "assets": {
+    "logo": null,
+    "heroVideo": null,
+    "socialImage": null,
+    "introImage": null,
+    "beforeAfter": []
+  },
+
+  "tokens": {},
+  "redirects": [],
+
+  "source": { "type": "manual", "path": null },
+  "notes": []
+}
