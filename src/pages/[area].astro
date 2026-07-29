@@ -47,6 +47,17 @@ const h1 = a.h1 ?? buildH1(seo.category, a.name, a.state);
 
   <SplitSection index={0} heading={a.localCopy.heading} body={a.localCopy.body} />
 
+  {
+    a.localDetail && (
+      <SplitSection
+        index={1}
+        tone="card"
+        heading={a.localDetail.heading}
+        body={a.localDetail.body}
+      />
+    )
+  }
+
   <ServicesGrid
     tone="card"
     heading={`Services Available in ${areaLabel(a)}`}
@@ -62,7 +73,7 @@ const h1 = a.h1 ?? buildH1(seo.category, a.name, a.state);
   <SocialStrip image={defaults.socialImage} />
 
   <SplitSection
-    index={1}
+    index={2}
     heading={a.whyUs.heading}
     body={a.whyUs.body}
     cta={{ label: 'Get A Quote', href: '/get-quote' }}

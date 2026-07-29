@@ -1,9 +1,15 @@
 ---
 /**
- * Renders an authored multi-paragraph string as paragraphs.
- * Payload prose is plain text, so nothing here interprets markup.
+ * Renders an authored multi-paragraph string.
+ *
+ * Prose is plain text with one exception: a block whose lines all begin with "- "
+ * becomes a real <ul>. Bulleted copy turns out to be unavoidable — service pages
+ * routinely list what a job includes — and without this those lines rendered as
+ * literal "- item" text inside a paragraph. Nothing else is interpreted; there is no
+ * markdown parser here, and payload prose is not markdown.
  */
 import { paragraphs } from '../lib/content';
+import Inline from './Inline.astro';
 
 interface Props {
   body: string;
@@ -11,9 +17,44 @@ interface Props {
 }
 
 const { body, class: className } = Astro.props;
-const parts = paragraphs(body);
+
+const blocks = paragraphs(body).map((block) => {
+  const lines = block.split('\n').map((l) => l.trim()).filter(Boolean);
+  const isList = lines.length > 0 && lines.every((l) => l.startsWith('- '));
+  return isList ? { type: 'list' as const, items: lines.map((l) => l.slice(2).trim()) } : { type: 'text' as const, text: block };
+});
 ---
 
 <div class:list={['ds-prose', className]}>
-  {parts.map((p) => <p>{p}</p>)}
+  {
+    blocks.map((b) =>
+      b.type === 'list' ? (
+        <ul class="ds-prose-list">
+          {b.items.map((item) => (
+            <li>
+              <Inline text={item} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>
+          <Inline text={b.text} />
+        </p>
+      ),
+    )
+  }
 </div>
+
+<style>
+  .ds-prose-list {
+    display: grid;
+    gap: 0.5rem;
+    margin-block: 1rem;
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+
+  .ds-prose-list li::marker {
+    color: var(--ds-accent);
+  }
+</style>

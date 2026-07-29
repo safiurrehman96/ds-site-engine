@@ -70,11 +70,17 @@ let splitIndex = 0;
     )
   }
 
-  <section class="packages ds-section">
-    <div class="ds-container">
-      {s.packages.map((p, i) => <PackageCard {...p} index={i} />)}
-    </div>
-  </section>
+  {
+    s.packages && (
+      <section class="packages ds-section">
+        <div class="ds-container">
+          {s.packages.map((p, i) => (
+            <PackageCard {...p} index={i} />
+          ))}
+        </div>
+      </section>
+    )
+  }
 
   <StepsList
     heading={s.processHeading}
@@ -93,7 +99,7 @@ let splitIndex = 0;
     )
   }
 
-  <AddOnCards addons={s.addons} tone="paper" />
+  {s.addons && <AddOnCards addons={s.addons} tone="paper" />}
 
   <SplitSection
     index={splitIndex++}

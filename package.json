@@ -17,7 +17,8 @@
     "stress": "node scripts/stress.mjs",
     "import": "node scripts/import-notion.mjs",
     "intake": "node scripts/check-intake.mjs",
-    "placeholders": "node scripts/make-placeholder-assets.mjs"
+    "placeholders": "node scripts/make-placeholder-assets.mjs",
+    "draft": "node scripts/draft-payload.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

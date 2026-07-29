@@ -21,6 +21,7 @@ import { spawn } from 'node:child_process';
 import { createServer } from 'node:http';
 import { readFile, readdir, rm, cp, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
+import * as fsSync from 'node:fs';
 import path from 'node:path';
 import lighthouse from 'lighthouse';
 import * as chromeLauncher from 'chrome-launcher';
@@ -29,8 +30,30 @@ const PRESETS = ['fresh', 'stealth', 'chrome', 'bold'];
 const OUT = '.stress';
 const PORT = 4405;
 
-/** Pages sampled per preset. Home and a service page exercise every component. */
-const SAMPLE = ['/', '/auto-detailing/'];
+/**
+ * Pages sampled per preset: home plus one service page exercise every component.
+ *
+ * The service slug is read from the active client's intake rather than hardcoded —
+ * `/auto-detailing/` exists only on Kleen, and against any other payload the audit
+ * scored a 404 as a page and reported four threshold failures that had nothing to do
+ * with the site.
+ */
+function sampleRoutes() {
+  const slug = process.env.DS_CLIENT ?? path.basename(fsSync.readlinkSync('client'));
+  const intakePath = path.join('clients', slug, 'source', 'intake.json');
+  try {
+    const intake = JSON.parse(fsSync.readFileSync(intakePath, 'utf8'));
+    const first = [...intake.pages.services].sort((a, b) => a.order - b.order)[0];
+    return ['/', `/${first.slug}/`];
+  } catch {
+    throw new Error(
+      `Cannot determine a service page to sample: no readable ${intakePath}.\n` +
+        'Every client needs source/intake.json (see scripts/intake.template.json).',
+    );
+  }
+}
+
+const SAMPLE = sampleRoutes();
 
 const THRESHOLDS = {
   performance: 90,

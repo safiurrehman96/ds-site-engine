@@ -122,6 +122,16 @@ export const siteConfig = {
 
   defaults: {
     ctaHeadline: 'Get Your Vehicle Detailed Today',
+    // Was hardcoded in Hero.astro; authored here so it stays Kleen's claim, not the
+    // engine's. The other two points are config-derived and identical to the default.
+    heroProof: [
+      { label: '100% Mobile', detail: 'We come to you — no drop-off, no waiting' },
+      {
+        label: '50-mile radius',
+        detail: 'From Sterling, across Northern Virginia and the greater DMV area',
+      },
+      { label: '9 AM - 9 PM', detail: 'Monday - Saturday' },
+    ],
     socialImage: {
       src: './assets/social.jpg',
       alt: 'Freshly detailed vehicle — Kleen Car Care in Sterling, VA',

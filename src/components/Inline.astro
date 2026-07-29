@@ -1,0 +1,71 @@
+---
+/**
+ * Inline formatting for authored prose: **bold** and [links](/path). Nothing else.
+ *
+ * Payload prose is not markdown, and this is not a markdown parser — it handles the
+ * two constructs client copy actually contains. Bold lead-ins ("**Insured.** We carry
+ * …") open most trust paragraphs, and inline links are how pages link to each other,
+ * which the SEO spec requires. Rendered as plain text, both leaked their syntax onto
+ * the page: literal asterisks, and "[Book Today](/booking)" as visible characters.
+ *
+ * Text is interpolated, never set as HTML, so payload copy cannot inject markup.
+ */
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+
+type Token =
+  | { kind: 'text'; value: string }
+  | { kind: 'strong'; value: string }
+  | { kind: 'link'; value: string; href: string };
+
+/**
+ * One pass, alternating between the two patterns. A link's label may itself be bold
+ * (`[**Book**](/booking)`) — rare enough that the label is emitted as plain text
+ * rather than recursing.
+ */
+function tokenize(input: string): Token[] {
+  const pattern = /\*\*(.+?)\*\*|\[([^\]]+)\]\(([^)\s]+)\)/gs;
+  const tokens: Token[] = [];
+  let last = 0;
+
+  for (const match of input.matchAll(pattern)) {
+    const at = match.index ?? 0;
+    if (at > last) tokens.push({ kind: 'text', value: input.slice(last, at) });
+
+    if (match[1] !== undefined) {
+      tokens.push({ kind: 'strong', value: match[1] });
+    } else {
+      tokens.push({ kind: 'link', value: match[2], href: match[3] });
+    }
+    last = at + match[0].length;
+  }
+
+  if (last < input.length) tokens.push({ kind: 'text', value: input.slice(last) });
+  return tokens;
+}
+
+const tokens = tokenize(text);
+/** Payload links are relative or tel:/mailto:; anything else leaves the site. */
+const isExternal = (href: string) => /^https?:\/\//i.test(href);
+---
+
+{
+  tokens.map((t) =>
+    t.kind === 'strong' ? (
+      <strong>{t.value}</strong>
+    ) : t.kind === 'link' ? (
+      <a
+        href={t.href}
+        target={isExternal(t.href) ? '_blank' : undefined}
+        rel={isExternal(t.href) ? 'noopener noreferrer' : undefined}
+      >
+        {t.value}
+      </a>
+    ) : (
+      t.value
+    ),
+  )
+}

@@ -235,19 +235,31 @@ const RADII = ['--ds-radius-sm', '--ds-radius-md', '--ds-radius-lg', '--ds-radiu
 <p class="sg-label ds-container">ServicesGrid — variant: tiles, tone: card</p>
 <ServicesGrid variant="tiles" tone="card" heading="Our Services" intro="Variant: tiles — image-led." />
 
-<p class="sg-label ds-container">PackageCard ×{service.packages.length} (alternating)</p>
-<section class="ds-section" data-tone="paper">
-  <div class="ds-container">
-    {service.packages.map((p, i) => <PackageCard {...p} index={i} />)}
-  </div>
-</section>
+{/* packages and addons are optional — a client that quotes per job publishes no
+    tiers at all, so the styleguide says so rather than crashing on an empty slot. */}
+{
+  service.packages ? (
+    <>
+      <p class="sg-label ds-container">PackageCard ×{service.packages.length} (alternating)</p>
+      <section class="ds-section" data-tone="paper">
+        <div class="ds-container">
+          {service.packages.map((p, i) => (
+            <PackageCard {...p} index={i} />
+          ))}
+        </div>
+      </section>
 
-<p class="sg-label ds-container">PackageCard — with durationBadge</p>
-<section class="ds-section" data-tone="card" style="background: var(--ds-card)">
-  <div class="ds-container">
-    <PackageCard {...service.packages[0]} durationBadge="2–3 years" index={0} />
-  </div>
-</section>
+      <p class="sg-label ds-container">PackageCard — with durationBadge</p>
+      <section class="ds-section" data-tone="card" style="background: var(--ds-card)">
+        <div class="ds-container">
+          <PackageCard {...service.packages[0]} durationBadge="2–3 years" index={0} />
+        </div>
+      </section>
+    </>
+  ) : (
+    <p class="sg-label ds-container">PackageCard — this payload defines no packages</p>
+  )
+}
 
 <p class="sg-label ds-container">
   StepsList — this preset's layout (<strong>{preset.motif.stepsStyle}</strong>), with titles + note
@@ -278,8 +290,16 @@ const RADII = ['--ds-radius-sm', '--ds-radius-md', '--ds-radius-lg', '--ds-radiu
   ))
 }
 
-<p class="sg-label ds-container">AddOnCards ×{service.addons.length}</p>
-<AddOnCards addons={service.addons} />
+{
+  service.addons ? (
+    <>
+      <p class="sg-label ds-container">AddOnCards ×{service.addons.length}</p>
+      <AddOnCards addons={service.addons} />
+    </>
+  ) : (
+    <p class="sg-label ds-container">AddOnCards — this payload defines no add-ons</p>
+  )
+}
 
 {/*
   No payload carries a beforeAfter pair yet, and the styleguide must render for every

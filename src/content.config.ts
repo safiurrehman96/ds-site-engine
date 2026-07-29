@@ -99,6 +99,11 @@ const services = defineCollection({
     /** "What Is {Service}" educational block. Absent on Kleen's simpler pages. */
     explainer: proseBlock.optional(),
 
+    /**
+     * Product tiers, where the client sells them. Optional: plenty of businesses
+     * quote per job and publish no tiers at all, and inventing package cards to
+     * satisfy a schema would be inventing a product structure.
+     */
     packages: z
       .array(
         z.object({
@@ -114,7 +119,8 @@ const services = defineCollection({
           body: prose,
         }),
       )
-      .min(1),
+      .min(1)
+      .optional(),
 
     processHeading: prose,
     processSteps: z
@@ -129,6 +135,7 @@ const services = defineCollection({
     /** Trailing requirement note under the steps (water/power access, etc.). */
     processNote: prose.optional(),
 
+    /** Optional for the same reason as `packages`. */
     addons: z
       .array(
         z.object({
@@ -137,7 +144,8 @@ const services = defineCollection({
           body: prose,
         }),
       )
-      .min(1),
+      .min(1)
+      .optional(),
 
     /**
      * Internal-linking block ("We Detail Every Vehicle Type"). Schema extension —
@@ -193,6 +201,12 @@ const areas = defineCollection({
 
     /** "Why {Area} Residents Choose Mobile Detailing" — the hyper-local block. */
     localCopy: proseBlock,
+    /**
+     * Second local block, for clients whose area pages carry genuinely page-specific
+     * detail (an airport's FBOs, weather, and scheduling constraints) beyond the
+     * "why here" pitch. Rendered after localCopy.
+     */
+    localDetail: proseBlock.optional(),
     /** "Why {Brand} for {Area}" trust block. */
     whyUs: proseBlock,
 
@@ -208,6 +222,8 @@ const home = defineCollection({
     metaDescription,
     /** Home is the one page whose H1 is authored, not formula-generated. */
     heroHeadline: prose,
+    /** Optional hero body. Kleen's home hero is headline-only. */
+    heroIntro: prose.optional(),
 
     intro: proseBlock,
     /** Image beside the intro block. */

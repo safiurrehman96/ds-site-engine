@@ -9,6 +9,7 @@
  * list when steps had no titles.
  */
 import type { Preset } from '../config-schema';
+import Inline from './Inline.astro';
 import { getPreset } from '../styles/presets';
 import { activePreset } from '../lib/theme';
 import { siteConfig } from '../lib/site-config';
@@ -61,7 +62,7 @@ const active: StepsVariant =
             </span>
             <div class="copy">
               {step.title && <h3>{step.title}</h3>}
-              <p>{step.body}</p>
+              <p><Inline text={step.body} /></p>
             </div>
           </li>
         ))

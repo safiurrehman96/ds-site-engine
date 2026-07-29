@@ -13,6 +13,7 @@
  * and decode failure.
  */
 import type { Preset } from '../config-schema';
+import Inline from './Inline.astro';
 import Img from './Img.astro';
 import { videoUrl } from '../lib/assets';
 import { getPreset } from '../styles/presets';
@@ -57,8 +58,9 @@ const sources = [video.src, video.fallbackSrc]
   .filter((s): s is string => Boolean(s))
   .map((s) => ({ url: videoUrl(s), type: mime(s) }));
 
-const proofPoints = [
-  { label: '100% Mobile', detail: 'We come to you — no drop-off, no waiting' },
+// Authored points win. The fallback states only what config already knows, so a
+// client who supplies none still gets a truthful card.
+const proofPoints = siteConfig.defaults.heroProof ?? [
   {
     label: `${serviceArea.radiusMiles}-mile radius`,
     detail: `From ${serviceArea.baseCity}, across ${serviceArea.label}`,
@@ -94,7 +96,7 @@ const proofPoints = [
     <div class="content-inner">
       <p class="chip">{eyebrow ?? `${seo.category} · ${serviceArea.baseCity}, ${serviceArea.baseState}`}</p>
       <h1>{heading}</h1>
-      {body && <p class="ds-lede body">{body}</p>}
+      {body && <p class="ds-lede body"><Inline text={body} /></p>}
 
       <div class="ctas">
         <a class="ds-btn ds-btn--primary" href="/booking">Book Online Now</a>

@@ -158,6 +158,19 @@ export const siteConfigSchema = z.object({
     ctaHeadline: z.string().min(1),
     socialImage: imageRef,
     /**
+     * The three-up card overlapping the hero. Optional and authored, because the
+     * engine has no way to know what is true of a client: the first point used to be
+     * hardcoded as "100% Mobile — we come to you", which is a claim, not a fact, and
+     * was simply false for a business that works out of hangars.
+     *
+     * Omitted, the card falls back to the two points that ARE derivable from config
+     * (coverage radius and opening hours) and asserts nothing.
+     */
+    heroProof: z
+      .array(z.object({ label: z.string().min(1), detail: z.string().min(1) }))
+      .max(3)
+      .optional(),
+    /**
      * Hero background video — the single hero asset. Every hero on every page uses
      * it, so a client supplies one video rather than a hero image per page.
      *

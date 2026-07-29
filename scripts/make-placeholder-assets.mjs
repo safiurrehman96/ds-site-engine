@@ -16,7 +16,7 @@
  * Requires ffmpeg for the hero video (`brew install ffmpeg`); images use sharp, which
  * is already a dev dependency.
  */
-import { mkdir, writeFile, rm } from 'node:fs/promises';
+import { mkdir, readFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
@@ -59,10 +59,25 @@ const IMAGES = [
   { file: 'intro.jpg', w: 1200, h: 900, label: 'PLACEHOLDER', sub: 'home intro photo' },
 ];
 
+/** One hero image per service, named by the convention the payloads already use. */
+async function serviceImages() {
+  const intake = path.join('clients', slug, 'source', 'intake.json');
+  if (!existsSync(intake)) return [];
+
+  const { pages } = JSON.parse(await readFile(intake, 'utf8'));
+  return (pages?.services ?? []).map((s) => ({
+    file: `service-${s.slug}.jpg`,
+    w: 1200,
+    h: 900,
+    label: 'PLACEHOLDER',
+    sub: s.name,
+  }));
+}
+
 async function main() {
   await mkdir(DIR, { recursive: true });
 
-  for (const img of IMAGES) {
+  for (const img of [...IMAGES, ...(await serviceImages())]) {
     const out = path.join(DIR, img.file);
     await sharp(svg(img.w, img.h, img.label, img.sub))
       .jpeg({ quality: 82 })

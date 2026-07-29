@@ -4,6 +4,7 @@
  * detailing and 2 on the specialty pages — so the grid is count-agnostic.
  */
 import Img from './Img.astro';
+import Inline from './Inline.astro';
 
 interface Props {
   /** Small label above the heading. Set to "" to hide. */
@@ -44,7 +45,7 @@ const hasImages = addons.some((a) => a.image);
             )}
             <div class="body">
               <h3>{a.name}</h3>
-              <p>{a.body}</p>
+              <p><Inline text={a.body} /></p>
             </div>
           </li>
         ))

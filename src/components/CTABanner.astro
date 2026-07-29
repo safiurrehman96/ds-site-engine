@@ -11,6 +11,7 @@
  * Headline comes from the payload; CTAs come from config.
  */
 import type { Preset } from '../config-schema';
+import Inline from './Inline.astro';
 import Img from './Img.astro';
 import { getPreset } from '../styles/presets';
 import { activePreset } from '../lib/theme';
@@ -60,7 +61,7 @@ const centred = active === 'image' || active === 'panel';
     <div class="inner">
       <div class="copy">
         <h2>{headline}</h2>
-        {body && <p class="ds-lede body">{body}</p>}
+        {body && <p class="ds-lede body"><Inline text={body} /></p>}
       </div>
 
       <div class="btns">
