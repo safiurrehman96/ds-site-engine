@@ -15,7 +15,7 @@ import CTABanner from '../components/CTABanner.astro';
 import BeforeAfter from '../components/BeforeAfter.astro';
 import { getAreas, areaLabel } from '../lib/content';
 import { buildTitle, buildH1 } from '../lib/seo';
-import { siteConfig } from '../../client/site.config';
+import { siteConfig } from '../lib/site-config';
 
 // Deliberately unannotated — see [service].astro.
 export const getStaticPaths = async () => {

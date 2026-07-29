@@ -10,7 +10,7 @@
  * and nothing here reaches the client bundle.
  */
 import { PRESETS, type Preset } from '../config-schema';
-import { siteConfig } from '../../client/site.config';
+import { siteConfig } from './site-config';
 
 function readOverride(): Preset | undefined {
   const raw = typeof process !== 'undefined' ? process.env?.DS_PRESET : undefined;

@@ -13,7 +13,7 @@ import LegalDoc from '../components/LegalDoc.astro';
 import CTABanner from '../components/CTABanner.astro';
 import { privacyPolicy, defaultLegalContact } from '../lib/legal';
 import { getLegalDoc } from '../lib/content';
-import { siteConfig } from '../../client/site.config';
+import { siteConfig } from '../lib/site-config';
 
 const { brand, seo, defaults } = siteConfig;
 const authored = (await getLegalDoc('privacy-policy'))?.data;

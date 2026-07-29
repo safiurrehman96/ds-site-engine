@@ -4,10 +4,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "use": "node scripts/use-client.mjs",
+    "predev": "node scripts/use-client.mjs",
     "dev": "astro dev",
+    "prebuild": "node scripts/use-client.mjs",
     "build": "astro build",
+    "prepreview": "node scripts/use-client.mjs",
     "preview": "astro preview",
+    "precheck": "node scripts/use-client.mjs",
     "check": "astro check",
+    "prestress": "node scripts/use-client.mjs",
     "stress": "node scripts/stress.mjs",
     "import": "node scripts/import-notion.mjs"
   },

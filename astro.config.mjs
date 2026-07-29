@@ -1,7 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
-import { siteConfig } from './client/site.config';
+import { siteConfig } from './src/lib/site-config';
 import { assetBudget } from './src/integrations/asset-budget';
 
 export default defineConfig({

@@ -5,7 +5,7 @@ import FAQAccordion from '../components/FAQAccordion.astro';
 import CTABanner from '../components/CTABanner.astro';
 import { getFaqs } from '../lib/content';
 import { faqPageJsonLd } from '../lib/seo';
-import { siteConfig } from '../../client/site.config';
+import { siteConfig } from '../lib/site-config';
 
 const faqs = (await getFaqs()).data;
 const { brand, ghl } = siteConfig;

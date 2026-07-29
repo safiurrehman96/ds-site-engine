@@ -4,10 +4,16 @@
  * Transcribed from the live GHL site at kleencarcare.com. Every value here is
  * observed, not invented. Items that could not be observed are marked TODO and
  * listed in PHASE-0-NOTES.md.
+ *
+ * Payloads import nothing — not even the engine's own schema. The engine reaches
+ * this file through the `client` symlink, and Vite and TypeScript disagree about what
+ * a relative path inside a symlinked file means (Vite resolves to the real location,
+ * TS follows the link as written), so any import here would be correct for exactly one
+ * of them. Validation happens in src/lib/site-config.ts instead, which is also why the
+ * two enum fields below carry `as const`: without an annotation TS widens them to
+ * `string`, and the schema wants the literal union.
  */
-import { defineSiteConfig } from '../src/config-schema';
-
-export const siteConfig = defineSiteConfig({
+export const siteConfig = {
   site: {
     url: 'https://kleencarcare.com',
   },
@@ -92,7 +98,7 @@ export const siteConfig = defineSiteConfig({
 
   theme: {
     // Starter values for Phase 1. Real preset selection happens in Phase 4.
-    preset: 'fresh',
+    preset: 'fresh' as const,
     accentColor: '#1a7f6b',
   },
 
@@ -111,7 +117,7 @@ export const siteConfig = defineSiteConfig({
   legal: {
     effectiveDate: 'July 2026',
     // Kleen uses the shared Detailer Systems boilerplate, not authored legal copy.
-    source: 'template',
+    source: 'template' as const,
   },
 
   defaults: {
@@ -134,6 +140,6 @@ export const siteConfig = defineSiteConfig({
       },
     },
   },
-});
+};
 
 export default siteConfig;

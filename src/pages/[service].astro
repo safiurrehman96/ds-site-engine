@@ -19,7 +19,7 @@ import FAQAccordion from '../components/FAQAccordion.astro';
 import CTABanner from '../components/CTABanner.astro';
 import { getServices } from '../lib/content';
 import { buildTitle, buildH1, faqPageJsonLd } from '../lib/seo';
-import { siteConfig } from '../../client/site.config';
+import { siteConfig } from '../lib/site-config';
 
 // Deliberately unannotated: adding `: GetStaticPaths` widens the return type and
 // collapses InferGetStaticPropsType to `never`.

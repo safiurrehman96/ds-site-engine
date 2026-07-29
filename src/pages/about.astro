@@ -8,7 +8,7 @@ import SocialStrip from '../components/SocialStrip.astro';
 import AreasGrid from '../components/AreasGrid.astro';
 import CTABanner from '../components/CTABanner.astro';
 import { getAbout } from '../lib/content';
-import { siteConfig } from '../../client/site.config';
+import { siteConfig } from '../lib/site-config';
 
 const about = (await getAbout()).data;
 const { brand, modules, defaults } = siteConfig;

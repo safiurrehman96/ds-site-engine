@@ -6,7 +6,7 @@ import LegalDoc from '../components/LegalDoc.astro';
 import CTABanner from '../components/CTABanner.astro';
 import { termsOfService, defaultLegalContact } from '../lib/legal';
 import { getServices, getLegalDoc } from '../lib/content';
-import { siteConfig } from '../../client/site.config';
+import { siteConfig } from '../lib/site-config';
 
 const { brand, seo, defaults } = siteConfig;
 const authored = (await getLegalDoc('tos'))?.data;

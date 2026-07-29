@@ -19,7 +19,7 @@ import AreasGrid from '../components/AreasGrid.astro';
 import CTABanner from '../components/CTABanner.astro';
 import { getHome } from '../lib/content';
 import { buildHomeTitle } from '../lib/seo';
-import { siteConfig } from '../../client/site.config';
+import { siteConfig } from '../lib/site-config';
 
 const home = (await getHome()).data;
 const { seo, defaults, modules } = siteConfig;

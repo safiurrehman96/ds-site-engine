@@ -8,7 +8,7 @@ import SocialLinks from '../components/SocialLinks.astro';
 import CTABanner from '../components/CTABanner.astro';
 import GHLEmbed from '../components/GHLEmbed.astro';
 import { getServices, getGetQuote } from '../lib/content';
-import { siteConfig } from '../../client/site.config';
+import { siteConfig } from '../lib/site-config';
 
 const services = await getServices();
 const page = (await getGetQuote()).data;

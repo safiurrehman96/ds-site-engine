@@ -10,7 +10,7 @@ import type { InferGetStaticPropsType } from 'astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import StyleguideContent from '../../../components/StyleguideContent.astro';
 import { ALL_PRESETS } from '../../../styles/presets';
-import { siteConfig } from '../../../../client/site.config';
+import { siteConfig } from '../../../lib/site-config';
 
 // Unannotated so InferGetStaticPropsType resolves — see [service].astro.
 export const getStaticPaths = async () =>

@@ -8,7 +8,7 @@
  */
 import Img from './Img.astro';
 import { getServices, getAreas, areaLabel } from '../lib/content';
-import { siteConfig } from '../../client/site.config';
+import { siteConfig } from '../lib/site-config';
 
 const [services, areas] = await Promise.all([getServices(), getAreas()]);
 const { brand, contact, modules } = siteConfig;

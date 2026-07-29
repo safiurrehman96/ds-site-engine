@@ -11,7 +11,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import CTABanner from '../components/CTABanner.astro';
 import GHLEmbed from '../components/GHLEmbed.astro';
 import { getBooking } from '../lib/content';
-import { siteConfig } from '../../client/site.config';
+import { siteConfig } from '../lib/site-config';
 
 const page = (await getBooking()).data;
 const { contact, ghl } = siteConfig;

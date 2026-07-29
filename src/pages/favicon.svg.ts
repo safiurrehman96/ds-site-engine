@@ -9,7 +9,7 @@
  * instead when present.
  */
 import type { APIRoute } from 'astro';
-import { siteConfig } from '../../client/site.config';
+import { siteConfig } from '../lib/site-config';
 import { getPreset } from '../styles/presets';
 
 export const GET: APIRoute = () => {
