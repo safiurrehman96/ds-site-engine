@@ -1,0 +1,45 @@
+---
+/** Recipe D — FAQs. Grouped Q&As + FAQPage JSON-LD across every group. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FAQAccordion from '../components/FAQAccordion.astro';
+import CTABanner from '../components/CTABanner.astro';
+import { getFaqs } from '../lib/content';
+import { faqPageJsonLd } from '../lib/seo';
+import { siteConfig } from '../../client/site.config';
+
+const faqs = (await getFaqs()).data;
+const { brand, ghl } = siteConfig;
+
+const allFaqs = faqs.groups.flatMap((g) => g.faqs);
+---
+
+<BaseLayout
+  title={`FAQs | ${brand.name}`}
+  description={faqs.metaDescription}
+  path="/faqs"
+  jsonLd={[faqPageJsonLd(allFaqs)]}
+>
+  <section class="intro ds-section">
+    <div class="ds-container inner">
+      <h1>{faqs.heroHeadline}</h1>
+      <p class="ds-lede">{faqs.heroIntro}</p>
+    </div>
+  </section>
+
+  <FAQAccordion heading="Everything You Need to Know" groups={faqs.groups} tone="card" />
+
+  {/* The review link and the fallback body compete for the same slot: with a
+      reviewUrl the banner asks for a review, without one it asks for the booking. */}
+  <CTABanner headline={faqs.ctaHeadline} body={ghl.reviewUrl ? undefined : faqs.ctaBody} />
+</BaseLayout>
+
+<style>
+  .inner {
+    max-width: 66ch;
+  }
+
+  .inner .ds-lede {
+    margin-top: 1rem;
+    white-space: pre-line;
+  }
+</style>

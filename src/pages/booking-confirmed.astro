@@ -1,0 +1,58 @@
+---
+/**
+ * Recipe F — Booking Confirmed. The page a GHL calendar redirects to after an
+ * appointment is taken.
+ *
+ * Two things make this page different from every other route:
+ *
+ * 1. noindex. It is a conversion endpoint, not a landing page. Indexed, it both
+ *    wastes crawl budget on a page no searcher wants and lets people arrive at a
+ *    "confirmed" screen without having booked anything.
+ * 2. It is excluded from the sitemap in astro.config.mjs for the same reason. The
+ *    two have to be kept in step — noindex alone still leaves it advertised.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SplitSection from '../components/SplitSection.astro';
+import CTABanner from '../components/CTABanner.astro';
+import { getBookingConfirmed } from '../lib/content';
+
+const page = (await getBookingConfirmed()).data;
+---
+
+<BaseLayout
+  title={page.title}
+  description={page.metaDescription}
+  path="/booking-confirmed"
+  noindex={true}
+>
+  <section class="confirmed ds-section">
+    <div class="ds-container inner">
+      <p class="ds-kicker">Confirmed</p>
+      <h1>{page.heroHeadline}</h1>
+      <p class="ds-lede">{page.heroIntro}</p>
+    </div>
+  </section>
+
+  {
+    page.blocks.map((block, i) => (
+      <SplitSection
+        index={i}
+        tone={i % 2 === 0 ? 'card' : 'paper'}
+        heading={block.heading}
+        body={block.body}
+      />
+    ))
+  }
+
+  <CTABanner headline={page.ctaHeadline} />
+</BaseLayout>
+
+<style>
+  .inner {
+    max-width: 66ch;
+  }
+
+  .inner .ds-lede {
+    margin-top: 1rem;
+  }
+</style>

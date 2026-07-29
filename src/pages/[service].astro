@@ -1,0 +1,127 @@
+---
+/**
+ * Recipe B — Service page. One per client/content/services/*.md.
+ *
+ * Hero → SplitSection(intro) → SplitSection(explainer?) → PackageCard×n →
+ * StepsList(process) → AddOnCards → SplitSection(crossSell) →
+ * SplitSection(whyItMatters?) → SocialStrip → FAQAccordion → CTABanner
+ */
+import type { InferGetStaticPropsType } from 'astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import SplitSection from '../components/SplitSection.astro';
+import PackageCard from '../components/PackageCard.astro';
+import StepsList from '../components/StepsList.astro';
+import AddOnCards from '../components/AddOnCards.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import SocialStrip from '../components/SocialStrip.astro';
+import FAQAccordion from '../components/FAQAccordion.astro';
+import CTABanner from '../components/CTABanner.astro';
+import { getServices } from '../lib/content';
+import { buildTitle, buildH1, faqPageJsonLd } from '../lib/seo';
+import { siteConfig } from '../../client/site.config';
+
+// Deliberately unannotated: adding `: GetStaticPaths` widens the return type and
+// collapses InferGetStaticPropsType to `never`.
+export const getStaticPaths = async () => {
+  const services = await getServices();
+  return services.map((entry) => ({
+    params: { service: entry.data.slug },
+    props: { entry },
+  }));
+};
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { entry } = Astro.props as Props;
+const s = entry.data;
+const { serviceArea, defaults } = siteConfig;
+
+const city = serviceArea.baseCity;
+const state = serviceArea.baseState;
+
+// Authored strings win; the formula is the fallback (see [area].astro).
+const title = s.title ?? buildTitle(siteConfig, s.name, city, state);
+const h1 = s.h1 ?? buildH1(s.name, city, state);
+
+// Track SplitSection position so imageSide auto-alternates down the page.
+let splitIndex = 0;
+---
+
+<BaseLayout
+  title={title}
+  description={s.metaDescription}
+  path={`/${s.slug}`}
+  ogImage={s.heroImage.src}
+  jsonLd={[faqPageJsonLd(s.faqs)]}
+>
+  <Hero heading={h1} body={s.heroIntro} />
+
+  <SplitSection index={splitIndex++} heading={s.intro.heading} body={s.intro.body} />
+
+  {
+    s.explainer && (
+      <SplitSection
+        index={splitIndex++}
+        tone="card"
+        heading={s.explainer.heading}
+        body={s.explainer.body}
+      />
+    )
+  }
+
+  <section class="packages ds-section">
+    <div class="ds-container">
+      {s.packages.map((p, i) => <PackageCard {...p} index={i} />)}
+    </div>
+  </section>
+
+  <StepsList
+    heading={s.processHeading}
+    steps={s.processSteps}
+    note={s.processNote}
+    tone="card"
+  />
+
+  {
+    s.beforeAfter && (
+      <BeforeAfter
+        {...s.beforeAfter}
+        heading={`${s.name} Results`}
+        tone="paper"
+      />
+    )
+  }
+
+  <AddOnCards addons={s.addons} tone="paper" />
+
+  <SplitSection
+    index={splitIndex++}
+    tone="card"
+    heading={s.crossSell.heading}
+    body={s.crossSell.body}
+    cta={{ label: 'Get A Quote', href: '/get-quote' }}
+  />
+
+  {
+    s.whyItMatters && (
+      <SplitSection
+        index={splitIndex++}
+        heading={s.whyItMatters.heading}
+        body={s.whyItMatters.body}
+      />
+    )
+  }
+
+  <SocialStrip image={defaults.socialImage} />
+
+  <FAQAccordion faqs={s.faqs} />
+
+  <CTABanner headline={s.ctaHeadline} />
+</BaseLayout>
+
+<style>
+  .packages {
+    background: var(--ds-paper);
+  }
+</style>

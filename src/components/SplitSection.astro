@@ -1,0 +1,394 @@
+---
+/**
+ * Image + copy block. Roughly half of every page in the system (spec §08):
+ * intro, trust, about, explainer, local, why-us and cross-sell all render here.
+ *
+ * Four compositions, selected by the preset's `splitStyle` motif and overridable
+ * per page. Because this component repeats 2–4 times on every page, its layout
+ * drives overall page rhythm more than any other.
+ *
+ * `imageSide` auto-alternates by index so recipes don't have to think about it
+ * (spec §13 — variants should be earned, not fiddled with per page).
+ *
+ * A block with no image ignores the variant and centres its copy: there is no
+ * meaningful "beside" or "overlap" without a second element.
+ */
+import type { Preset } from '../config-schema';
+import Img from './Img.astro';
+import Prose from './Prose.astro';
+import { getPreset } from '../styles/presets';
+import { activePreset } from '../lib/theme';
+import { siteConfig } from '../../client/site.config';
+
+type SplitVariant = 'beside' | 'overlap' | 'wide' | 'stack';
+
+interface Props {
+  heading: string;
+  body: string;
+  image?: { src: string; alt: string };
+  imageSide?: 'left' | 'right';
+  /** Zero-based position in the page; drives auto-alternation. */
+  index?: number;
+  eyebrow?: string;
+  cta?: { label: string; href: string };
+  badge?: { image: string; alt: string; href?: string };
+  tone?: 'paper' | 'card';
+  /** Overrides the preset's composition. */
+  variant?: SplitVariant;
+  /** Render under a preset other than the configured one (styleguide only). */
+  preset?: Preset;
+}
+
+const {
+  heading,
+  body,
+  image,
+  imageSide,
+  index = 0,
+  eyebrow,
+  cta,
+  badge,
+  tone = 'paper',
+  variant,
+  preset,
+} = Astro.props;
+
+const side = imageSide ?? (index % 2 === 0 ? 'right' : 'left');
+const active: SplitVariant =
+  variant ?? getPreset(preset ?? activePreset).motif.splitStyle;
+---
+
+<section
+  class="split ds-section"
+  data-tone={tone}
+  data-side={side}
+  data-media={image ? 'yes' : 'no'}
+  data-variant={image ? active : 'beside'}
+>
+  <div class="ds-container grid">
+    <div class="copy">
+      {eyebrow && <p class="ds-kicker">{eyebrow}</p>}
+      <h2>{heading}</h2>
+      <Prose body={body} class="body" />
+
+      {
+        badge && (
+          <div class="badge">
+            {badge.href ? (
+              <a href={badge.href} target="_blank" rel="noopener noreferrer">
+                <Img src={badge.image} alt={badge.alt} widths={[160, 320]} sizes="160px" />
+              </a>
+            ) : (
+              <Img src={badge.image} alt={badge.alt} widths={[160, 320]} sizes="160px" />
+            )}
+          </div>
+        )
+      }
+
+      {
+        cta && (
+          <p class="cta">
+            <a class="ds-btn ds-btn--primary" href={cta.href}>
+              {cta.label}
+            </a>
+          </p>
+        )
+      }
+    </div>
+
+    {
+      image && (
+        <div class="media">
+          <Img
+            src={image.src}
+            alt={image.alt}
+            widths={[480, 768, 1200, 1600]}
+            sizes="(min-width: 900px) 60vw, 100vw"
+          />
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .split[data-tone='card'] {
+    background: var(--ds-card);
+  }
+
+  .grid {
+    display: grid;
+    gap: clamp(1.75rem, 1rem + 3vw, 3.5rem);
+    align-items: center;
+  }
+
+  .copy h2 {
+    margin-top: 0.5rem;
+  }
+
+  .copy :global(.body) {
+    margin-top: 1rem;
+    color: var(--ds-ink-soft);
+    font-size: 1.0625rem;
+  }
+
+  .badge {
+    margin-top: 1.5rem;
+    max-width: 160px;
+  }
+
+  .cta {
+    margin-top: 1.75rem;
+  }
+
+  .media :global(img) {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  /* Copy-only blocks centre rather than leaving half the viewport empty. */
+  .split[data-media='no'] .copy {
+    max-width: 64ch;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .split[data-media='no'] .cta,
+  .split[data-media='no'] .badge {
+    margin-inline: auto;
+  }
+
+  .split[data-media='no'] .copy :global(.ds-kicker) {
+    justify-content: center;
+  }
+
+  /* ================= beside — image alongside the copy ================= */
+
+  @media (min-width: 900px) {
+    /* Slight asymmetry reads as designed; a dead-even 50/50 reads as a wireframe. */
+    .split[data-variant='beside'][data-media='yes'] .grid {
+      grid-template-columns: 1.05fr 0.95fr;
+    }
+
+    .split[data-variant='beside'][data-side='left'] .copy {
+      order: 2;
+    }
+
+    .split[data-variant='beside'][data-side='left'][data-media='yes'] .grid {
+      grid-template-columns: 0.95fr 1.05fr;
+    }
+  }
+
+  .split[data-variant='beside'] .media {
+    position: relative;
+  }
+
+  /* Offset accent panel behind the photo — depth without extra payload assets. */
+  .split[data-variant='beside'] .media::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    border-radius: var(--ds-radius-lg);
+    background: color-mix(in srgb, var(--ds-accent) 20%, transparent);
+  }
+
+  .split[data-variant='beside'][data-side='right'] .media::before {
+    inset: 1.1rem -1.1rem -1.1rem 1.1rem;
+  }
+
+  .split[data-variant='beside'][data-side='left'] .media::before {
+    inset: 1.1rem 1.1rem -1.1rem -1.1rem;
+  }
+
+  @media (max-width: 640px) {
+    .split[data-variant='beside'] .media::before {
+      display: none;
+    }
+  }
+
+  .split[data-variant='beside'] .media :global(img) {
+    position: relative;
+    z-index: 1;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-lg);
+  }
+
+  /* ================= overlap — copy on a card over the image ================= */
+
+  .split[data-variant='overlap'] .grid {
+    gap: 0;
+  }
+
+  .split[data-variant='overlap'] .media :global(img) {
+    aspect-ratio: 16 / 10;
+    border-radius: var(--ds-radius-lg);
+  }
+
+  .split[data-variant='overlap'] .copy {
+    padding: clamp(1.5rem, 1.25rem + 1.5vw, 2.5rem);
+    background: var(--ds-card);
+    border: var(--ds-border);
+    border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-lg);
+  }
+
+  /* Stacked on small screens: the card rides up over the image's bottom edge. */
+  @media (max-width: 899px) {
+    .split[data-variant='overlap'] .copy {
+      order: 2;
+      margin: -2.5rem 0.75rem 0;
+      z-index: 1;
+      position: relative;
+    }
+
+    .split[data-variant='overlap'] .media {
+      order: 1;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .split[data-variant='overlap'] .grid {
+      grid-template-columns: repeat(12, 1fr);
+      align-items: center;
+    }
+
+    .split[data-variant='overlap'] .media {
+      grid-row: 1;
+      grid-column: 1 / span 8;
+    }
+
+    .split[data-variant='overlap'] .copy {
+      grid-row: 1;
+      grid-column: 7 / span 6;
+      z-index: 1;
+    }
+
+    .split[data-variant='overlap'][data-side='left'] .media {
+      grid-column: 5 / span 8;
+    }
+
+    .split[data-variant='overlap'][data-side='left'] .copy {
+      grid-column: 1 / span 6;
+    }
+  }
+
+  /* ================= wide — full-bleed image band, copy over a scrim ============ */
+
+  .split[data-variant='wide'] {
+    position: relative;
+    isolation: isolate;
+    color: var(--ds-on-deep);
+    background: var(--ds-deep);
+    padding-block: clamp(4rem, 3rem + 6vw, 8rem);
+  }
+
+  /* base.css sets `.ds-section > .ds-container { position: relative }` for the
+     divider wedge, which would make the container — not the section — the
+     containing block for the absolutely positioned media, leaving it inset to
+     1180px instead of full-bleed. Opt this one variant out. */
+  .split[data-variant='wide'] > :global(.ds-container) {
+    position: static;
+  }
+
+  .split[data-variant='wide'] .media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .split[data-variant='wide'] .copy {
+    position: relative;
+    z-index: 1;
+  }
+
+  .split[data-variant='wide'] .media :global(img) {
+    height: 100%;
+  }
+
+  /* Copy sits in a column, so a horizontal scrim earns its place here. */
+  .split[data-variant='wide'] .media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--ds-deep) 62%, transparent) 0%,
+      color-mix(in srgb, var(--ds-deep) 80%, transparent) 100%
+    );
+  }
+
+  @media (min-width: 900px) {
+    .split[data-variant='wide'] .media::after {
+      background:
+        linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--ds-deep) 52%, transparent) 0%,
+          color-mix(in srgb, var(--ds-deep) 74%, transparent) 100%
+        ),
+        linear-gradient(90deg, color-mix(in srgb, var(--ds-deep) 60%, transparent) 0%, transparent 65%);
+    }
+
+    .split[data-variant='wide'][data-side='left'] .media::after {
+      background:
+        linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--ds-deep) 52%, transparent) 0%,
+          color-mix(in srgb, var(--ds-deep) 74%, transparent) 100%
+        ),
+        linear-gradient(270deg, color-mix(in srgb, var(--ds-deep) 60%, transparent) 0%, transparent 65%);
+    }
+  }
+
+  .split[data-variant='wide'] .copy {
+    max-width: 46rem;
+  }
+
+  .split[data-variant='wide'][data-side='left'] .copy {
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .split[data-variant='wide'][data-side='left'] .copy :global(.ds-kicker) {
+    justify-content: flex-end;
+  }
+
+  .split[data-variant='wide'] .copy :global(.body) {
+    color: var(--ds-on-deep);
+    opacity: 0.92;
+  }
+
+  /* ================= stack — image above, copy centred beneath ================= */
+
+  .split[data-variant='stack'] .grid {
+    grid-template-columns: 1fr;
+    gap: clamp(1.75rem, 1.25rem + 2vw, 3rem);
+  }
+
+  .split[data-variant='stack'] .media {
+    order: 1;
+  }
+
+  .split[data-variant='stack'] .copy {
+    order: 2;
+    max-width: 64ch;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .split[data-variant='stack'] .copy :global(.ds-kicker) {
+    justify-content: center;
+  }
+
+  .split[data-variant='stack'] .cta,
+  .split[data-variant='stack'] .badge {
+    margin-inline: auto;
+  }
+
+  .split[data-variant='stack'] .media :global(img) {
+    aspect-ratio: 21 / 9;
+    border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-lg);
+  }
+</style>

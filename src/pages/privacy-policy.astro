@@ -1,0 +1,34 @@
+---
+/**
+ * Recipe E — Privacy Policy.
+ *
+ * Two sources, one renderer. By default the shared Detailer Systems boilerplate is
+ * generated from config (lib/legal.ts) — reviewed once, reused unchanged, which is
+ * the point of a template. A payload carrying client/content/legal/privacy-policy.md
+ * overrides it, for clients whose own counsel supplied the text. Set
+ * legal.source: 'client' in site.config.ts when that is the case.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalDoc from '../components/LegalDoc.astro';
+import CTABanner from '../components/CTABanner.astro';
+import { privacyPolicy, defaultLegalContact } from '../lib/legal';
+import { getLegalDoc } from '../lib/content';
+import { siteConfig } from '../../client/site.config';
+
+const { brand, seo, defaults } = siteConfig;
+const authored = (await getLegalDoc('privacy-policy'))?.data;
+
+const title = authored?.title ?? 'Privacy Policy';
+const doc = authored
+  ? { ...authored, contact: authored.contact ?? defaultLegalContact(siteConfig, title) }
+  : privacyPolicy(siteConfig);
+
+const description =
+  authored?.metaDescription ??
+  `Privacy Policy for ${brand.name} ${seo.category.toLowerCase()} services. Learn how we collect, use, and protect your personal information.`;
+---
+
+<BaseLayout title={`${title} | ${brand.name}`} description={description} path="/privacy-policy">
+  <LegalDoc title={title} doc={doc} />
+  <CTABanner headline={authored?.ctaHeadline ?? defaults.ctaHeadline} />
+</BaseLayout>

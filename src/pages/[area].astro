@@ -1,0 +1,72 @@
+---
+/**
+ * Recipe C — Location page. One per client/content/areas/*.md.
+ *
+ * Hero → SplitSection(local) → ServicesGrid → SocialStrip →
+ * SplitSection(why-us) → CTABanner
+ */
+import type { InferGetStaticPropsType } from 'astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import SplitSection from '../components/SplitSection.astro';
+import ServicesGrid from '../components/ServicesGrid.astro';
+import SocialStrip from '../components/SocialStrip.astro';
+import CTABanner from '../components/CTABanner.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import { getAreas, areaLabel } from '../lib/content';
+import { buildTitle, buildH1 } from '../lib/seo';
+import { siteConfig } from '../../client/site.config';
+
+// Deliberately unannotated — see [service].astro.
+export const getStaticPaths = async () => {
+  const areas = await getAreas();
+  return areas.map((entry) => ({
+    params: { area: entry.data.slug },
+    props: { entry },
+  }));
+};
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { entry } = Astro.props as Props;
+const a = entry.data;
+const { seo, defaults } = siteConfig;
+
+// Authored strings win; the formula is the fallback for payloads that supply neither.
+const title = a.title ?? buildTitle(siteConfig, seo.category, a.name, a.state);
+const h1 = a.h1 ?? buildH1(seo.category, a.name, a.state);
+---
+
+<BaseLayout
+  title={title}
+  description={a.metaDescription}
+  path={`/${a.slug}`}
+  ogImage={defaults.heroVideo.poster.src}
+>
+  <Hero heading={h1} body={a.heroIntro} />
+
+  <SplitSection index={0} heading={a.localCopy.heading} body={a.localCopy.body} />
+
+  <ServicesGrid
+    tone="card"
+    heading={`Services Available in ${areaLabel(a)}`}
+    intro={a.servicesIntro}
+  />
+
+  {
+    a.beforeAfter && (
+      <BeforeAfter {...a.beforeAfter} heading={`Recent Work in ${a.name}`} tone="card" />
+    )
+  }
+
+  <SocialStrip image={defaults.socialImage} />
+
+  <SplitSection
+    index={1}
+    heading={a.whyUs.heading}
+    body={a.whyUs.body}
+    cta={{ label: 'Get A Quote', href: '/get-quote' }}
+  />
+
+  <CTABanner headline={a.ctaHeadline} />
+</BaseLayout>

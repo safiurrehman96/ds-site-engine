@@ -1,0 +1,33 @@
+---
+/** Recipe E — Terms of Service. Authored payload doc wins; the template is the
+ *  default (see privacy-policy.astro for the reasoning). */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalDoc from '../components/LegalDoc.astro';
+import CTABanner from '../components/CTABanner.astro';
+import { termsOfService, defaultLegalContact } from '../lib/legal';
+import { getServices, getLegalDoc } from '../lib/content';
+import { siteConfig } from '../../client/site.config';
+
+const { brand, seo, defaults } = siteConfig;
+const authored = (await getLegalDoc('tos'))?.data;
+
+const title = authored?.title ?? 'Terms of Service';
+
+// Only the generated document needs the service list — it names each service in the
+// scope clause. An authored doc already names whatever its clauses require.
+const doc = authored
+  ? { ...authored, contact: authored.contact ?? defaultLegalContact(siteConfig, title) }
+  : termsOfService(
+      siteConfig,
+      (await getServices()).map((s) => s.data.name),
+    );
+
+const description =
+  authored?.metaDescription ??
+  `Terms of Service for ${brand.name} ${seo.category.toLowerCase()}. Read our service terms, cancellation policy, and customer requirements before booking.`;
+---
+
+<BaseLayout title={`${title} | ${brand.name}`} description={description} path="/tos">
+  <LegalDoc title={title} doc={doc} />
+  <CTABanner headline={authored?.ctaHeadline ?? defaults.ctaHeadline} />
+</BaseLayout>

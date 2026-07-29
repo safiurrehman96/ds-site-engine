@@ -1,0 +1,155 @@
+---
+/**
+ * /styleguide/compare — all presets side by side.
+ *
+ * Each column is an <iframe> of the real per-preset styleguide route, so what you
+ * see is genuinely that preset rendering, not a mock. Scrolling one column is
+ * independent, which is what you want when comparing a specific component.
+ *
+ * Zero JS, like the rest of the engine.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { ALL_PRESETS, getPreset } from '../../styles/presets';
+import { siteConfig } from '../../../client/site.config';
+
+const { brand, theme } = siteConfig;
+---
+
+<BaseLayout
+  title={`Styleguide · compare — ${brand.name}`}
+  description="Internal preset comparison. Not indexed."
+  path="/styleguide/compare"
+  noindex={true}
+>
+  <div class="bar">
+    <div class="ds-container bar-inner">
+      <div>
+        <p class="ds-eyebrow">Internal · not indexed</p>
+        <h1>Compare presets</h1>
+        <p class="hint">
+          All {ALL_PRESETS.length} presets rendering the same payload with accent
+          <code>{theme.accentColor}</code>. Columns scroll independently. Configured preset
+          is <strong>{theme.preset}</strong>.
+        </p>
+      </div>
+      <a class="ds-btn ds-btn--secondary" href="/styleguide">← Back to styleguide</a>
+    </div>
+  </div>
+
+  <div class="grid">
+    {
+      ALL_PRESETS.map((p) => (
+        <section class="col">
+          <header class="col-head">
+            <a href={`/styleguide/${p}`}>
+              <strong>{p}</strong>
+              {p === theme.preset && <span class="live">configured</span>}
+            </a>
+            <span class="col-desc">{getPreset(p).label}</span>
+          </header>
+          <iframe
+            src={`/styleguide/${p}/bare`}
+            title={`Styleguide rendered with the ${p} preset`}
+            loading="lazy"
+          />
+        </section>
+      ))
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .bar {
+    padding-block: 1.5rem;
+    background: var(--ds-card);
+    border-bottom: 1px solid var(--ds-line);
+  }
+
+  .bar-inner {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .hint {
+    margin-top: 0.5rem;
+    color: var(--ds-ink-soft);
+    font-size: 0.9375rem;
+  }
+
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.85em;
+    padding: 0.1em 0.4em;
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--ds-accent) 12%, transparent);
+    color: var(--ds-accent-ink);
+  }
+
+  .grid {
+    display: grid;
+    gap: 1px;
+    background: var(--ds-line);
+    /* Horizontal scroll rather than squeezing four columns into a phone. */
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(420px, 1fr);
+    overflow-x: auto;
+    height: calc(100dvh - 8rem);
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: var(--ds-paper);
+  }
+
+  .col-head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.625rem 1rem;
+    background: var(--ds-ink);
+    color: var(--ds-paper);
+  }
+
+  .col-head a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.8125rem;
+    text-decoration: none;
+  }
+
+  .col-head a:hover {
+    text-decoration: underline;
+  }
+
+  .live {
+    padding: 0.05rem 0.45rem;
+    border-radius: 999px;
+    background: var(--ds-accent);
+    color: var(--ds-on-accent);
+    font-size: 0.625rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .col-desc {
+    font-size: 0.6875rem;
+    opacity: 0.6;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  iframe {
+    flex: 1;
+    width: 100%;
+    border: 0;
+    background: var(--ds-paper);
+  }
+</style>

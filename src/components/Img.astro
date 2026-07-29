@@ -1,0 +1,65 @@
+---
+/**
+ * Resolves a payload image path (e.g. "./assets/hero.jpg") to an optimized
+ * <Image>. Payloads reference files by name; this is where those names become
+ * real, optimized assets.
+ *
+ * A missing file fails the build with a named error rather than shipping a
+ * broken <img> (core principle 3).
+ */
+import { Image } from 'astro:assets';
+
+interface Props {
+  src: string;
+  alt: string;
+  widths?: number[];
+  sizes?: string;
+  loading?: 'eager' | 'lazy';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  class?: string;
+}
+
+const {
+  src,
+  alt,
+  widths = [480, 768, 1200],
+  sizes = '100vw',
+  loading = 'lazy',
+  fetchpriority = 'auto',
+  class: className,
+} = Astro.props;
+
+const assets = import.meta.glob<{ default: ImageMetadata }>(
+  '../../client/assets/**/*.{jpeg,jpg,png,webp,avif,svg}',
+  { eager: true },
+);
+
+/** "./assets/hero.jpg" and "assets/hero.jpg" both resolve. */
+const key = `../../client/${src.replace(/^\.\//, '')}`;
+const entry = assets[key];
+
+if (!entry) {
+  const available = Object.keys(assets)
+    .map((k) => k.replace('../../client/', './'))
+    .sort();
+  throw new Error(
+    `Missing payload asset "${src}".\n` +
+      `Expected the file at client/${src.replace(/^\.\//, '')}.\n` +
+      (available.length
+        ? `Available assets:\n${available.map((a) => `  · ${a}`).join('\n')}`
+        : 'client/assets/ is empty.'),
+  );
+}
+
+const image = entry.default;
+---
+
+<Image
+  src={image}
+  alt={alt}
+  widths={widths}
+  sizes={sizes}
+  loading={loading}
+  fetchpriority={fetchpriority}
+  class={className}
+/>

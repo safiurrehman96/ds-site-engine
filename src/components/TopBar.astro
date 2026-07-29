@@ -1,0 +1,66 @@
+---
+/** Announcement strip: CTA text + phone + socials (spec §04). */
+import SocialLinks from './SocialLinks.astro';
+import { siteConfig } from '../../client/site.config';
+
+const { contact } = siteConfig;
+---
+
+<div class="topbar ds-deep-surface">
+  <div class="ds-container inner">
+    <p class="tagline">Book Your Detail Today</p>
+    <div class="right">
+      <a class="phone" href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a>
+      <SocialLinks size={16} />
+    </div>
+  </div>
+</div>
+
+<style>
+  .topbar {
+    background: var(--ds-deep);
+    color: var(--ds-on-deep);
+    font-size: 0.875rem;
+  }
+
+  .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 44px;
+    padding-block: 0.375rem;
+  }
+
+  .tagline {
+    font-family: var(--ds-font-display);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .phone {
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .phone:hover {
+    text-decoration: underline;
+  }
+
+  /* Below 640px the strip would wrap awkwardly; keep the phone, drop the rest. */
+  @media (max-width: 640px) {
+    .tagline {
+      display: none;
+    }
+    .inner {
+      justify-content: center;
+    }
+  }
+</style>

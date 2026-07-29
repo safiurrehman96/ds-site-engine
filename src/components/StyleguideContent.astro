@@ -1,0 +1,551 @@
+---
+/**
+ * The styleguide body, shared by /styleguide and /styleguide/[preset].
+ * Takes the preset it is being rendered under so it can label itself correctly.
+ */
+import type { Preset } from '../config-schema';
+import Hero from './Hero.astro';
+import SplitSection from './SplitSection.astro';
+import ServicesGrid from './ServicesGrid.astro';
+import AreasGrid from './AreasGrid.astro';
+import PackageCard from './PackageCard.astro';
+import StepsList from './StepsList.astro';
+import AddOnCards from './AddOnCards.astro';
+import BeforeAfter from './BeforeAfter.astro';
+import FAQAccordion from './FAQAccordion.astro';
+import SocialStrip from './SocialStrip.astro';
+import CTABanner from './CTABanner.astro';
+import SocialLinks from './SocialLinks.astro';
+import Footer from './Footer.astro';
+import { getServices, getAreas, getHome, getFaqs } from '../lib/content';
+import { getPreset, ALL_PRESETS } from '../styles/presets';
+import { siteConfig } from '../../client/site.config';
+
+interface Props {
+  preset: Preset;
+  /** Hide the switcher when embedded in the compare view. */
+  bare?: boolean;
+}
+
+const { preset: presetName, bare = false } = Astro.props;
+
+const [services, areas, home, faqs] = await Promise.all([
+  getServices(),
+  getAreas(),
+  getHome(),
+  getFaqs(),
+]);
+
+const service = services[0].data;
+const h = home.data;
+const { theme, brand, defaults } = siteConfig;
+const preset = getPreset(presetName);
+
+const COLORS = [
+  ['--ds-accent', 'accent (fills)'],
+  ['--ds-accent-ink', 'accent-ink (derived)'],
+  ['--ds-accent-on-deep', 'accent-on-deep (derived)'],
+  ['--ds-on-accent', 'on-accent'],
+  ['--ds-ink', 'ink'],
+  ['--ds-ink-soft', 'ink-soft'],
+  ['--ds-paper', 'paper'],
+  ['--ds-card', 'card'],
+  ['--ds-line', 'line'],
+  ['--ds-deep', 'deep (derived)'],
+  ['--ds-on-deep', 'on-deep'],
+  ['--ds-on-deep-soft', 'on-deep-soft (derived)'],
+];
+
+const RADII = ['--ds-radius-sm', '--ds-radius-md', '--ds-radius-lg', '--ds-radius-pill'];
+---
+
+{
+  !bare && (
+    <div class="sg-switch">
+      <div class="ds-container switch-inner">
+        <span class="switch-label">Preset</span>
+        <nav class="switch-nav" aria-label="Preset switcher">
+          {ALL_PRESETS.map((p) => (
+            <a
+              href={`/styleguide/${p}`}
+              class:list={['switch-link', p === presetName && 'is-active']}
+              aria-current={p === presetName ? 'page' : undefined}
+            >
+              {p}
+            </a>
+          ))}
+          <a href="/styleguide/compare" class="switch-link switch-link--compare">
+            compare all →
+          </a>
+        </nav>
+      </div>
+    </div>
+  )
+}
+
+<div class="sg-head">
+  <div class="ds-container">
+    <p class="ds-eyebrow">Internal · not indexed</p>
+    <h1>Styleguide</h1>
+    <p class="ds-lede">
+      Every component under the <strong>{presetName}</strong> preset with accent
+      <code>{theme.accentColor}</code>, rendered from {brand.name}'s real payload.
+    </p>
+    <p class="preset-meta">
+      {preset.label} · divider <code>{preset.motif.divider}</code> · cards
+      <code>{preset.motif.cardStyle}</code> · headings <code>{preset.motif.headingCase}</code>
+      · deepTint <code>{preset.deepTint}</code>
+    </p>
+  </div>
+</div>
+
+<!-- ============ TOKENS ============ -->
+<section class="sg-block ds-container">
+  <h2 class="sg-h">Tokens</h2>
+
+  <h3 class="sg-sub">Colour</h3>
+  <ul class="swatches">
+    {
+      COLORS.map(([varName, label]) => (
+        <li>
+          <span class="chip" style={`background: var(${varName})`} />
+          <span class="chip-label">
+            {label}
+            <code>{varName}</code>
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h3 class="sg-sub">Type scale</h3>
+  <div class="sg-panel">
+    <h1>H1 — {service.name} in Sterling, VA</h1>
+    <h2>H2 — What Our Full Detail Includes</h2>
+    <h3>H3 — Clean From Every Angle</h3>
+    <h4>H4 — Engine Bay Cleaning</h4>
+    <p class="ds-lede">Lede — {h.intro.heading}</p>
+    <p>Body — {h.trust.body.split('\n')[0]}</p>
+    <p class="ds-eyebrow">Eyebrow — Book Your Detail Today</p>
+  </div>
+
+  <h3 class="sg-sub">Fonts</h3>
+  <div class="sg-panel">
+    <p>Display: <code>{preset.fonts.display}</code></p>
+    <p>Body: <code>{preset.fonts.body}</code></p>
+  </div>
+
+  <h3 class="sg-sub">Radius</h3>
+  <ul class="radii">
+    {
+      RADII.map((r) => (
+        <li>
+          <span class="radius-box" style={`border-radius: var(${r})`} />
+          <code>{r}</code>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h3 class="sg-sub">Elevation</h3>
+  <ul class="radii">
+    <li><span class="radius-box shadow-sm" /><code>--ds-shadow</code></li>
+    <li><span class="radius-box shadow-lg" /><code>--ds-shadow-lg</code></li>
+  </ul>
+
+  <h3 class="sg-sub">Buttons</h3>
+  <div class="sg-panel row">
+    <a class="ds-btn ds-btn--primary" href="#">Primary</a>
+    <a class="ds-btn ds-btn--secondary" href="#">Secondary</a>
+    <span class="ghost-holder"><a class="ds-btn ds-btn--ghost" href="#">Ghost (on deep)</a></span>
+  </div>
+
+  <h3 class="sg-sub">SocialLinks</h3>
+  <div class="sg-panel"><SocialLinks /></div>
+</section>
+
+<!-- ============ COMPONENTS ============ -->
+<p class="sg-label ds-container">
+  Hero — this preset's layout (<strong>{preset.motif.heroLayout}</strong>)
+</p>
+<Hero
+  preset={presetName}
+  eyebrow="Eyebrow slot"
+  heading={`${service.name} in Sterling, VA`}
+  body={service.heroIntro}
+/>
+
+{
+  (['fullbleed', 'centered', 'split', 'card'] as const)
+    .filter((l) => l !== preset.motif.heroLayout)
+    .map((l) => (
+      <>
+        <p class="sg-label ds-container">Hero — layout override: <strong>{l}</strong></p>
+        <Hero
+          preset={presetName}
+          layout={l}
+          proof={false}
+          priority={false}
+          eyebrow="Eyebrow slot"
+          heading={`${service.name} in Sterling, VA`}
+          body={service.heroIntro}
+        />
+      </>
+    ))
+}
+
+<p class="sg-label ds-container">
+  SplitSection — this preset's composition (<strong>{preset.motif.splitStyle}</strong>), with CTA
+</p>
+<SplitSection
+  preset={presetName}
+  index={0}
+  heading={h.intro.heading}
+  body={h.intro.body}
+  image={h.introImage}
+  cta={{ label: 'Get A Quote', href: '/get-quote' }}
+/>
+
+{
+  (['beside', 'overlap', 'wide', 'stack'] as const).map((v, i) => (
+    <>
+      <p class="sg-label ds-container">
+        SplitSection — variant <strong>{v}</strong>, image {i % 2 === 0 ? 'right' : 'left'} (auto)
+      </p>
+      <SplitSection
+        preset={presetName}
+        variant={v}
+        index={i}
+        tone={i % 2 === 0 ? 'paper' : 'card'}
+        eyebrow="Eyebrow slot"
+        heading={service.intro.heading}
+        body={service.intro.body}
+        image={service.heroImage}
+      />
+    </>
+  ))
+}
+
+<p class="sg-label ds-container">SplitSection — no image (copy-only, centred; variant ignored)</p>
+<SplitSection preset={presetName} index={2} heading={h.trust.heading} body={h.trust.body} />
+
+<p class="sg-label ds-container">ServicesGrid — variant: cards</p>
+<ServicesGrid variant="cards" heading="Our Services" intro="Variant: cards — with descriptions." />
+
+<p class="sg-label ds-container">ServicesGrid — variant: tiles, tone: card</p>
+<ServicesGrid variant="tiles" tone="card" heading="Our Services" intro="Variant: tiles — image-led." />
+
+<p class="sg-label ds-container">PackageCard ×{service.packages.length} (alternating)</p>
+<section class="ds-section" data-tone="paper">
+  <div class="ds-container">
+    {service.packages.map((p, i) => <PackageCard {...p} index={i} />)}
+  </div>
+</section>
+
+<p class="sg-label ds-container">PackageCard — with durationBadge</p>
+<section class="ds-section" data-tone="card" style="background: var(--ds-card)">
+  <div class="ds-container">
+    <PackageCard {...service.packages[0]} durationBadge="2–3 years" index={0} />
+  </div>
+</section>
+
+<p class="sg-label ds-container">
+  StepsList — this preset's layout (<strong>{preset.motif.stepsStyle}</strong>), with titles + note
+</p>
+<StepsList
+  preset={presetName}
+  heading={service.processHeading}
+  intro={h.howItWorks?.intro}
+  steps={h.howItWorks?.steps ?? []}
+  note={service.processNote}
+/>
+
+{
+  (['timeline', 'track', 'numerals', 'ledger'] as const).map((v) => (
+    <>
+      <p class="sg-label ds-container">
+        StepsList — layout <strong>{v}</strong>, bodies only ({service.processSteps.length} steps),
+        tone: paper
+      </p>
+      <StepsList
+        preset={presetName}
+        variant={v}
+        heading={service.processHeading}
+        steps={service.processSteps}
+        tone="paper"
+      />
+    </>
+  ))
+}
+
+<p class="sg-label ds-container">AddOnCards ×{service.addons.length}</p>
+<AddOnCards addons={service.addons} />
+
+{/*
+  No payload carries a beforeAfter pair yet, and the styleguide must render for every
+  client, so the demo borrows two images the schema guarantees exist. They are not a
+  real before/after — the point here is the component's layout and interaction.
+*/}
+<p class="sg-label ds-container">
+  BeforeAfter — variant: slider (drag the handle; renders as the pair below without JS)
+</p>
+<BeforeAfter
+  before={h.introImage}
+  after={service.heroImage}
+  caption="Demo pair — two unrelated payload images, not an actual before/after."
+/>
+
+<p class="sg-label ds-container">BeforeAfter — variant: pair, tone: card</p>
+<BeforeAfter
+  variant="pair"
+  tone="card"
+  before={h.introImage}
+  after={service.heroImage}
+  beforeLabel="Before"
+  afterLabel="After"
+/>
+
+<p class="sg-label ds-container">FAQAccordion — flat list</p>
+<FAQAccordion faqs={service.faqs} />
+
+<p class="sg-label ds-container">FAQAccordion — grouped, tone: card</p>
+<FAQAccordion groups={faqs.data.groups.slice(0, 2)} tone="card" />
+
+<p class="sg-label ds-container">SocialStrip — with image</p>
+<SocialStrip image={defaults.socialImage} />
+
+<p class="sg-label ds-container">SocialStrip — no image</p>
+<SocialStrip heading="Follow Us" />
+
+<p class="sg-label ds-container">AreasGrid — variant: tiles ×{areas.length}</p>
+<AreasGrid variant="tiles" intro={h.areasIntro} />
+
+<p class="sg-label ds-container">AreasGrid — variant: list, tone: paper</p>
+<AreasGrid variant="list" tone="paper" intro={h.areasIntro} />
+
+<p class="sg-label ds-container">
+  CTABanner — this preset's treatment (<strong>{preset.motif.ctaStyle}</strong>), with body
+</p>
+<CTABanner preset={presetName} headline={h.ctaHeadline} body={brand.blurb} />
+
+{
+  (['tint', 'deep', 'image', 'panel'] as const).map((v) => (
+    <>
+      <p class="sg-label ds-container">CTABanner — variant <strong>{v}</strong>, headline only</p>
+      <CTABanner preset={presetName} variant={v} headline={h.ctaHeadline} />
+    </>
+  ))
+}
+
+{
+  (['columns', 'split', 'compact', 'stacked'] as const).map((v) => (
+    <>
+      <p class="sg-label ds-container">Footer — variant <strong>{v}</strong></p>
+      <Footer preset={presetName} variant={v} />
+    </>
+  ))
+}
+
+<p class="sg-label ds-container">
+  TopBar and Header render around this page; the real Footer is below. SEOHead is in
+  &lt;head&gt;. LegalDoc is on /privacy-policy and /tos.
+</p>
+
+<style>
+  /* ---------- preset switcher ---------- */
+  .sg-switch {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    background: var(--ds-ink);
+    color: var(--ds-paper);
+  }
+
+  .switch-inner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-block: 0.5rem;
+  }
+
+  .switch-label {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.65;
+  }
+
+  .switch-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  .switch-link {
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.75rem;
+    text-decoration: none;
+    border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  }
+
+  .switch-link:hover {
+    background: color-mix(in srgb, currentColor 16%, transparent);
+  }
+
+  .switch-link.is-active {
+    background: var(--ds-accent);
+    color: var(--ds-on-accent);
+    border-color: transparent;
+  }
+
+  .switch-link--compare {
+    border-style: dashed;
+  }
+
+  /* ---------- page chrome ---------- */
+  .sg-head {
+    padding-block: clamp(2.5rem, 2rem + 2.5vw, 4rem);
+    background: var(--ds-card);
+    border-bottom: 1px solid var(--ds-line);
+  }
+
+  .sg-head .ds-lede {
+    margin-top: 1rem;
+    max-width: 62ch;
+  }
+
+  .preset-meta {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--ds-ink-soft);
+  }
+
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.85em;
+    padding: 0.1em 0.4em;
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--ds-accent) 12%, transparent);
+    color: var(--ds-accent-ink);
+  }
+
+  .sg-label {
+    display: block;
+    padding-block: 1.25rem 0.5rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ds-ink-soft);
+    border-top: 2px dashed var(--ds-line);
+    margin-top: 2rem;
+  }
+
+  .sg-block {
+    padding-block: clamp(2rem, 1.5rem + 2vw, 3rem);
+  }
+
+  .sg-h {
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--ds-ink);
+  }
+
+  .sg-sub {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--ds-ink-soft);
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .sg-panel {
+    padding: 1.5rem;
+    background: var(--ds-card);
+    border: var(--ds-border);
+    border-radius: var(--ds-radius-md);
+  }
+
+  .sg-panel > * + * {
+    margin-top: 0.75rem;
+  }
+
+  .sg-panel.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .sg-panel.row > * + * {
+    margin-top: 0;
+  }
+
+  .ghost-holder {
+    display: inline-flex;
+    padding: 0.5rem;
+    border-radius: var(--ds-radius-pill);
+    background: var(--ds-deep);
+    color: var(--ds-on-deep);
+  }
+
+  .swatches {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+
+  .chip {
+    display: block;
+    height: 56px;
+    border: 1px solid var(--ds-line);
+    border-radius: var(--ds-radius-sm);
+  }
+
+  .chip-label {
+    display: block;
+    margin-top: 0.375rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+
+  .chip-label code {
+    display: block;
+    margin-top: 0.125rem;
+    font-weight: 400;
+  }
+
+  .radii {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+
+  .radii li {
+    display: grid;
+    gap: 0.5rem;
+    justify-items: center;
+  }
+
+  .radius-box {
+    display: block;
+    width: 76px;
+    height: 56px;
+    background: var(--ds-card);
+    border: 1px solid var(--ds-line);
+  }
+
+  .shadow-sm {
+    box-shadow: var(--ds-shadow);
+    border-radius: var(--ds-radius-md);
+  }
+
+  .shadow-lg {
+    box-shadow: var(--ds-shadow-lg);
+    border-radius: var(--ds-radius-md);
+  }
+</style>

@@ -1,0 +1,46 @@
+---
+/** Recipe D — About. Variable number of SplitSection blocks from about.md. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import SplitSection from '../components/SplitSection.astro';
+import ServicesGrid from '../components/ServicesGrid.astro';
+import SocialStrip from '../components/SocialStrip.astro';
+import AreasGrid from '../components/AreasGrid.astro';
+import CTABanner from '../components/CTABanner.astro';
+import { getAbout } from '../lib/content';
+import { siteConfig } from '../../client/site.config';
+
+const about = (await getAbout()).data;
+const { brand, modules, defaults } = siteConfig;
+
+const [first, ...rest] = about.blocks;
+---
+
+<BaseLayout
+  title={`About | ${brand.name}`}
+  description={about.metaDescription}
+  path="/about"
+  ogImage={about.heroImage.src}
+>
+  <Hero heading={about.heroHeadline} />
+
+  <SplitSection
+    index={0}
+    heading={first.heading}
+    body={first.body}
+    image={about.heroImage}
+    badge={modules.credentialBadge}
+  />
+
+  <ServicesGrid tone="card" heading={`What ${brand.name} Offers`} />
+
+  {rest.map((block, i) => (
+    <SplitSection index={i + 1} tone={i % 2 === 0 ? 'paper' : 'card'} heading={block.heading} body={block.body} />
+  ))}
+
+  <SocialStrip image={defaults.socialImage} />
+
+  <AreasGrid intro={`Serving ${siteConfig.serviceArea.label}.`} />
+
+  <CTABanner headline={about.ctaHeadline} />
+</BaseLayout>

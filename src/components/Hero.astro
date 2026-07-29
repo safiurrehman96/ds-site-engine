@@ -1,0 +1,402 @@
+---
+/**
+ * Page opener. Video is the background on every page — the poster is a still from
+ * that same video, so a client supplies one hero asset rather than an image per page.
+ *
+ * Four compositions, selected by the preset's `heroLayout` motif and overridable per
+ * page. All four share this markup; only CSS differs, so no recipe knows which is
+ * active. Patterns drawn from Astro's own landing pages (centred copy over media with
+ * an eyebrow chip and paired CTAs) and standard split/contained-media layouts.
+ *
+ * The poster renders as a normal optimized <Image> and carries LCP, since a <video>
+ * cannot. It also covers autoplay being blocked (iOS Low Power Mode), slow connections
+ * and decode failure.
+ */
+import type { Preset } from '../config-schema';
+import Img from './Img.astro';
+import { videoUrl } from '../lib/assets';
+import { getPreset } from '../styles/presets';
+import { activePreset } from '../lib/theme';
+import { siteConfig } from '../../client/site.config';
+
+type HeroLayout = 'fullbleed' | 'centered' | 'split' | 'card';
+
+interface Props {
+  eyebrow?: string;
+  heading: string;
+  body?: string;
+  /** Overrides the preset's composition. */
+  layout?: HeroLayout;
+  /** Render under a preset other than the configured one (styleguide only). */
+  preset?: Preset;
+  video?: { src: string; fallbackSrc?: string };
+  poster?: { src: string; alt: string };
+  priority?: boolean;
+  proof?: boolean;
+}
+
+const {
+  eyebrow,
+  heading,
+  body,
+  layout,
+  preset,
+  video = siteConfig.defaults.heroVideo,
+  poster = siteConfig.defaults.heroVideo.poster,
+  priority = true,
+  proof = true,
+} = Astro.props;
+
+const { contact, serviceArea, hours, seo, theme } = siteConfig;
+const activeLayout: HeroLayout = layout ?? getPreset(preset ?? activePreset).motif.heroLayout;
+
+const mime = (u: string) => (u.endsWith('.mp4') ? 'video/mp4' : 'video/webm');
+
+// WebM first (smaller), MP4 second — Safari skips the WebM it cannot decode.
+const sources = [video.src, video.fallbackSrc]
+  .filter((s): s is string => Boolean(s))
+  .map((s) => ({ url: videoUrl(s), type: mime(s) }));
+
+const proofPoints = [
+  { label: '100% Mobile', detail: 'We come to you — no drop-off, no waiting' },
+  {
+    label: `${serviceArea.radiusMiles}-mile radius`,
+    detail: `From ${serviceArea.baseCity}, across ${serviceArea.label}`,
+  },
+  { label: hours[0].hours, detail: hours[0].days },
+];
+---
+
+<section class="hero" data-layout={activeLayout}>
+  <div class="media">
+    <Img
+      src={poster.src}
+      alt={poster.alt}
+      widths={[640, 1024, 1600]}
+      sizes="100vw"
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : 'auto'}
+      class="media-img"
+    />
+
+    {/*
+      No `preload="none"`: Chrome ignores it when autoplay is set, but Safari honours
+      it and then never starts playback.
+
+      This deliberately does NOT honour prefers-reduced-motion — see PHASE-4-NOTES.md.
+    */}
+    <video class="media-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1">
+      {sources.map((s) => <source src={s.url} type={s.type} />)}
+    </video>
+  </div>
+
+  <div class="content">
+    <div class="content-inner">
+      <p class="chip">{eyebrow ?? `${seo.category} · ${serviceArea.baseCity}, ${serviceArea.baseState}`}</p>
+      <h1>{heading}</h1>
+      {body && <p class="ds-lede body">{body}</p>}
+
+      <div class="ctas">
+        <a class="ds-btn ds-btn--primary" href="/booking">Book Online Now</a>
+        <a class="ds-btn ds-btn--ghost" href="/get-quote">Get A Quote</a>
+        <a class="ds-btn ds-btn--ghost" href={`tel:${contact.phone}`}>Call {contact.phoneDisplay}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{
+  proof && (
+    <div class="proof">
+      <div class="ds-container">
+        <ul class="proof-card">
+          {proofPoints.map((p) => (
+            <li>
+              <span class="proof-label">{p.label}</span>
+              <span class="proof-detail">{p.detail}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+<style>
+  .hero {
+    position: relative;
+    display: grid;
+    isolation: isolate;
+    background: var(--ds-deep);
+    color: var(--ds-on-deep);
+  }
+
+  .media {
+    position: relative;
+    overflow: hidden;
+    grid-area: media;
+  }
+
+  .media :global(.media-img),
+  .media-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .media-video {
+    position: absolute;
+    inset: 0;
+  }
+
+  .content {
+    grid-area: content;
+    display: grid;
+    align-content: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .content-inner {
+    width: 100%;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.9rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+    border-radius: var(--ds-radius-pill);
+    font-family: var(--ds-font-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .body {
+    margin-top: 1.25rem;
+    max-width: 52ch;
+    color: inherit;
+    opacity: 0.94;
+  }
+
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 420px) {
+    .ctas .ds-btn {
+      width: 100%;
+    }
+  }
+
+  /* ================= layout: fullbleed — copy left, on the footage ================= */
+
+  .hero[data-layout='fullbleed'] {
+    grid-template-areas: 'media';
+    min-height: clamp(30rem, 25rem + 20vw, 44rem);
+  }
+
+  .hero[data-layout='fullbleed'] .content {
+    grid-area: media;
+    padding: clamp(3.5rem, 2.5rem + 5vw, 6rem) clamp(1rem, 0.5rem + 2vw, 2.5rem)
+      clamp(5rem, 3rem + 7vw, 8rem);
+  }
+
+  .hero[data-layout='fullbleed'] .content-inner {
+    max-width: 1180px;
+    margin-inline: auto;
+  }
+
+  /* ================= layout: centered — copy centred over the footage ============= */
+
+  .hero[data-layout='centered'] {
+    grid-template-areas: 'media';
+    min-height: clamp(30rem, 25rem + 20vw, 44rem);
+    text-align: center;
+  }
+
+  .hero[data-layout='centered'] .content {
+    grid-area: media;
+    justify-items: center;
+    padding: clamp(3.5rem, 2.5rem + 5vw, 6rem) clamp(1rem, 0.5rem + 2vw, 2.5rem)
+      clamp(5rem, 3rem + 7vw, 8rem);
+  }
+
+  .hero[data-layout='centered'] .content-inner {
+    max-width: 62rem;
+  }
+
+  .hero[data-layout='centered'] .body {
+    margin-inline: auto;
+  }
+
+  .hero[data-layout='centered'] .ctas {
+    justify-content: center;
+  }
+
+  /* ================= layout: card — copy in a solid offset card =================== */
+
+  .hero[data-layout='card'] {
+    grid-template-areas: 'media';
+    min-height: clamp(32rem, 26rem + 20vw, 46rem);
+  }
+
+  .hero[data-layout='card'] .content {
+    grid-area: media;
+    padding: clamp(3.5rem, 2.5rem + 5vw, 6rem) clamp(1rem, 0.5rem + 2vw, 2.5rem)
+      clamp(5.5rem, 3.5rem + 7vw, 8.5rem);
+  }
+
+  .hero[data-layout='card'] .content-inner {
+    max-width: min(52rem, 100%);
+    margin-inline: 0;
+    padding: clamp(1.75rem, 1.25rem + 2vw, 2.75rem);
+    background: var(--ds-card);
+    color: var(--ds-ink);
+    border: var(--ds-border);
+    border-radius: var(--ds-radius-lg);
+    box-shadow: 10px 10px 0 var(--ds-ink);
+  }
+
+  /* Keep the card left-aligned within the page container, not the full viewport. */
+  .hero[data-layout='card'] .content {
+    justify-items: start;
+  }
+
+  @media (min-width: 1180px) {
+    .hero[data-layout='card'] .content {
+      padding-inline: max(calc((100vw - 1180px) / 2), 2.5rem);
+    }
+  }
+
+  /* ================= layout: split — copy on a panel, video beside ================ */
+
+  .hero[data-layout='split'] {
+    grid-template-areas: 'content' 'media';
+    background: var(--ds-paper);
+    color: var(--ds-ink);
+  }
+
+  .hero[data-layout='split'] .content {
+    padding: clamp(2.5rem, 2rem + 3vw, 4.5rem) clamp(1rem, 0.5rem + 2vw, 2.5rem)
+      clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  }
+
+  .hero[data-layout='split'] .media {
+    margin: 0 clamp(1rem, 0.5rem + 2vw, 2.5rem) clamp(4rem, 2.5rem + 5vw, 6rem);
+    border-radius: var(--ds-radius-lg);
+    min-height: 18rem;
+    box-shadow: var(--ds-shadow-lg);
+  }
+
+  @media (min-width: 960px) {
+    .hero[data-layout='split'] {
+      grid-template-areas: 'content media';
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: clamp(1.5rem, 1rem + 2vw, 3rem);
+      padding-left: max(calc((100vw - 1180px) / 2), clamp(1rem, 0.5rem + 2vw, 2.5rem));
+    }
+
+    .hero[data-layout='split'] .content {
+      padding: clamp(4rem, 3rem + 4vw, 6.5rem) 0 clamp(5.5rem, 4rem + 5vw, 8rem);
+    }
+
+    .hero[data-layout='split'] .content-inner {
+      max-width: 34rem;
+    }
+
+    /* Video bleeds off the right edge — contained, but not boxed in. */
+    .hero[data-layout='split'] .media {
+      margin: 0;
+      min-height: clamp(26rem, 20rem + 18vw, 38rem);
+      border-radius: var(--ds-radius-lg) 0 0 var(--ds-radius-lg);
+    }
+  }
+
+  /* ---------- scrim: only where copy sits directly on the footage ---------- */
+
+  .hero:is([data-layout='fullbleed'], [data-layout='centered'], [data-layout='card']) .media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--ds-deep) var(--ds-hero-scrim-top), transparent) 0%,
+      color-mix(in srgb, var(--ds-deep) var(--ds-hero-scrim-bottom), transparent) 100%
+    );
+  }
+
+  /* A horizontal scrim only helps once the copy occupies a column. */
+  @media (min-width: 900px) {
+    .hero[data-layout='fullbleed'] .media::after {
+      background:
+        linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--ds-deep) calc(var(--ds-hero-scrim-top) - 10%), transparent) 0%,
+          color-mix(in srgb, var(--ds-deep) var(--ds-hero-scrim-bottom), transparent) 100%
+        ),
+        linear-gradient(90deg, color-mix(in srgb, var(--ds-deep) 62%, transparent) 0%, transparent 62%);
+    }
+  }
+
+  /* Split needs no scrim at all — the copy is on a solid panel, so the footage
+     shows at full brightness. */
+
+  /* ---------- overlapping proof card ---------- */
+
+  .proof {
+    position: relative;
+    z-index: 3;
+    margin-top: clamp(-3.5rem, -2rem - 2vw, -2rem);
+  }
+
+  .proof-card {
+    display: grid;
+    gap: 0.25rem 2rem;
+    padding: clamp(1.25rem, 1rem + 1vw, 1.75rem) clamp(1.25rem, 1rem + 1.5vw, 2.25rem);
+    background: var(--ds-card);
+    border: var(--ds-border);
+    border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-lg);
+  }
+
+  @media (min-width: 760px) {
+    .proof-card {
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;
+    }
+
+    .proof-card li + li {
+      padding-left: 2rem;
+      border-left: 1px solid var(--ds-line);
+      margin-top: 0;
+    }
+  }
+
+  .proof-card li + li {
+    margin-top: 0.875rem;
+  }
+
+  .proof-label {
+    display: block;
+    font-family: var(--ds-font-display);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--ds-accent-ink);
+  }
+
+  .proof-detail {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.875rem;
+    color: var(--ds-ink-soft);
+  }
+</style>

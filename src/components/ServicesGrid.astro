@@ -1,0 +1,211 @@
+---
+/**
+ * Service links, pulled from the collection. Used on home, about and every
+ * area page — the internal-linking mesh (spec §10).
+ */
+import Img from './Img.astro';
+import { getServices } from '../lib/content';
+
+interface Props {
+  /** Small label above the heading. Set to "" to hide. */
+  kicker?: string;
+  variant?: 'tiles' | 'cards';
+  heading?: string;
+  intro?: string;
+  tone?: 'paper' | 'card';
+}
+
+const { variant = 'cards', heading, intro, tone = 'paper',
+  kicker = 'Services',
+} = Astro.props;
+const services = await getServices();
+---
+
+<section class="services ds-section" data-variant={variant} data-tone={tone}>
+  <div class="ds-container">
+    {
+      (heading || intro) && (
+        <div class="head">
+          {kicker && <p class="ds-kicker">{kicker}</p>}
+          {heading && <h2>{heading}</h2>}
+          {intro && <p class="ds-lede">{intro}</p>}
+        </div>
+      )
+    }
+
+    <ul class="grid">
+      {
+        services.map((s) => (
+          <li class="card">
+            <a href={`/${s.data.slug}`}>
+              <div class="media">
+                <Img
+                  src={s.data.heroImage.src}
+                  alt={s.data.heroImage.alt}
+                  widths={[320, 480, 768]}
+                  sizes="(min-width: 900px) 24vw, (min-width: 600px) 45vw, 100vw"
+                />
+              </div>
+              <div class="body">
+                <h3>{s.data.name}</h3>
+                {variant === 'cards' && <p>{s.data.shortDescription}</p>}
+                <span class="more" aria-hidden="true">Learn more →</span>
+              </div>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .services[data-tone='card'] {
+    background: var(--ds-card);
+  }
+
+  .head {
+    max-width: 62ch;
+    margin-bottom: 2.5rem;
+  }
+
+  .head .ds-lede {
+    margin-top: 0.75rem;
+  }
+
+  .grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 600px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 980px) {
+    .grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .card a {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--ds-card);
+    border: var(--ds-border);
+    border-radius: var(--ds-radius-lg);
+    overflow: hidden;
+    text-decoration: none;
+    box-shadow: var(--ds-shadow);
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .services[data-tone='card'] .card a {
+    background: var(--ds-paper);
+  }
+
+  .card a:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--ds-shadow-lg);
+  }
+
+  .media {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .media :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    transition: transform 0.45s cubic-bezier(0.2, 0.6, 0.2, 1);
+  }
+
+  .card a:hover .media :global(img),
+  .card a:focus-visible .media :global(img) {
+    transform: scale(1.06);
+  }
+
+  /* ---------- tiles: image-led, title sitting on the photo ---------- */
+
+  .services[data-variant='tiles'] .card a {
+    position: relative;
+    min-height: 19rem;
+  }
+
+  .services[data-variant='tiles'] .media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .services[data-variant='tiles'] .media :global(img) {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+
+  /* Scrim so the title stays legible over any client photo. */
+  .services[data-variant='tiles'] .media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      transparent 25%,
+      color-mix(in srgb, var(--ds-deep) 55%, transparent) 60%,
+      color-mix(in srgb, var(--ds-deep) 92%, transparent) 100%
+    );
+  }
+
+  /* The body must hug the bottom, not stretch: the scrim is bottom-weighted, so a
+     full-height body puts the title over the bright part of the photo. */
+  .services[data-variant='tiles'] .body {
+    position: relative;
+    z-index: 1;
+    flex: 0 0 auto;
+    margin-top: auto;
+    color: var(--ds-on-deep);
+    text-shadow: 0 1px 3px color-mix(in srgb, var(--ds-deep) 70%, transparent);
+  }
+
+  .services[data-variant='tiles'] .more {
+    margin-top: 0.25rem;
+    padding-top: 0;
+  }
+
+  .services[data-variant='tiles'] .more {
+    color: var(--ds-accent-on-deep);
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.125rem 1.25rem 1.375rem;
+    flex: 1;
+  }
+
+  .body p {
+    color: var(--ds-ink-soft);
+    font-size: 0.9375rem;
+  }
+
+  .more {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    color: var(--ds-accent-ink);
+    font-family: var(--ds-font-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  /* Tiles: image-led, no description. */
+  .services[data-variant='tiles'] .body p {
+    display: none;
+  }
+</style>

@@ -1,0 +1,146 @@
+---
+/**
+ * Recipe D — Booking. A chooser that hands off to GHL calendars. The engine never
+ * rebuilds the calendar itself (core principle 6).
+ *
+ * Every string comes from client/content/booking.md: the chooser is by vehicle type
+ * for one client and by aircraft class for the next, so none of this copy can live
+ * here. The calendar entries themselves come from ghl.bookingUrls.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CTABanner from '../components/CTABanner.astro';
+import GHLEmbed from '../components/GHLEmbed.astro';
+import { getBooking } from '../lib/content';
+import { siteConfig } from '../../client/site.config';
+
+const page = (await getBooking()).data;
+const { contact, ghl } = siteConfig;
+
+// One calendar: embed it directly rather than making the visitor click through to a
+// page that only contains the same calendar. Several: the chooser has to come first.
+const embedSingleCalendar = ghl.embed && ghl.bookingUrls.length === 1;
+---
+
+<BaseLayout title={page.title} description={page.metaDescription} path="/booking">
+  <section class="choose ds-section">
+    <div class="ds-container">
+      <h1>{page.heroHeadline}</h1>
+      <p class="ds-lede">{page.heroIntro}</p>
+
+      {
+        embedSingleCalendar ? (
+          <GHLEmbed src={ghl.bookingUrls[0].url} title={ghl.bookingUrls[0].label} />
+        ) : (
+          <ul class="grid">
+            {ghl.bookingUrls.map((b) => (
+              <li>
+                <a href={b.url} target="_blank" rel="noopener noreferrer">
+                  <span class="label">{b.label}</span>
+                  <span class="go" aria-hidden="true">
+                    Book →
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="help ds-section">
+    <div class="ds-container inner">
+      <h2>{page.helpBlock.heading}</h2>
+      <p class="ds-lede">{page.helpBlock.body}</p>
+      <p class="btns">
+        <a class="ds-btn ds-btn--primary" href={`tel:${contact.phone}`}>
+          Call {contact.phoneDisplay}
+        </a>
+        <a class="ds-btn ds-btn--secondary" href="/get-quote">Get A Quote</a>
+      </p>
+    </div>
+  </section>
+
+  <CTABanner headline={page.ctaHeadline} />
+</BaseLayout>
+
+<style>
+  .choose .ds-lede {
+    margin-top: 1rem;
+    max-width: 62ch;
+  }
+
+  .grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 600px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 980px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .grid a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 88px;
+    padding: 1.25rem 1.5rem;
+    background: var(--ds-card);
+    border: var(--ds-border);
+    border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow);
+    text-decoration: none;
+    transition:
+      transform 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .grid a:hover {
+    transform: translateY(-2px);
+    border-color: var(--ds-accent);
+  }
+
+  .label {
+    font-family: var(--ds-font-display);
+    font-weight: 600;
+    font-size: 1.0625rem;
+  }
+
+  .go {
+    color: var(--ds-accent);
+    font-family: var(--ds-font-display);
+    font-weight: 600;
+    font-size: 0.875rem;
+    white-space: nowrap;
+  }
+
+  .help {
+    background: var(--ds-card);
+  }
+
+  .help .inner {
+    max-width: 62ch;
+  }
+
+  .help .ds-lede {
+    margin-top: 0.75rem;
+  }
+
+  .btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+</style>

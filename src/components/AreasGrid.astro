@@ -1,0 +1,254 @@
+---
+/**
+ * Area links, pulled from the collection.
+ *
+ * `list`  — compact rows. The right choice when a client has no per-city photography.
+ * `tiles` — city name over a photo with a gradient scrim. Only earns its place when the
+ *           images actually differ per area; otherwise it is N identical tiles.
+ */
+import Img from './Img.astro';
+import { getAreas, areaLabel, areaShortLabel } from '../lib/content';
+import { siteConfig } from '../../client/site.config';
+
+interface Props {
+  /** Small label above the heading. Set to "" to hide. */
+  kicker?: string;
+  variant?: 'list' | 'tiles';
+  heading?: string;
+  intro?: string;
+  /** Omit an area (used on area pages so a city doesn't link to itself). */
+  excludeSlug?: string;
+  tone?: 'paper' | 'card';
+}
+
+const {
+  heading = 'Areas We Serve',
+  variant = 'list',
+  intro,
+  excludeSlug,
+  tone = 'card',
+  kicker = 'Coverage',
+} = Astro.props;
+
+const areas = (await getAreas()).filter((a) => a.data.slug !== excludeSlug);
+const fallback = siteConfig.defaults.heroVideo.poster;
+---
+
+<section class="areas ds-section" data-tone={tone} data-variant={variant}>
+  <div class="ds-container">
+    <div class="head">
+      {kicker && <p class="ds-kicker">{kicker}</p>}
+      <h2>{heading}</h2>
+      {intro && <p class="ds-lede">{intro}</p>}
+    </div>
+
+    <ul class="grid">
+      {
+        areas.map((a) => (
+          <li>
+            <a href={`/${a.data.slug}`}>
+              {variant === 'tiles' && (
+                <span class="media">
+                  <Img
+                    src={(a.data.image ?? fallback).src}
+                    alt={(a.data.image ?? fallback).alt}
+                    widths={[320, 480, 768]}
+                    sizes="(min-width: 900px) 32vw, (min-width: 560px) 48vw, 100vw"
+                  />
+                </span>
+              )}
+
+              <span class="label">
+                {variant === 'tiles' && a.data.isHeadquarters && <span class="hq">HQ</span>}
+                <span class="name">
+                  {variant === 'tiles' ? areaShortLabel(a.data) : areaLabel(a.data)}
+                </span>
+              </span>
+              {variant === 'list' && (
+                <span class="arrow" aria-hidden="true">
+                  →
+                </span>
+              )}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .areas[data-tone='card'] {
+    background: var(--ds-card);
+  }
+
+  .head {
+    max-width: 62ch;
+    margin-bottom: 2.25rem;
+  }
+
+  .head .ds-lede {
+    margin-top: 0.75rem;
+  }
+
+  .grid {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 560px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .grid a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    text-decoration: none;
+    transition:
+      border-color 0.15s ease,
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .name {
+    font-family: var(--ds-font-display);
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .arrow {
+    color: var(--ds-accent-ink);
+  }
+
+  /* ---------------- variant: list ---------------- */
+
+  .areas[data-variant='list'] .grid a {
+    min-height: 56px;
+    padding: 0.875rem 1.125rem;
+    border: var(--ds-border);
+    border-radius: var(--ds-radius-md);
+    background: var(--ds-paper);
+  }
+
+  .areas[data-variant='list'] .grid a:hover {
+    border-color: var(--ds-accent);
+    transform: translateX(2px);
+  }
+
+  /* ---------------- variant: tiles ----------------
+     Full-bleed photo, an even scrim across the whole tile, and the city name set
+     large and centred. The scrim is deliberately flat rather than bottom-weighted:
+     centred text needs uniform darkness behind it, not a gradient. */
+
+  .areas[data-variant='tiles'] .grid {
+    gap: 1.25rem;
+  }
+
+  .areas[data-variant='tiles'] .grid a {
+    position: relative;
+    display: grid;
+    place-items: center;
+    /* The shared `.grid a` rule sets justify-content: space-between for the list
+       variant. In grid context that pushes the single track to the start, which
+       place-items cannot override — so reset it here. */
+    justify-content: center;
+    aspect-ratio: 16 / 10;
+    padding: 1.25rem;
+    overflow: hidden;
+    text-align: center;
+    color: var(--ds-on-deep);
+    background: var(--ds-deep);
+    border-radius: var(--ds-radius-lg);
+  }
+
+  /* Angular presets get chamfered corners instead of rounded ones. Follows the
+     existing divider motif rather than introducing another token. */
+  :global([data-divider='angle']) .areas[data-variant='tiles'] .grid a {
+    border-radius: 0;
+    clip-path: polygon(
+      0 0,
+      calc(100% - 26px) 0,
+      100% 26px,
+      100% 100%,
+      26px 100%,
+      0 calc(100% - 26px)
+    );
+  }
+
+  .areas[data-variant='tiles'] .media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: block;
+  }
+
+  .areas[data-variant='tiles'] .media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.2, 0.6, 0.2, 1);
+  }
+
+  .areas[data-variant='tiles'] .grid a:hover .media :global(img),
+  .areas[data-variant='tiles'] .grid a:focus-visible .media :global(img) {
+    transform: scale(1.06);
+  }
+
+  .areas[data-variant='tiles'] .media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--ds-deep) 30%, transparent) 0%,
+        color-mix(in srgb, var(--ds-deep) 46%, transparent) 100%
+      ),
+      color-mix(in srgb, var(--ds-deep) 34%, transparent);
+    transition: opacity 0.25s ease;
+  }
+
+  .areas[data-variant='tiles'] .grid a:hover .media::after {
+    opacity: 0.82;
+  }
+
+  .areas[data-variant='tiles'] .label {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    justify-items: center;
+    gap: 0.5rem;
+  }
+
+  .areas[data-variant='tiles'] .name {
+    font-family: var(--ds-font-display);
+    font-size: clamp(1.25rem, 1rem + 1.1vw, 1.85rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    text-shadow: 0 2px 10px color-mix(in srgb, var(--ds-deep) 85%, transparent);
+  }
+
+  .hq {
+    padding: 0.1rem 0.45rem;
+    border-radius: var(--ds-radius-pill);
+    background: var(--ds-accent);
+    color: var(--ds-on-accent);
+    font-family: var(--ds-font-display);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+</style>

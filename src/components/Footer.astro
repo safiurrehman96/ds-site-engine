@@ -1,0 +1,367 @@
+---
+/**
+ * Footer (spec §04): brand / locations / contact / hours / social+CTA, then the
+ * Detailer Systems attribution badge and legal links. Fully config- and
+ * collection-driven.
+ *
+ * Four shapes, selected by the preset's `footerStyle` motif. All share one markup
+ * structure — only the grid and a few suppressions differ — so the content and its
+ * reading order stay identical across variants.
+ */
+import type { Preset } from '../config-schema';
+import Img from './Img.astro';
+import SocialLinks from './SocialLinks.astro';
+import { getAreas, areaLabel } from '../lib/content';
+import { getPreset } from '../styles/presets';
+import { activePreset } from '../lib/theme';
+import { siteConfig } from '../../client/site.config';
+
+type FooterVariant = 'columns' | 'split' | 'compact' | 'stacked';
+
+interface Props {
+  /** Overrides the preset's shape. */
+  variant?: FooterVariant;
+  /** Render under a preset other than the configured one (styleguide only). */
+  preset?: Preset;
+}
+
+const { variant, preset } = Astro.props;
+
+const areas = await getAreas();
+const { brand, contact, hours, serviceArea, theme } = siteConfig;
+const year = new Date().getFullYear();
+const active: FooterVariant =
+  variant ?? getPreset(preset ?? activePreset).motif.footerStyle;
+---
+
+<footer class="footer ds-deep-surface" data-variant={active}>
+  <div class="ds-container">
+    <div class="cols">
+      <div class="col col--brand">
+        <Img
+          src={brand.logoPath}
+          alt={`${brand.name} logo`}
+          widths={[200, 400]}
+          sizes="200px"
+          class="brand-logo"
+        />
+        <p class="blurb">{brand.blurb}</p>
+        <div class="brand-social"><SocialLinks /></div>
+      </div>
+
+      <nav class="col col--areas" aria-labelledby="ft-locations">
+        <h2 class="col-title" id="ft-locations">Locations We Serve</h2>
+        <ul class="links">
+          {
+            areas.map((a) => (
+              <li>
+                <a href={`/${a.data.slug}`}>
+                  {areaLabel(a.data)}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="col col--contact">
+        <h2 class="col-title">Contact Us</h2>
+        <ul class="links">
+          <li><a href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a></li>
+          <li><a href={`mailto:${contact.email}`}>{contact.email}</a></li>
+        </ul>
+        <address class="address">
+          {contact.address.street}<br />
+          {contact.address.city}, {contact.address.state} {contact.address.zip}
+        </address>
+        <p class="note">
+          Serving {serviceArea.baseCity}, {serviceArea.baseState} and communities across
+          {' '}{serviceArea.label} with pride.{brand.footerNote ? ` ${brand.footerNote}` : ''}
+        </p>
+      </div>
+
+      <div class="col col--hours">
+        <h2 class="col-title">Working Hours</h2>
+        <ul class="links">
+          {
+            hours.map((h) => (
+              <li>
+                <span class="days">{h.days}</span>
+                <span class="hrs">{h.hours}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="col col--cta">
+        <h2 class="col-title">Follow Us</h2>
+        <div class="cta-social"><SocialLinks /></div>
+        <a class="ds-btn ds-btn--primary book" href="/booking">Book Today</a>
+      </div>
+    </div>
+
+    <div class="base">
+      <p class="attrib">
+        Website proudly developed and managed by{' '}
+        <a href="https://detailersystems.com" target="_blank" rel="noopener noreferrer">
+          Detailer Systems</a>. The all-in-one marketing platform helping car detailers get
+        more bookings.
+      </p>
+      <p class="legal">
+        <a href="/privacy-policy">Privacy Policy</a>
+        <span aria-hidden="true">|</span>
+        <a href="/tos">Terms of Service</a>
+      </p>
+      <p class="copy">All Rights Reserved | Detailer Systems | {brand.name} © {year}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--ds-deep);
+    color: var(--ds-on-deep-soft);
+    padding-block: clamp(2.5rem, 2rem + 2.5vw, 4rem) 1.5rem;
+    font-size: 0.9375rem;
+  }
+
+  .cols {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+  }
+
+  /* :global() is required — the <img> is rendered by Img.astro and carries that
+     component's scope id, not this one's. Without it the rule never matches and the
+     logo renders at its natural size. */
+  .col--brand :global(.brand-logo) {
+    height: 44px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .blurb {
+    margin-top: 0.875rem;
+    max-width: 34ch;
+  }
+
+  .brand-social {
+    margin-top: 1.25rem;
+    display: none;
+  }
+
+  .col-title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--ds-on-deep);
+    margin-bottom: 0.875rem;
+  }
+
+  .links {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .links a {
+    text-decoration: none;
+  }
+
+  .links a:hover {
+    color: var(--ds-on-deep);
+    text-decoration: underline;
+  }
+
+  .days {
+    display: block;
+    color: var(--ds-on-deep);
+    font-weight: 500;
+  }
+
+  .address {
+    margin-top: 0.875rem;
+    font-style: normal;
+  }
+
+  .note {
+    margin-top: 0.875rem;
+    max-width: 34ch;
+  }
+
+  .book {
+    margin-top: 1rem;
+  }
+
+  .base {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid color-mix(in srgb, var(--ds-on-deep) 18%, transparent);
+    display: grid;
+    gap: 0.625rem;
+    font-size: 0.8125rem;
+  }
+
+  .attrib {
+    max-width: 62ch;
+  }
+
+  .base a {
+    color: var(--ds-on-deep);
+  }
+
+  .legal {
+    display: flex;
+    gap: 0.625rem;
+  }
+
+  /* ================= columns — five equal columns (spec §04 default) ============= */
+
+  @media (min-width: 620px) {
+    .footer[data-variant='columns'] .cols {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer[data-variant='columns'] .cols {
+      grid-template-columns: 1.4fr 1fr 1.2fr 1fr 0.8fr;
+      gap: 2.5rem;
+    }
+  }
+
+  /* ================= split — big brand block, condensed links ==================== */
+
+  .footer[data-variant='split'] .brand-social {
+    display: block;
+  }
+
+  .footer[data-variant='split'] .col--cta .cta-social {
+    display: none;
+  }
+
+  @media (min-width: 620px) {
+    .footer[data-variant='split'] .cols {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer[data-variant='split'] .cols {
+      grid-template-columns: 1.6fr repeat(4, 1fr);
+      gap: 3rem 2rem;
+      align-items: start;
+    }
+
+    .footer[data-variant='split'] .col--brand {
+      padding-right: 2rem;
+      border-right: 1px solid color-mix(in srgb, var(--ds-on-deep) 14%, transparent);
+    }
+  }
+
+  /* ================= compact — tight, long-form copy suppressed ================== */
+
+  .footer[data-variant='compact'] {
+    padding-block: clamp(2rem, 1.5rem + 1.5vw, 2.75rem) 1.25rem;
+  }
+
+  /* The blurb and coverage note are the two long paragraphs; a compact footer is
+     the one shape where they cost more than they add. */
+  .footer[data-variant='compact'] .blurb,
+  .footer[data-variant='compact'] .note,
+  .footer[data-variant='compact'] .attrib {
+    display: none;
+  }
+
+  .footer[data-variant='compact'] .cols {
+    gap: 1.75rem;
+  }
+
+  @media (min-width: 620px) {
+    .footer[data-variant='compact'] .cols {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer[data-variant='compact'] .cols {
+      grid-template-columns: auto repeat(3, minmax(0, 1fr)) auto;
+      gap: 2.25rem;
+      align-items: start;
+    }
+  }
+
+  .footer[data-variant='compact'] .col--areas .links {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.4rem 1rem;
+  }
+
+  .footer[data-variant='compact'] .base {
+    margin-top: 1.75rem;
+    padding-top: 1rem;
+  }
+
+  /* ================= stacked — everything centred ================================ */
+
+  .footer[data-variant='stacked'] .cols {
+    justify-items: center;
+    text-align: center;
+    gap: 2.25rem;
+  }
+
+  /* The brand column spans the full row at >=720px, so `justify-items: center` on
+     the grid does nothing for its children — they need centring themselves. */
+  .footer[data-variant='stacked'] .col--brand {
+    display: grid;
+    justify-items: center;
+  }
+
+  .footer[data-variant='stacked'] .blurb,
+  .footer[data-variant='stacked'] .note,
+  .footer[data-variant='stacked'] .col--brand :global(.brand-logo) {
+    margin-inline: auto;
+  }
+
+  .footer[data-variant='stacked'] .brand-social {
+    display: block;
+  }
+
+  .footer[data-variant='stacked'] .brand-social :global(.social) {
+    justify-content: center;
+  }
+
+  .footer[data-variant='stacked'] .col--cta .cta-social {
+    display: none;
+  }
+
+  .footer[data-variant='stacked'] .col--areas .links {
+    grid-auto-flow: row;
+  }
+
+  @media (min-width: 720px) {
+    .footer[data-variant='stacked'] .cols {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .footer[data-variant='stacked'] .col--brand {
+      grid-column: 1 / -1;
+      padding-bottom: 1.75rem;
+      border-bottom: 1px solid color-mix(in srgb, var(--ds-on-deep) 14%, transparent);
+      width: 100%;
+    }
+
+    .footer[data-variant='stacked'] .col--areas .links {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.4rem 1rem;
+      text-align: left;
+    }
+  }
+
+  .footer[data-variant='stacked'] .base {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .footer[data-variant='stacked'] .attrib {
+    margin-inline: auto;
+  }
+</style>

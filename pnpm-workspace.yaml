@@ -1,0 +1,3 @@
+allowBuilds:
+  # Astro's bundler needs esbuild's platform binary, installed by its build script.
+  esbuild: true

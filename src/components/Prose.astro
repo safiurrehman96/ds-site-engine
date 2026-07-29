@@ -1,0 +1,19 @@
+---
+/**
+ * Renders an authored multi-paragraph string as paragraphs.
+ * Payload prose is plain text, so nothing here interprets markup.
+ */
+import { paragraphs } from '../lib/content';
+
+interface Props {
+  body: string;
+  class?: string;
+}
+
+const { body, class: className } = Astro.props;
+const parts = paragraphs(body);
+---
+
+<div class:list={['ds-prose', className]}>
+  {parts.map((p) => <p>{p}</p>)}
+</div>

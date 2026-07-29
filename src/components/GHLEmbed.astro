@@ -1,0 +1,52 @@
+---
+/**
+ * Inline GHL form or calendar (core principle 6: the engine never rebuilds these,
+ * it only frames them).
+ *
+ * Used on /booking and /get-quote only, and only when `ghl.embed` is true. A GHL
+ * iframe cannot be styled from here and loads on the third-party's schedule, so the
+ * two things this component owes the page are: reserved space, so the embed does not
+ * shove the rest of the layout down as it arrives, and a real title, because an
+ * untitled iframe is a screen-reader dead end.
+ *
+ * The reserved space is a min-height rather than an aspect-ratio: GHL forms are tall
+ * and narrow on mobile and short and wide on desktop, so a fixed ratio guarantees
+ * either a scrollbar inside the frame or a band of dead space under it.
+ */
+interface Props {
+  src: string;
+  /** Describes the embed to assistive tech, e.g. "Request a quote form". */
+  title: string;
+  /** Reserved height. Raise it for long forms; the frame scrolls internally past it. */
+  minHeight?: string;
+}
+
+const { src, title, minHeight = '780px' } = Astro.props;
+---
+
+<div class="embed" style={`--embed-min-height:${minHeight}`}>
+  <iframe
+    src={src}
+    title={title}
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    allow="clipboard-write; payment"></iframe>
+</div>
+
+<style>
+  .embed {
+    margin-top: 1.75rem;
+    background: var(--ds-card);
+    border: var(--ds-border);
+    border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow);
+    overflow: hidden;
+  }
+
+  iframe {
+    display: block;
+    width: 100%;
+    min-height: var(--embed-min-height);
+    border: 0;
+  }
+</style>
