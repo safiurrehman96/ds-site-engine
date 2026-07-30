@@ -83,7 +83,36 @@ export async function restartDevServer(reason) {
     return false;
   }
 
-  await rm(path.join('.astro', 'data-store.json'), { force: true });
+  /*
+   * `astro dev stop` returns before the old process has actually exited. Booting the
+   * replacement inside that window means two servers briefly share `.astro/` — and the
+   * dying one flushes its (now wrong) content store over whatever the new one is
+   * setting up. Both observed mid-flight deaths followed exactly this kind of rapid
+   * stop/start cycle, with nothing in the new server's log because the fatal write
+   * came from the old process. So: wait for the pid to be truly gone first.
+   */
+  for (let i = 0; i < 50; i++) {
+    try {
+      process.kill(server.pid, 0);
+      await new Promise((r) => setTimeout(r, 100));
+    } catch {
+      break; // gone
+    }
+  }
+
+  /*
+   * Fully cold boot: wipe .astro/ and vite's dep cache, not just data-store.json.
+   *
+   * Deleting only the store turned out to be insufficient — with the rest of .astro/
+   * (collections/, generated content modules) and node_modules/.vite carried over
+   * from a server that ran a different client, the new server logs a clean
+   * "Syncing content → Synced content" and still comes up missing entries. Torture
+   * test that settled it: alternating `pnpm use kleen` / `pnpm use jetspa` with a
+   * store-only wipe went 200/500/200/500; with the full wipe it holds 200 across
+   * every switch. Everything removed here is a cache astro rebuilds on boot.
+   */
+  await rm('.astro', { recursive: true, force: true });
+  await rm(path.join('node_modules', '.vite'), { recursive: true, force: true });
 
   const start = await exec('pnpm', [
     'exec', 'astro', 'dev', '--background', '--port', String(server.port),
