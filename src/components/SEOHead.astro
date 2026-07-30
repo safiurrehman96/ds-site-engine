@@ -15,7 +15,7 @@ interface Props {
   /** Absolute or site-relative image for OG/Twitter cards. */
   ogImage?: string;
   noindex?: boolean;
-  /** One or more JSON-LD graphs to emit. */
+  /** Nodes of the page's single JSON-LD @graph (no @context — added here). */
   jsonLd?: Array<Record<string, unknown>>;
 }
 
@@ -50,8 +50,12 @@ const og = await ogImageUrl(ogImage ?? siteConfig.defaults.heroVideo.poster.src,
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={og.url} />
 
+{/* One @graph, not one script per node, so nodes can reference each other by @id. */}
 {
-  jsonLd.map((graph) => (
-    <script type="application/ld+json" set:html={JSON.stringify(graph)} />
-  ))
+  jsonLd.length > 0 && (
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': jsonLd })}
+    />
+  )
 }

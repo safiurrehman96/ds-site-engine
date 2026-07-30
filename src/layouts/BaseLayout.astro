@@ -10,7 +10,7 @@ import Footer from '../components/Footer.astro';
 import type { Preset } from '../config-schema';
 import { tokensToCss, presetAttrs, assertAccentContrast } from '../styles/presets';
 import { activePreset } from '../lib/theme';
-import { localBusinessJsonLd } from '../lib/seo';
+import { localBusinessJsonLd, webSiteJsonLd, webPageJsonLd } from '../lib/seo';
 import { getAreas } from '../lib/content';
 import { siteConfig } from '../lib/site-config';
 import '../styles/base.css';
@@ -21,7 +21,7 @@ interface Props {
   path: string;
   ogImage?: string;
   noindex?: boolean;
-  /** Page-specific graphs. LocalBusiness is added here for every page. */
+  /** Page-specific @graph nodes. WebSite/WebPage/LocalBusiness are added here. */
   jsonLd?: Array<Record<string, unknown>>;
   /**
    * Render under a preset other than the configured one. Only /styleguide uses
@@ -61,6 +61,8 @@ const attrs = presetAttrs(preset);
 
 const areas = await getAreas();
 const graphs = [
+  webSiteJsonLd(siteConfig),
+  webPageJsonLd(siteConfig, { title, description, path }),
   localBusinessJsonLd(
     siteConfig,
     areas.map((a) => ({ name: a.data.name, state: a.data.state })),

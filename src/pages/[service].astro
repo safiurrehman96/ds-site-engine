@@ -18,7 +18,14 @@ import SocialStrip from '../components/SocialStrip.astro';
 import FAQAccordion from '../components/FAQAccordion.astro';
 import CTABanner from '../components/CTABanner.astro';
 import { getServices } from '../lib/content';
-import { buildTitle, buildH1, faqPageJsonLd } from '../lib/seo';
+import {
+  buildTitle,
+  buildH1,
+  faqPageJsonLd,
+  serviceJsonLd,
+  serviceBreadcrumbJsonLd,
+} from '../lib/seo';
+import { getAreas } from '../lib/content';
 import { siteConfig } from '../lib/site-config';
 
 // Deliberately unannotated: adding `: GetStaticPaths` widens the return type and
@@ -44,6 +51,14 @@ const state = serviceArea.baseState;
 const title = s.title ?? buildTitle(siteConfig, s.name, city, state);
 const h1 = s.h1 ?? buildH1(s.name, city, state);
 
+const areas = (await getAreas()).map((a) => ({ name: a.data.name, state: a.data.state }));
+
+const graph = [
+  serviceJsonLd(siteConfig, { name: s.name, description: s.metaDescription, slug: s.slug }, areas),
+  serviceBreadcrumbJsonLd(siteConfig, { name: s.name, slug: s.slug }),
+  faqPageJsonLd(s.faqs),
+];
+
 // Track SplitSection position so imageSide auto-alternates down the page.
 let splitIndex = 0;
 ---
@@ -53,7 +68,7 @@ let splitIndex = 0;
   description={s.metaDescription}
   path={`/${s.slug}`}
   ogImage={s.heroImage.src}
-  jsonLd={[faqPageJsonLd(s.faqs)]}
+  jsonLd={graph}
 >
   <Hero heading={h1} body={s.heroIntro} />
 
