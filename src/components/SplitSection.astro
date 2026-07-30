@@ -65,6 +65,29 @@ const active: SplitVariant =
   data-media={image ? 'yes' : 'no'}
   data-variant={image ? active : 'beside'}
 >
+  {/*
+    The wide variant's media lives OUTSIDE .ds-container, as a direct child of the
+    section, because it must span the full section while everything in the container
+    cannot: base.css animates `transform` on every `.ds-section > .ds-container`
+    (the scroll reveal), and a transform-animated element becomes the containing
+    block for absolutely positioned descendants regardless of `position`. With the
+    media inside, its `inset: 0` resolved against the 1180px container and the
+    "full-bleed" band quietly clipped to content width. Outside, no amount of
+    container styling can capture it.
+  */}
+  {
+    image && active === 'wide' && (
+      <div class="media">
+        <Img
+          src={image.src}
+          alt={image.alt}
+          widths={[480, 768, 1200, 1600]}
+          sizes="100vw"
+        />
+      </div>
+    )
+  }
+
   <div class="ds-container grid">
     <div class="copy">
       {eyebrow && <p class="ds-kicker">{eyebrow}</p>}
@@ -97,7 +120,7 @@ const active: SplitVariant =
     </div>
 
     {
-      image && (
+      image && active !== 'wide' && (
         <div class="media">
           <Img
             src={image.src}
@@ -283,14 +306,9 @@ const active: SplitVariant =
     padding-block: clamp(4rem, 3rem + 6vw, 8rem);
   }
 
-  /* base.css sets `.ds-section > .ds-container { position: relative }` for the
-     divider wedge, which would make the container — not the section — the
-     containing block for the absolutely positioned media, leaving it inset to
-     1180px instead of full-bleed. Opt this one variant out. */
-  .split[data-variant='wide'] > :global(.ds-container) {
-    position: static;
-  }
-
+  /* Media is a direct child of the section (see the template comment), so the
+     section is its containing block no matter what base.css does to the container —
+     which stays `position: relative; z-index: 1` and keeps the copy above the band. */
   .split[data-variant='wide'] .media {
     position: absolute;
     inset: 0;
