@@ -16,10 +16,15 @@
  * package.json, so a stale link cannot quietly build the wrong client: every entry
  * point re-establishes it from DS_CLIENT first.
  */
-import { readdir, readlink, readFile, rm, symlink, copyFile, stat } from 'node:fs/promises';
+import { readdir, readlink, rm, symlink, copyFile, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
-import { execFile } from 'node:child_process';
 import path from 'node:path';
+import {
+  runningDevServer,
+  restartDevServer,
+  markRestartNeeded,
+  clearRestartMarker,
+} from './dev-server.mjs';
 
 const CLIENTS_DIR = 'clients';
 const LINK = 'client';
@@ -47,51 +52,37 @@ async function currentClient() {
   }
 }
 
-const DEV_STATE = path.join('.astro', 'dev.json');
-
-const exec = (cmd, args) =>
-  new Promise((resolve) => {
-    execFile(cmd, args, (err, stdout, stderr) =>
-      resolve({ ok: !err, out: `${stdout ?? ''}${stderr ?? ''}` }),
-    );
-  });
-
-/** The background dev server's recorded state, or null when none is alive. */
-async function runningDevServer() {
-  try {
-    const state = JSON.parse(await readFile(DEV_STATE, 'utf8'));
-    if (!state?.pid) return null;
-    // Signal 0 tests liveness without touching the process; throws if it is gone.
-    process.kill(state.pid, 0);
-    return state;
-  } catch {
-    return null;
-  }
-}
-
 /**
- * A running `astro dev` cannot survive the link moving under it, so restart it.
+ * A running `astro dev` cannot survive the link moving under it, so restart it —
+ * but at the right moment.
  *
  * Collections load through a glob over `client/content/**`, and both Vite's watcher and
  * Astro's content store key on the *resolved* path — `clients/jetspa/…`, not `client/…`.
  * Repointing the symlink changes what that pattern resolves to without touching any
  * watched file, so nothing invalidates: the server keeps serving a store built for the
  * previous payload and the next request throws "Missing payload file" for a file that is
- * sitting on disk. `.astro/data-store.json` shows it plainly — every collection an empty
- * Map.
+ * sitting on disk.
  *
- * This used to be a warning. A warning was the wrong shape: the link moves as a *side
- * effect* of `DS_CLIENT=kleen pnpm build` or `pnpm run stress` in another terminal, so the
- * person who has to act on it is not the person who ran the command, and it was ignored
- * every single time — including by the author of the warning, twice in one session. The
- * state is recoverable automatically, so recover it.
+ * Under a pre* hook this must NOT restart inline: the parent command is an `astro
+ * build` (or a stress run full of them) about to execute in this same directory, and a
+ * dev server booting concurrently with a build races it over the shared `.astro/`
+ * state. The first version of this fix did exactly that, and the restarted server came
+ * up with "Astro config changed → Clearing content store" and an empty store. So under
+ * pre* hooks a marker is written instead, and the matching post* hook
+ * (scripts/finish-dev-restart.mjs) performs the restart once every other astro process
+ * has exited. A manual `pnpm use <slug>` has no command following it, so it restarts
+ * immediately.
  *
- * `--force` clears the content layer cache, which is exactly the invalidation the swap
- * failed to trigger. Skipped under `predev`, which is about to start a server of its own,
- * and under DS_NO_DEV_RESTART=1 for anyone who would rather it kept its hands off.
+ * `predev` does neither — it is about to start a fresh server itself.
+ * DS_NO_DEV_RESTART=1 downgrades everything to a warning for anyone who wants the
+ * script to keep its hands off.
  */
-async function restartDevServerIfRunning(from, to) {
-  if (process.env.npm_lifecycle_event === 'predev') return;
+async function handleStaleDevServer(from, to) {
+  const lifecycle = process.env.npm_lifecycle_event ?? '';
+  if (lifecycle === 'predev') {
+    await clearRestartMarker();
+    return;
+  }
 
   const server = await runningDevServer();
   if (!server) return;
@@ -105,19 +96,13 @@ async function restartDevServerIfRunning(from, to) {
     return;
   }
 
-  const stop = await exec('pnpm', ['exec', 'astro', 'dev', 'stop']);
-  if (!stop.ok) {
-    console.warn(`⚠️  could not stop dev server (pid ${server.pid}) — restart it by hand.`);
+  if (lifecycle.startsWith('pre')) {
+    await markRestartNeeded(`client link moved ${from ?? 'unset'} → ${to} during ${lifecycle}`);
+    console.log(`▸ dev server restart deferred until after ${lifecycle.slice(3)} finishes`);
     return;
   }
 
-  const args = ['exec', 'astro', 'dev', '--background', '--force', '--port', String(server.port)];
-  const start = await exec('pnpm', args);
-  console.log(
-    start.ok
-      ? `↻ restarted dev server on port ${server.port} (the link moved, its content store was stale)`
-      : `⚠️  stopped the stale dev server but could not restart it — run: pnpm dev`,
-  );
+  await restartDevServer('the client link moved, its content store was stale');
 }
 
 async function main() {
@@ -166,7 +151,7 @@ async function main() {
 
   // After the link and _redirects are both settled, so a restarted server reads the
   // finished state rather than a half-applied one.
-  if (existing !== slug) await restartDevServerIfRunning(existing, slug);
+  if (existing !== slug) await handleStaleDevServer(existing, slug);
 }
 
 main().catch((err) => {

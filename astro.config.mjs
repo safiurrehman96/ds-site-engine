@@ -6,6 +6,16 @@ import { assetBudget } from './src/integrations/asset-budget';
 
 export default defineConfig({
   site: siteConfig.site.url,
+  vite: {
+    server: {
+      watch: {
+        // stress.mjs copies a full dist/ per preset into .stress/. Astro ignores its
+        // own outDir but knows nothing about this one, so a stress run flooded the
+        // dev server's watcher with one event per built file (~70 per preset).
+        ignored: ['**/.stress/**'],
+      },
+    },
+  },
   integrations: [
     assetBudget(),
     sitemap({

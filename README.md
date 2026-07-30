@@ -30,15 +30,23 @@ stay put — the link moves instead.
 > resolves *through* the symlink, so Vite's watcher and Astro's content store key on
 > `clients/<slug>/…`; repointing the link changes what the pattern resolves to without
 > touching a watched file, nothing invalidates, and the next request throws
-> `Missing payload file` for a file that is plainly on disk. Nothing can fix that from
-> inside the running server, so `use-client.mjs` reads `.astro/dev.json` and restarts it
-> with `--force` (which clears the content layer cache) on the same port.
+> `Missing payload file` for a file that is plainly on disk.
 >
 > This matters because the link also moves as a **side effect** — `DS_CLIENT=kleen pnpm
 > build` or `pnpm run stress` in another terminal repoints the shared link, so the dev
-> server you are looking at can go stale from a command you did not run. It was a warning
-> first; a warning aimed at the wrong person and got ignored every time. Set
+> server you are looking at can go stale from a command you did not run. Set
 > `DS_NO_DEV_RESTART=1` to be warned instead of restarted.
+>
+> Two hard-won details of *how* it restarts (scripts/dev-server.mjs):
+>
+> - **Deferred past the build.** Under `prebuild`/`prestress` the restart waits for the
+>   matching `post*` hook — a dev server booting while an `astro build` runs in the same
+>   directory races it over `.astro/` and comes up corrupted.
+> - **Clean-slate, never `--force`.** `.astro/data-store.json` is deleted between stop
+>   and start. Astro 7.1.5's clear-then-resync path (what `--force` requests, and what
+>   fires by itself when the store file was last written by a build, whose config digest
+>   never matches dev's) leaves every collection an empty Map. A missing file has no
+>   digest to mismatch, so boot-from-nothing takes the genuine full-load path.
 
 ## Adding a client
 
