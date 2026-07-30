@@ -45,18 +45,33 @@ processSteps:
   - title: "Scope call"
     body: |
       We confirm your aircraft make and model, the services you want, your home base, and your available window. Aircraft class drives the crew size and timeline.
+    image:
+      src: "./assets/service-corporate-jet-detailing.jpg"
+      alt: "Scope call — placeholder detailing photo"
   - title: "Written quote"
     body: |
       You receive a written scope, timeline, and price. Larger aircraft may require breaking the work across multiple days.
+    image:
+      src: "./assets/service-de-ice-boot-refurbishment.jpg"
+      alt: "Written quote — placeholder detailing photo"
   - title: "On-site arrival"
     body: |
       Our team arrives at the confirmed hangar with all products, equipment, and PPE ready. Super-corporate jets can require crews of six to eight people and multiple ladders.
+    image:
+      src: "./assets/service-piston-aircraft-detailing.jpg"
+      alt: "On-site arrival — placeholder detailing photo"
   - title: "Coordinated execution"
     body: |
       Work proceeds panel by panel and section by section. We coordinate with your pilot or flight department on any downtime windows, coating cure requirements, or ground time constraints.
+    image:
+      src: "./assets/service-turboprop-aircraft-detailing.jpg"
+      alt: "Coordinated execution — placeholder detailing photo"
   - title: "Post-service walkthrough and documentation"
     body: |
       You or your representative walks the aircraft with our lead technician. You receive a written service record documenting scope, product used, and any observations.
+    image:
+      src: "./assets/service-aircraft-ceramic-coating.jpg"
+      alt: "Post-service walkthrough and documentation — placeholder detailing photo"
 
 crossSell:
   heading: "Add-On Services"

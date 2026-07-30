@@ -49,18 +49,33 @@ processSteps:
   - title: "Inspection"
     body: |
       Our team walks the aircraft with your pilot or ground crew to identify existing paint issues, previous coatings, and any surface damage that needs attention before coating.
+    image:
+      src: "./assets/service-aircraft-ceramic-coating.jpg"
+      alt: "Inspection — placeholder detailing photo"
   - title: "Decontamination and prep"
     body: |
       The aircraft receives a full wash, iron and chemical decontamination, and machine polish appropriate to the paint condition. For older aircraft with heavier oxidation, a cut and polish is required. Newer aircraft with sound clear coat typically need only a one step polish.
+    image:
+      src: "./assets/service-aircraft-exterior-detailing.jpg"
+      alt: "Decontamination and prep — placeholder detailing photo"
   - title: "Coating application"
     body: |
       The chosen ceramic coating is applied to the fuselage, wings, and tail surfaces using OEM-approved techniques. Application happens indoors in a controlled environment whenever possible.
+    image:
+      src: "./assets/service-aircraft-interior-detailing.jpg"
+      alt: "Coating application — placeholder detailing photo"
   - title: "Cure and inspection"
     body: |
       The coating requires 24 to 48 hours of curing time during which the aircraft cannot be flown, wet-washed, or exposed to precipitation. We inspect the coating post-cure and document the finished result.
+    image:
+      src: "./assets/service-aog-emergency-cleaning.jpg"
+      alt: "Cure and inspection — placeholder detailing photo"
   - title: "Documentation"
     body: |
       You receive a written service record with the coating warranty period, maintenance recommendations, and next service window.
+    image:
+      src: "./assets/service-brightwork-polishing.jpg"
+      alt: "Documentation — placeholder detailing photo"
 
 crossSell:
   heading: "Add-On Services"

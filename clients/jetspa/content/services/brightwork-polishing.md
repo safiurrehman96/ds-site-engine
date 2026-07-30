@@ -42,18 +42,33 @@ processSteps:
   - title: "Assessment"
     body: |
       Our team inspects the brightwork surfaces, identifies oxidation depth, pitting, and existing damage, then confirms the scope in writing.
+    image:
+      src: "./assets/service-brightwork-polishing.jpg"
+      alt: "Assessment — placeholder detailing photo"
   - title: "Masking"
     body: |
       All painted surfaces adjacent to brightwork are masked to prevent cutting compound contamination. This step alone separates professional brightwork from amateur work.
+    image:
+      src: "./assets/service-corporate-jet-detailing.jpg"
+      alt: "Masking — placeholder detailing photo"
   - title: "Cutting compound"
     body: |
       Aviation-grade cutting compound is applied with wool pads to remove oxidation and pitting. This is the most labor-intensive stage.
+    image:
+      src: "./assets/service-de-ice-boot-refurbishment.jpg"
+      alt: "Cutting compound — placeholder detailing photo"
   - title: "Refining polish"
     body: |
       Intermediate polish refines the surface and removes hazing left by the cutting stage.
+    image:
+      src: "./assets/service-piston-aircraft-detailing.jpg"
+      alt: "Refining polish — placeholder detailing photo"
   - title: "Finishing polish and seal"
     body: |
       Final polish brings the brightwork to mirror condition, followed by aviation-approved sealant to slow the return of oxidation.
+    image:
+      src: "./assets/service-turboprop-aircraft-detailing.jpg"
+      alt: "Finishing polish and seal — placeholder detailing photo"
 
 crossSell:
   heading: "Add-On Services"

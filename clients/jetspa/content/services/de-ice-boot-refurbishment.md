@@ -41,18 +41,33 @@ processSteps:
   - title: "Assessment"
     body: |
       Our team inspects each boot surface for cracks, delamination, or damage that requires replacement rather than refurbishment. Findings are documented before work begins.
+    image:
+      src: "./assets/service-de-ice-boot-refurbishment.jpg"
+      alt: "Assessment — placeholder detailing photo"
   - title: "Surface cleaning"
     body: |
       Each boot is cleaned with manufacturer-approved rubber cleaner to remove contamination, hydraulic bleed, and residue from prior products.
+    image:
+      src: "./assets/service-piston-aircraft-detailing.jpg"
+      alt: "Surface cleaning — placeholder detailing photo"
   - title: "First conditioning coat"
     body: |
       OEM-approved boot conditioner is applied evenly across the boot surface. This coat restores flexibility and begins UV protection.
+    image:
+      src: "./assets/service-turboprop-aircraft-detailing.jpg"
+      alt: "First conditioning coat — placeholder detailing photo"
   - title: "Subsequent coats"
     body: |
       Additional coats are applied per manufacturer specification, with appropriate flash time between coats.
+    image:
+      src: "./assets/service-aircraft-ceramic-coating.jpg"
+      alt: "Subsequent coats — placeholder detailing photo"
   - title: "Cure and documentation"
     body: |
       The aircraft cannot fly for 24 to 48 hours after boot refurbishment to allow full cure. We inspect the boots post-cure and provide a written service record.
+    image:
+      src: "./assets/service-aircraft-exterior-detailing.jpg"
+      alt: "Cure and documentation — placeholder detailing photo"
 
 crossSell:
   heading: "Add-On Services"

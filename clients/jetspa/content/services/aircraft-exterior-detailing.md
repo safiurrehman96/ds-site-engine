@@ -46,18 +46,33 @@ processSteps:
   - title: "Inspection"
     body: |
       Our team walks the aircraft to assess paint condition, existing damage, and contamination level, then confirms scope.
+    image:
+      src: "./assets/service-aircraft-exterior-detailing.jpg"
+      alt: "Inspection — placeholder detailing photo"
   - title: "Surface prep"
     body: |
       For dry wash: full aircraft dry wash using aviation-approved chemistry, panel by panel. For polish work: aircraft receives full chemical and iron decontamination first.
+    image:
+      src: "./assets/service-aircraft-interior-detailing.jpg"
+      alt: "Surface prep — placeholder detailing photo"
   - title: "Polish work (if applicable)"
     body: |
       Machine polish is applied panel by panel to bring back clarity and remove defects.
+    image:
+      src: "./assets/service-aog-emergency-cleaning.jpg"
+      alt: "Polish work (if applicable) — placeholder detailing photo"
   - title: "Protection"
     body: |
       If sealant or ceramic coating was ordered, it is applied after polish work is complete. If sealant only, curing takes minutes to hours.
+    image:
+      src: "./assets/service-brightwork-polishing.jpg"
+      alt: "Protection — placeholder detailing photo"
   - title: "Inspection and documentation"
     body: |
       Post-service walk with your pilot or ground crew, plus written service record with any observations for future reference.
+    image:
+      src: "./assets/service-corporate-jet-detailing.jpg"
+      alt: "Inspection and documentation — placeholder detailing photo"
 
 crossSell:
   heading: "Add-On Services"

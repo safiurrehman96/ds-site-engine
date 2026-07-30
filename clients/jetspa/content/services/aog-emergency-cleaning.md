@@ -44,18 +44,33 @@ processSteps:
   - title: "Emergency intake"
     body: |
       You call our AOG line with your aircraft location, aircraft type, issue description, and departure deadline. Intake takes minutes.
+    image:
+      src: "./assets/service-aog-emergency-cleaning.jpg"
+      alt: "Emergency intake — placeholder detailing photo"
   - title: "Dispatch"
     body: |
       We confirm ETA and dispatch the closest available team with all containment and cleaning materials.
+    image:
+      src: "./assets/service-brightwork-polishing.jpg"
+      alt: "Dispatch — placeholder detailing photo"
   - title: "On-site containment"
     body: |
       First priority is safe containment of the affected area, especially for biohazard incidents. PPE and containment protocols are followed without exception.
+    image:
+      src: "./assets/service-corporate-jet-detailing.jpg"
+      alt: "On-site containment — placeholder detailing photo"
   - title: "Deep clean and treatment"
     body: |
       The affected area receives a full deep clean, odor treatment as required, and disinfection of surrounding surfaces.
+    image:
+      src: "./assets/service-de-ice-boot-refurbishment.jpg"
+      alt: "Deep clean and treatment — placeholder detailing photo"
   - title: "Documentation"
     body: |
       Written service record noting the incident, actions taken, materials used, and any recommended follow-up. This documentation supports insurance claims and operator maintenance logs.
+    image:
+      src: "./assets/service-piston-aircraft-detailing.jpg"
+      alt: "Documentation — placeholder detailing photo"
 
 crossSell:
   heading: "Add-On Services"

@@ -45,18 +45,33 @@ processSteps:
   - title: "Scope call"
     body: |
       We confirm aircraft type, spinner and boot configuration, and the services you want.
+    image:
+      src: "./assets/service-turboprop-aircraft-detailing.jpg"
+      alt: "Scope call — placeholder detailing photo"
   - title: "Written quote"
     body: |
       You receive a written scope and timeline. Boot refurbishment and coating work require 24 to 48 hour ground time; we build that into scheduling.
+    image:
+      src: "./assets/service-aircraft-ceramic-coating.jpg"
+      alt: "Written quote — placeholder detailing photo"
   - title: "On-site arrival"
     body: |
       Team arrives at your hangar with all products and equipment. Twin engine turboprops with additional surfaces (spinners, boots on horizontal stabilizer) require additional crew.
+    image:
+      src: "./assets/service-aircraft-exterior-detailing.jpg"
+      alt: "On-site arrival — placeholder detailing photo"
   - title: "Sequential execution"
     body: |
       Work proceeds in the order that respects cure times: exterior polish and coating first (with cure), then boots and brightwork, then interior. This maximizes efficient use of the ground time.
+    image:
+      src: "./assets/service-aircraft-interior-detailing.jpg"
+      alt: "Sequential execution — placeholder detailing photo"
   - title: "Walkthrough and documentation"
     body: |
       Post-service walk with your pilot or ground crew plus written service record.
+    image:
+      src: "./assets/service-aog-emergency-cleaning.jpg"
+      alt: "Walkthrough and documentation — placeholder detailing photo"
 
 crossSell:
   heading: "Add-On Services"

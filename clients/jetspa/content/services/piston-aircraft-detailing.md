@@ -49,18 +49,33 @@ processSteps:
   - title: "Scope call"
     body: |
       We confirm aircraft make, model, condition, and the services you want. Piston owners often want just polish and coating; some want the full menu.
+    image:
+      src: "./assets/service-piston-aircraft-detailing.jpg"
+      alt: "Scope call — placeholder detailing photo"
   - title: "Written quote"
     body: |
       You receive a written scope, timeline, and price.
+    image:
+      src: "./assets/service-turboprop-aircraft-detailing.jpg"
+      alt: "Written quote — placeholder detailing photo"
   - title: "On-site arrival"
     body: |
       Team arrives at your hangar or tie-down with all products and equipment.
+    image:
+      src: "./assets/service-aircraft-ceramic-coating.jpg"
+      alt: "On-site arrival — placeholder detailing photo"
   - title: "Execution"
     body: |
       Work proceeds in the order that respects cure times and available daylight. Most piston services complete in a single day; ceramic coating adds 24 to 48 hours of cure time.
+    image:
+      src: "./assets/service-aircraft-exterior-detailing.jpg"
+      alt: "Execution — placeholder detailing photo"
   - title: "Walkthrough and documentation"
     body: |
       Post-service walk with you or your representative plus written service record.
+    image:
+      src: "./assets/service-aircraft-interior-detailing.jpg"
+      alt: "Walkthrough and documentation — placeholder detailing photo"
 
 crossSell:
   heading: "Add-On Services"
