@@ -154,6 +154,7 @@ const services = defineCollection({
           /** Optional: Kleen's service-page steps are single sentences with no lead-in. */
           title: prose.optional(),
           body: prose,
+          image: image.optional(),
         }),
       )
       .min(1),

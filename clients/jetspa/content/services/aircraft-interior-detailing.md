@@ -47,18 +47,33 @@ processSteps:
   - title: "Walkthrough"
     body: |
       We inspect the cabin with your pilot or ground crew, identify problem areas such as stains, odors, or damage, and confirm scope in writing.
+    image:
+      src: "./assets/service-aircraft-interior-detailing.jpg"
+      alt: "Technician reviewing a jet cabin with the flight crew before work begins"
   - title: "Removal and vacuum"
     body: |
       All loose items are removed and the cabin receives a full detailed vacuum from headliner to floor.
+    image:
+      src: "./assets/service-corporate-jet-detailing.jpg"
+      alt: "Cabin seating cleared and vacuumed from headliner to floor"
   - title: "Surface work"
     body: |
       Every hard surface, leather element, and wood veneer is cleaned and conditioned with OEM-approved products.
+    image:
+      src: "./assets/service-aircraft-ceramic-coating.jpg"
+      alt: "Leather seat and wood veneer being conditioned with OEM-approved products"
   - title: "Deep work"
     body: |
       If carpet extraction was ordered, the extractor runs after surface work is complete to lift embedded soil and residue.
+    image:
+      src: "./assets/service-aircraft-exterior-detailing.jpg"
+      alt: "Carpet extractor lifting embedded soil from cabin carpet"
   - title: "Final pass"
     body: |
       We disinfect all high-touch surfaces (armrests, tray tables, cabin controls), replace loose items, and document the completed work.
+    image:
+      src: "./assets/service-aog-emergency-cleaning.jpg"
+      alt: "Finished cabin with high-touch surfaces disinfected and reset"
 
 crossSell:
   heading: "Add-On Services"

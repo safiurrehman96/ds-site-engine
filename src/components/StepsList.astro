@@ -9,6 +9,7 @@
  * list when steps had no titles.
  */
 import type { Preset } from '../config-schema';
+import Img from './Img.astro';
 import Inline from './Inline.astro';
 import { getPreset } from '../styles/presets';
 import { activePreset } from '../lib/theme';
@@ -21,7 +22,11 @@ interface Props {
   kicker?: string;
   heading: string;
   intro?: string;
-  steps: Array<{ title?: string; body: string }>;
+  steps: Array<{
+    title?: string;
+    body: string;
+    image?: { src: string; alt: string };
+  }>;
   note?: string;
   tone?: 'paper' | 'card';
   /** Overrides the preset's layout. */
@@ -60,6 +65,18 @@ const active: StepsVariant =
             <span class="num" aria-hidden="true">
               {String(i + 1).padStart(2, '0')}
             </span>
+            {
+              step.image && (
+                <div class="media">
+                  <Img
+                    src={step.image.src}
+                    alt={step.image.alt}
+                    widths={[320, 480, 768]}
+                    sizes="(min-width: 700px) 30vw, 100vw"
+                  />
+                </div>
+              )
+            }
             <div class="copy">
               {step.title && <h3>{step.title}</h3>}
               <p><Inline text={step.body} /></p>
@@ -90,6 +107,21 @@ const active: StepsVariant =
   .list {
     display: grid;
     counter-reset: step;
+  }
+
+  /* Per-step photo, shared by every variant; each layout only decides where the
+     block sits. Fixed 3:2 crop so uneven source photos can't break row alignment. */
+  .media {
+    overflow: hidden;
+    border-radius: var(--ds-radius-sm);
+  }
+
+  .media :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
   }
 
   .copy h3 {
@@ -164,6 +196,20 @@ const active: StepsVariant =
     padding-top: 0.5rem;
   }
 
+  /* The photo shares the copy column, capped so it reads as an illustration of the
+     step rather than a full split-section image. */
+  .steps[data-variant='timeline'] .media {
+    grid-column: 2;
+    max-width: 26rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Three children in a two-column grid: the copy must be pinned to the copy column
+     or auto-placement drops it under the number. */
+  .steps[data-variant='timeline'] li:has(.media) .copy {
+    grid-column: 2;
+  }
+
   /* ================= track — horizontal line through the numbers ================= */
 
   .steps[data-variant='track'] .list {
@@ -192,6 +238,15 @@ const active: StepsVariant =
     font-family: var(--ds-font-display);
     font-weight: 700;
     font-size: 0.875rem;
+  }
+
+  .steps[data-variant='track'] .media {
+    grid-column: 2;
+    margin-bottom: 0.75rem;
+  }
+
+  .steps[data-variant='track'] li:has(.media) .copy {
+    grid-column: 2;
   }
 
   @media (min-width: 860px) {
@@ -228,6 +283,16 @@ const active: StepsVariant =
     .steps[data-variant='track'] .num {
       position: relative;
       z-index: 1;
+    }
+
+    .steps[data-variant='track'] .media {
+      grid-column: auto;
+      width: 100%;
+      margin-bottom: 0;
+    }
+
+    .steps[data-variant='track'] li:has(.media) .copy {
+      grid-column: auto;
     }
   }
 
@@ -300,6 +365,15 @@ const active: StepsVariant =
     z-index: 1;
   }
 
+  /* The photo slots between the watermark numeral and the copy; it sits above the
+     accent rule's plane, so it needs its own stacking context to stay clickable-
+     looking and clean of the hairline. */
+  .steps[data-variant='numerals'] .media {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 1rem;
+  }
+
   /* ================= ledger — full-width rows with hairline rules ================ */
 
   .steps[data-variant='ledger'] .list {
@@ -323,6 +397,37 @@ const active: StepsVariant =
       grid-template-columns: 5rem 1fr;
       gap: 2rem;
       padding-block: 1.5rem;
+    }
+  }
+
+  .steps[data-variant='ledger'] .media {
+    grid-column: 2;
+    max-width: 22rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .steps[data-variant='ledger'] li:has(.media) {
+    align-items: start;
+  }
+
+  .steps[data-variant='ledger'] li:has(.media) .copy {
+    grid-column: 2;
+  }
+
+  /* With a photo the baseline alignment stops making sense — the thumb becomes a
+     third column and everything tops-out instead. */
+  @media (min-width: 760px) {
+    .steps[data-variant='ledger'] li:has(.media) {
+      grid-template-columns: 5rem 11rem 1fr;
+      align-items: start;
+    }
+
+    .steps[data-variant='ledger'] li:has(.media) .media {
+      max-width: none;
+    }
+
+    .steps[data-variant='ledger'] li:has(.media) .copy {
+      grid-column: 3;
     }
   }
 
