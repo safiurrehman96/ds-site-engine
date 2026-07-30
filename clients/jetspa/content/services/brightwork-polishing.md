@@ -10,7 +10,7 @@ shortDescription: "Brightwork polishing is the appearance care work performed on
 
 heroImage:
   src: "./assets/service-brightwork-polishing.jpg"
-  alt: "PLACEHOLDER brightwork polishing image — JetSpa"
+  alt: "A high-gloss aircraft surface reflecting hangar lighting"
 
 heroIntro: |
   Brightwork is the polished bare metal surface on your aircraft: leading edges, exhaust stacks, spinner surfaces, and polished aluminum panels. It requires specialized compounds, aviation-grade wool and foam, and a technique that will not damage adjacent painted surfaces. Standard car polish products contaminate it, and general auto detailers cannot restore it. JetSpa brings brightwork back to mirror condition using aviation-approved chemistry and technique.

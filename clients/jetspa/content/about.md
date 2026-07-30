@@ -3,7 +3,7 @@ metaDescription: "Meet the JetSpa team. Certified aircraft detailing specialists
 heroHeadline: "The Team Behind Every JetSpa Detail"
 heroImage:
   src: "./assets/intro.jpg"
-  alt: "PLACEHOLDER team image — JetSpa"
+  alt: "A technician working a rotary polisher across a fuselage panel"
 
 blocks:
   - heading: "Who We Are"

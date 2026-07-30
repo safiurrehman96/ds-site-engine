@@ -105,7 +105,7 @@ export interface PresetTokens {
     footerStyle: 'columns' | 'split' | 'compact' | 'stacked';
     /**
      * Motion character. Drives duration, easing and travel distance for the
-     * scroll-reveal and hero entrance — so the four presets move differently, not
+     * scroll-reveal and hero entrance — so the presets move differently, not
      * just look different.
      */
     motion: 'calm' | 'sharp' | 'smooth' | 'snappy';
@@ -237,6 +237,73 @@ const bold: PresetTokens = {
   deepTint: 0.12,
 };
 
+/**
+ * The one dark-surface preset. Every other preset paints dark ink on light paper and
+ * reserves near-black for bands; `noir` inverts that — the page itself is near-black.
+ *
+ * It exists because a premium accent is often a *light* colour (brass, champagne,
+ * bronze), and a light accent cannot clear WCAG AA as a fill on light paper: brass
+ * #c6a46c manages 2.12:1 against stealth's #f3f3f4 where 3:1 is the floor, and no
+ * amount of tuning fixes that — it is what "light on light" means. Against #0c0c0c the
+ * same brass gives 8.32:1. So the surface has to move, not the accent.
+ *
+ * Structural motifs are stealth's, deliberately: the two presets are the same design
+ * language at opposite polarity, and duplicating the motif choices is what makes that
+ * legible. Typography is stealth's too.
+ */
+const noir: PresetTokens = {
+  label: 'Noir — near-black surfaces, condensed display, built for a light accent',
+  fontFaces: [INTER, { family: 'Oswald', weight: '500 700', file: 'oswald-latin.woff2' }],
+  fonts: {
+    display: "'Oswald', 'Arial Narrow', system-ui, sans-serif",
+    body: "'Inter', system-ui, sans-serif",
+  },
+  colors: {
+    ink: '#fbfbfb',
+    // 7.4:1 on paper — body copy, so it clears AA for normal text, not just large.
+    inkSoft: '#a4a4ab',
+    paper: '#0c0c0c',
+    // Cards lift by one step rather than by shadow; see `surface` below.
+    card: '#16161a',
+    // Opaque, not the translucent #fbfbfb1a this is modelled on: --ds-line is read by
+    // the contrast helpers, which parse 6-digit hex and would silently misread alpha.
+    line: '#2a2a2e',
+    // A light accent needs dark label text. Derived at render by pickOnAccent, which
+    // will override this if a client's accent is dark enough to carry the light one.
+    onAccent: '#0c0c0c',
+    // Bands must read as *darker* than an already-dark page, so this bottoms out.
+    deep: '#000000',
+    onDeep: '#fbfbfb',
+    onDeepSoft: '#9a9aa2',
+  },
+  radius: { sm: '0px', md: '2px', lg: '3px', pill: '2px' },
+  surface: {
+    // Drop shadows are invisible on a near-black page — a dark blur over dark paper
+    // renders as nothing. Elevation comes from the card/paper step and a hairline
+    // instead, and the "shadow" slots carry a faint inner light so the tokens still
+    // mean something to the components that reference them.
+    shadow: '0 0 0 1px rgba(251, 251, 251, .06)',
+    shadowLg: '0 0 0 1px rgba(251, 251, 251, .08), 0 18px 48px rgba(0, 0, 0, .6)',
+    border: '1px solid var(--ds-line)',
+  },
+  motif: { divider: 'angle', cardStyle: 'outline', headingCase: 'uppercase', headingTracking: '0.02em', headStyle: 'bar', texture: 'grid', buttonStyle: 'square', heroLayout: 'fullbleed', stepsStyle: 'ledger', ctaStyle: 'deep', splitStyle: 'wide', footerStyle: 'compact', motion: 'sharp' },
+  /*
+   * Lighter than every other preset, which is the opposite of what a dark theme
+   * suggests. The scrim exists to stop bright footage washing out hero copy; on a
+   * near-black page the footage a client picks is usually already dark, so a heavy
+   * scrim buys no legibility (black over black is black) and costs the only thing
+   * such footage has — its highlights. At 68/92 the rim light on JetSpa's jet was
+   * knocked down to almost nothing.
+   *
+   * Still enough to protect white copy over a bright frame, which is the case that
+   * would otherwise fail the contrast gate.
+   */
+  heroScrim: { top: 44, bottom: 76 },
+  // Almost none. Tinting pure black toward a brass accent turns the bands muddy brown,
+  // and the accent already has plenty of presence against these surfaces.
+  deepTint: 0.03,
+};
+
 /** Duration / easing / travel per motion character. */
 const MOTION = {
   calm:   { duration: '700ms', ease: 'cubic-bezier(.22,.61,.36,1)', distance: '14px' },
@@ -246,7 +313,7 @@ const MOTION = {
   snappy: { duration: '420ms', ease: 'cubic-bezier(.34,1.32,.64,1)', distance: '18px' },
 } as const;
 
-const PRESET_MAP: Record<Preset, PresetTokens> = { fresh, stealth, chrome, bold };
+const PRESET_MAP: Record<Preset, PresetTokens> = { fresh, stealth, chrome, bold, noir };
 
 export function getPreset(name: Preset): PresetTokens {
   const preset = PRESET_MAP[name];
@@ -295,21 +362,51 @@ function toHex([r, g, b]: [number, number, number]): string {
 }
 
 /**
- * Darkens a colour until it clears `min` against every given background.
+ * Moves a colour away from its backgrounds until it clears `min` against all of them.
  *
  * A mid-tone accent that looks right as a button fill is often just under AA as
  * small text — Kleen's teal lands at 4.32:1 on the `chrome` paper. Deriving a
  * text-safe variant fixes that class of problem for every accent an agent might
  * pick, instead of hand-tuning each preset's palette against one client's colour.
+ *
+ * The direction depends on the surfaces, which is why this is not simply "darken":
+ * on `noir`'s near-black paper, darkening an accent walks it *toward* the background
+ * and the loop terminates at black having made contrast worse at every step. The
+ * lightest background decides — if that is dark, the safe direction is up.
  */
 export function deriveTextSafe(color: string, backgrounds: string[], min = AA_NORMAL): string {
+  const lightestBg = Math.max(...backgrounds.map(luminance));
+  const towardWhite = lightestBg < 0.18;
   let rgb = toRgb(color);
   for (let i = 0; i < 40; i++) {
     const hex = toHex(rgb);
     if (backgrounds.every((bg) => contrastRatio(hex, bg) >= min)) return hex;
-    rgb = [rgb[0] * 0.94, rgb[1] * 0.94, rgb[2] * 0.94] as [number, number, number];
+    rgb = towardWhite
+      ? ([
+          rgb[0] + (255 - rgb[0]) * 0.06,
+          rgb[1] + (255 - rgb[1]) * 0.06,
+          rgb[2] + (255 - rgb[2]) * 0.06,
+        ] as [number, number, number])
+      : ([rgb[0] * 0.94, rgb[1] * 0.94, rgb[2] * 0.94] as [number, number, number]);
   }
-  return '#000000';
+  return towardWhite ? '#ffffff' : '#000000';
+}
+
+/**
+ * Picks the label colour for text sitting on an accent fill.
+ *
+ * `onAccent` used to be a fixed per-preset value — always white, because every accent
+ * in play was a mid-to-dark colour. That silently made light accents unusable: brass
+ * carries white at 2.35:1, so `assertAccentContrast` rejected it and the advice
+ * ("pick a darker accent") amounted to telling a client their brand colour was wrong.
+ * The label is the part that should move, not the brand.
+ *
+ * The preset's own choice wins whenever it is legible, so no existing preset changes.
+ */
+export function pickOnAccent(accent: string, preferred: string): string {
+  if (contrastRatio(preferred, accent) >= AA_NORMAL) return preferred;
+  const [dark, light] = ['#0c0c0c', '#ffffff'];
+  return contrastRatio(dark, accent) >= contrastRatio(light, accent) ? dark : light;
 }
 
 /** Linear blend of two hex colours; `t` is how much of `b` to mix in. */
@@ -351,29 +448,36 @@ export function deriveOnDeepSafe(color: string, background: string, min = AA_LAR
  * Fails the build when the chosen accent cannot meet AA in the places the engine
  * actually paints it. Called from BaseLayout so every page render is validated.
  */
-export function assertAccentContrast(name: Preset, accent: string): void {
+export function accentContrastIssues(
+  name: Preset,
+  accent: string,
+): Array<{ what: string; ratio: number; min: number }> {
   const t = getPreset(name);
   // Accent *text* is not checked here: --ds-accent-ink / --ds-accent-on-deep are
   // derived to clear AA automatically. What remains is what derivation cannot fix —
   // the accent used as a large fill with onAccent text sitting on top of it.
   const checks: Array<{ what: string; a: string; b: string; min: number }> = [
-    { what: 'button label on accent fill (--ds-on-accent vs accent)', a: t.colors.onAccent, b: accent, min: AA_NORMAL },
+    { what: 'button label on accent fill (--ds-on-accent vs accent)', a: pickOnAccent(accent, t.colors.onAccent), b: accent, min: AA_NORMAL },
     { what: 'accent fill against page background (accent vs --ds-paper)', a: accent, b: t.colors.paper, min: AA_LARGE },
   ];
 
-  const failures = checks
-    .map((c) => ({ ...c, ratio: contrastRatio(c.a, c.b) }))
+  return checks
+    .map(({ what, a, b, min }) => ({ what, min, ratio: contrastRatio(a, b) }))
     .filter((c) => c.ratio < c.min);
+}
 
-  if (failures.length) {
-    const lines = failures
-      .map((f) => `  · ${f.what}: ${f.ratio.toFixed(2)}:1 — needs ${f.min}:1`)
-      .join('\n');
-    throw new Error(
-      `theme.accentColor "${accent}" fails WCAG AA against the "${name}" preset:\n${lines}\n\n` +
-        `Pick a darker or more saturated accent, or choose a different preset.`,
-    );
-  }
+export function assertAccentContrast(name: Preset, accent: string): void {
+  const failures = accentContrastIssues(name, accent);
+  if (!failures.length) return;
+
+  const lines = failures
+    .map((f) => `  · ${f.what}: ${f.ratio.toFixed(2)}:1 — needs ${f.min}:1`)
+    .join('\n');
+  throw new Error(
+    `theme.accentColor "${accent}" fails WCAG AA against the "${name}" preset:\n${lines}\n\n` +
+      `Pick a different accent, or a preset whose surfaces suit this one — a light accent ` +
+      `(brass, champagne, bronze) cannot clear AA as a fill on light paper and needs "noir".`,
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -427,7 +531,7 @@ export function tokensToCss(name: Preset, accentColor: string): string {
 --ds-card:${t.colors.card};
 --ds-line:${t.colors.line};
 --ds-accent:${accentColor};
---ds-on-accent:${t.colors.onAccent};
+--ds-on-accent:${pickOnAccent(accentColor, t.colors.onAccent)};
 --ds-accent-ink:${accentInk};
 --ds-accent-on-deep:${accentOnDeep};
 --ds-deep:${deep};

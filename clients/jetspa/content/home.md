@@ -23,7 +23,7 @@ intro:
 
 introImage:
   src: "./assets/intro.jpg"
-  alt: "PLACEHOLDER home intro image — JetSpa"
+  alt: "A technician machine-polishing an aircraft fuselage panel"
 
 trust:
   heading: "What Working with Us Looks Like"

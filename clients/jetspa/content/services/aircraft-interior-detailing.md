@@ -10,7 +10,7 @@ shortDescription: "Aircraft interior detailing is a specialized cabin restoratio
 
 heroImage:
   src: "./assets/service-aircraft-interior-detailing.jpg"
-  alt: "PLACEHOLDER aircraft interior detailing image — JetSpa"
+  alt: "A private jet cabin with cream leather seating and a polished table"
 
 heroIntro: |
   An aircraft cabin is a workspace, a lounge, and a first impression your clients form the moment they board. Coffee spills, leather wear, carpet contamination, and lingering odors devalue the experience and the aircraft itself. JetSpa restores cabin interiors to a condition that matches the exterior, using OEM-approved chemistry that will not damage leather, wood veneer, or certified aviation fabrics.

@@ -10,7 +10,7 @@ shortDescription: "AOG stands for Aircraft on Ground, aviation industry terminol
 
 heroImage:
   src: "./assets/service-aog-emergency-cleaning.jpg"
-  alt: "PLACEHOLDER aog emergency aircraft cleaning image — JetSpa"
+  alt: "A business jet nose-on in a hangar at night"
 
 heroIntro: |
   When your aircraft lands with a cabin issue that must be resolved before the next departure, the difference between a two-hour response and an eight-hour response can cost you the flight. AOG cleaning is a specialized service line built around one metric: how fast can we be on the ramp. JetSpa dispatches AOG teams across the Northeast for turnaround-critical interior situations.

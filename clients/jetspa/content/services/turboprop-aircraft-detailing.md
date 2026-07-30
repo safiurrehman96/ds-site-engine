@@ -10,7 +10,7 @@ shortDescription: "Turboprop detailing covers the full appearance care menu adap
 
 heroImage:
   src: "./assets/service-turboprop-aircraft-detailing.jpg"
-  alt: "PLACEHOLDER turboprop aircraft detailing image — JetSpa"
+  alt: "A gloved hand applying coating to a fuselage panel"
 
 heroIntro: |
   Turboprops are their own class. King Airs, TBMs, Pilatus PC-12s, and Cessna Caravans get flown harder than most jets, spend more time on outdoor ramps, and carry appearance considerations that jets do not: propeller spinner polish, exhaust stack care, and de-ice boot systems that need regular refurbishment. JetSpa details every major turboprop in general aviation with the specific chemistry and technique the class requires.

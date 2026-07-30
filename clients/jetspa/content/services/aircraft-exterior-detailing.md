@@ -10,7 +10,7 @@ shortDescription: "Aircraft exterior detailing covers the appearance care work o
 
 heroImage:
   src: "./assets/service-aircraft-exterior-detailing.jpg"
-  alt: "PLACEHOLDER aircraft exterior detailing image — JetSpa"
+  alt: "A gloved hand drying an aircraft fuselage with a microfibre cloth"
 
 heroIntro: |
   The exterior of your aircraft accumulates jet exhaust residue, deicing fluid, hydraulic bleed, bug and bird strikes, and airborne pollutants at every flight cycle. Left untreated, that contamination oxidizes into the clear coat, dulls the finish, and eventually requires paint correction to reverse. JetSpa handles the full exterior appearance cycle, from routine trip cleans to full cut and polish work that restores neglected paint to showroom condition.

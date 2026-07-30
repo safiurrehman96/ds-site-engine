@@ -27,7 +27,7 @@ export const siteConfig = {
     tagline: 'Certified aircraft detailing for private aviation.',
     blurb:
       'JetSpa is a New Jersey based aircraft detailing company serving four of the busiest general aviation airports in the Northeast. Appearance care for private aviation exclusively — ADA-certified technicians, OEM-approved chemistry, and badge access at every field we work.',
-    logoPath: './assets/logo.jpg',
+    logoPath: './assets/logo.png',
   },
 
   contact: {
@@ -87,8 +87,8 @@ export const siteConfig = {
   },
 
   theme: {
-    preset: 'fresh' as const,
-    accentColor: '#1f6f8b',
+    preset: 'noir' as const,
+    accentColor: '#c6a46c',
   },
 
   modules: {
@@ -113,14 +113,14 @@ export const siteConfig = {
     ctaHeadline: "Book Your Aircraft's Next Detail",
     socialImage: {
       src: './assets/social.jpg',
-      alt: 'PLACEHOLDER social share image — JetSpa',
+      alt: 'A polished business jet on the ramp at sunset',
     },
     heroVideo: {
       src: './assets/hero.webm',
       fallbackSrc: './assets/hero.mp4',
       poster: {
         src: './assets/hero-poster.jpg',
-        alt: 'PLACEHOLDER hero image — JetSpa',
+        alt: 'A business jet emerging from darkness, its outline picked out in light',
       },
     },
   },

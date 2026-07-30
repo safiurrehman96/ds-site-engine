@@ -65,8 +65,8 @@
     "gtmId": null
   },
   "theme": {
-    "preset": "fresh",
-    "accentColor": "#1f6f8b"
+    "preset": "noir",
+    "accentColor": "#c6a46c"
   },
   "modules": {
     "howItWorks": true,
@@ -180,10 +180,25 @@
     ]
   },
   "assets": {
-    "logo": null,
-    "heroVideo": null,
-    "socialImage": null,
-    "introImage": null,
+    "logo": {
+      "file": "logo.png"
+    },
+    "heroVideo": {
+      "file": "hero.webm",
+      "fallbackFile": "hero.mp4",
+      "poster": {
+        "file": "hero-poster.jpg",
+        "alt": "A business jet emerging from darkness, its outline picked out in light"
+      }
+    },
+    "socialImage": {
+      "file": "social.jpg",
+      "alt": "A polished business jet on the ramp at sunset"
+    },
+    "introImage": {
+      "file": "intro.jpg",
+      "alt": "A technician machine-polishing an aircraft fuselage panel"
+    },
     "beforeAfter": []
   },
   "tokens": {},
@@ -195,7 +210,11 @@
   "notes": [
     "Owner confirmed as Karan Gogna. Resolves {{custom_values.business_owner}}, which appears in the About page copy; the rest of the site keeps company-front framing.",
     "The phone number is a 714 area code (Orange County, CA) for a business operating out of NJ/NY/PA airports. Mobile numbers travel, so this is not necessarily wrong — but a local 201/862/973 number reads as more credible to a Teterboro flight department, and area code is one of the few local-SEO signals a service business has. Worth raising with the client.",
-    "theme: preset 'fresh' being trialled by Detailer Systems (light surfaces, rounded corners, Plus Jakarta Sans), replacing an earlier trial of 'stealth'. Not signed off. accentColor #1f6f8b is still the original proposal and has not been confirmed with the client either; contrast is validated at build.",
+    "theme: adopted from the client's current site at jetspa.co (a Framer build). Their Framer colour tokens are #0c0c0c near-black, #fbfbfb off-white and #c6a46c brass; brass is the accent. This forced a new engine preset: brass is a LIGHT colour and cannot clear WCAG AA as a fill on any light-paper preset (2.12:1 against stealth's #f3f3f4, where 3:1 is the floor) but reaches 8.32:1 on #0c0c0c. So preset is 'noir', the engine's only dark-surface preset, added for this client. Not yet signed off by the client, but it is their own palette.",
+    "typography deliberately NOT adopted: jetspa.co uses DM Sans with Geist Mono for uppercase labels. Detailer Systems chose to keep the preset's own type (condensed uppercase Oswald over Inter), so the colours match their site and the type does not.",
+    "ASSETS ARE THE CLIENT'S OWN, pulled from jetspa.co, replacing the generated placeholders. hero video: the first of five videos on their site (framerusercontent 50u0zEJtn09AZavWDJ6pW41ZeY.mp4, 7s, a jet outline emerging from black), chosen by Detailer Systems and re-encoded to 1600px VP9 + H.264 (280KB / 361KB, well under the 1536KB budget); hero-poster.jpg is a frame from it at 6.6s. logo.png is their brass monogram-plus-wordmark lockup, which exists on their site only inside a marketing banner - it was cropped out and the near-black background keyed to transparency. It carries a faint artifact from the banner's decorative rule, invisible on noir's dark header but visible on a light surface: ask the client for the original lockup (SVG or transparent PNG) before launch.",
+    "8 usable photographs exist on their site for 11 image slots, so 4 service pages reuse another page's photo. No photograph shows a turboprop or a piston aircraft - the turboprop and piston pages therefore use airframe-ambiguous close-ups (a gloved hand at a panel, a rotary polisher) rather than a jet, which an owner would notice. The imagery also looks generated rather than shot; that is the client's own published choice, not ours, but real photography of their own work at KTEB/KMMU/KABE/KHPN would carry far more weight with this audience.",
+    "their site also carries an App Store / Google Play badge pair and a phone mockup, so JetSpa has a mobile app. Nothing in the intake schema or the engine has a slot for it. Confirm whether the new site needs to link it.",
     "The contact email is a personal Gmail address, and it will render publicly on Privacy Policy, Terms of Service, and Request a Quote as the business contact. jetspa.co already exists as a domain; a karan@jetspa.co style address would cost nothing and match the credential-heavy positioning the copy leans on.",
     "websiteUrl: the domain jetspa.co is stated in the client's Privacy Policy as 'http://jetspa.co'. Recorded here as https — confirm the canonical scheme and whether www redirects.",
     "legal.source is 'client': JetSpa supplied its own Privacy Policy and Terms of Service with aviation-specific insurance, warranty, and AOG liability clauses. That text has NOT been through Detailer Systems' legal review.",
@@ -207,7 +226,7 @@
     "8 service pages carry a [BEFORE/AFTER IMAGE SECTION] placeholder in the export; assets.beforeAfter is empty until real photography exists. Generated aircraft imagery is a poor fit for this audience — wrong airframes and garbled registrations are obvious to owners and flight departments.",
     "Trust signals repeated site-wide and treated as facts: ADA (Aircraft Detailing Association) certification, OEM-approved chemistry, $200K general liability + $1.5M hangar liability insurance, badge access at all four airports. Verify each before publishing; none is verifiable from the export.",
     "Morristown's ICAO is KMMU (the onboarding call said 'MMA', which is wrong).",
-    "PLACEHOLDERS ARE IN USE, by decision: site.config.ts carries stand-in values for the facts still null here, so the site can be built and reviewed before onboarding completes. This file stays the honest record — a field that is null here has not been supplied, whatever site.config.ts says. Every placeholder contains the string 'PLACEHOLDER', is listed on every build by src/lib/site-config.ts, and fails the build under DS_STRICT=1. Assets are generated stand-ins from `pnpm run placeholders jetspa`, not photography.",
+    "PLACEHOLDERS ARE IN USE, by decision: site.config.ts carries stand-in values for the facts still null here, so the site can be built and reviewed before onboarding completes. This file stays the honest record — a field that is null here has not been supplied, whatever site.config.ts says. Every placeholder contains the string 'PLACEHOLDER', is listed on every build by src/lib/site-config.ts, and fails the build under DS_STRICT=1. Assets are no longer stand-ins: logo, hero video, poster and every page image now come from the client's own site (see the asset note above). What remains placeholder is text and URLs, not imagery.",
     "Instagram is the only social account; Facebook, TikTok, YouTube and the Google review link are deliberately skipped. SocialLinks and the FAQs CTA are config-driven and handle their absence on their own, but the EXPORT COPY does not: Request a Quote and Booking Confirmed name all four platforms inline, and FAQs links a review button. Those sentences must be rewritten to Instagram-only while authoring the payload — leaving the tokens in place fails the build."
   ]
 }

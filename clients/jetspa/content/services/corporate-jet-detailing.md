@@ -10,7 +10,7 @@ shortDescription: "Corporate jet detailing covers the full menu of appearance ca
 
 heroImage:
   src: "./assets/service-corporate-jet-detailing.jpg"
-  alt: "PLACEHOLDER corporate jet detailing image — JetSpa"
+  alt: "A business jet nose-on in a hangar"
 
 heroIntro: |
   A Cirrus Vision SF50 and a Gulfstream G650 are both corporate jets, but almost nothing about how they are detailed is the same. The chemistry, the labor, the team size, the ground time, and the pricing scale substantially between light jets and super-corporate airframes. JetSpa services every class of corporate jet in general aviation, from light through super-corporate and Boeing Business Jets, with the team, equipment, and OEM-approved products required for each class.

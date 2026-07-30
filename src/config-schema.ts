@@ -8,7 +8,7 @@
 import { z } from 'astro/zod';
 
 /** Agents pick one of these. They never author raw token values (spec §13). */
-export const PRESETS = ['stealth', 'fresh', 'chrome', 'bold'] as const;
+export const PRESETS = ['stealth', 'fresh', 'chrome', 'bold', 'noir'] as const;
 export type Preset = (typeof PRESETS)[number];
 
 const hexColor = z

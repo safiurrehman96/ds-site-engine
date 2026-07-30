@@ -28,6 +28,15 @@ Lighthouse (mobile, throttled 4G) on the home page under **every** preset:
 | `chrome` | Sora | angled dividers, raised cards, tight tracking |
 | `bold` | Anton (heavy) | curved dividers, uppercase headings, hard offset shadows |
 
+> **Addendum, 2026-07-30.** A fifth preset, `noir`, was added after this phase closed —
+> near-black surfaces, stealth's motifs and typography at inverted polarity. It exists
+> because a *light* accent (brass, champagne, bronze) cannot clear WCAG AA as a fill on
+> light paper at any tuning, so JetSpa's brand colour needed the surfaces to move rather
+> than the colour. Two engine changes came with it: `deriveTextSafe` now picks its
+> direction from the surfaces instead of always darkening, and `--ds-on-accent` is derived
+> per accent by `pickOnAccent` instead of being a fixed per-preset white. Everything below
+> in this document describes the original four and still holds for them.
+
 All fonts self-hosted from `public/fonts` — five variable `.woff2` files, 11–47KB each.
 Only the active preset's `@font-face` rules are emitted.
 

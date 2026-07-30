@@ -43,8 +43,18 @@ const {
 const { theme, tracking } = siteConfig;
 const preset = presetOverride ?? activePreset;
 
-// Fails the build if the chosen accent cannot meet WCAG AA on this preset.
-assertAccentContrast(preset, theme.accentColor);
+/*
+ * Fails the build if the chosen accent cannot meet WCAG AA on this preset — but only
+ * for the preset the client actually ships.
+ *
+ * /styleguide/{preset} deliberately renders the payload under presets it was not
+ * configured with, and an accent is not obliged to work under all of them: a light
+ * accent like brass clears AA on `noir` and cannot on any light-paper preset, by
+ * arithmetic. Asserting there turned the compare view into a build failure and made
+ * the accent impossible to preview. The styleguide reports the mismatch on the page
+ * instead, which is the thing that view exists to show.
+ */
+if (!presetOverride) assertAccentContrast(preset, theme.accentColor);
 
 const tokens = tokensToCss(preset, theme.accentColor);
 const attrs = presetAttrs(preset);

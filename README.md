@@ -158,11 +158,43 @@ first time a pin bump has stakes.
   `src/**` plus its own `clients/<slug>/**` still rebuilds every client on any `src/`
   commit — which is the thing being avoided here.
 
+## Theme
+
+A client's whole design decision is `theme.preset` plus `theme.accentColor`. Everything
+else — palette, type, radii, dividers, card and button treatment, hero composition,
+motion — comes from the preset.
+
+| preset | surfaces | character |
+| --- | --- | --- |
+| `fresh` | light | Space Grotesk, curved dividers, pill buttons, split hero |
+| `stealth` | light, near-black bands | Oswald condensed uppercase, square buttons, full-bleed hero |
+| `chrome` | light | Sora, overlapping cards, centred hero |
+| `bold` | light | Anton, hard offset shadows, poster-card hero |
+| `noir` | **near-black** | stealth's language inverted — for a *light* accent |
+
+**Pick `noir` when the brand colour is light** — brass, champagne, bronze, pale gold.
+This is not a taste call, it is arithmetic: WCAG AA wants 3:1 for an accent fill against
+the page, and brass `#c6a46c` manages 2.12:1 on `stealth`'s `#f3f3f4` versus 8.32:1 on
+`#0c0c0c`. `assertAccentContrast` fails the build rather than shipping it, so a light
+accent on a light preset is not a thing you can talk the engine into.
+
+Two things are derived per accent rather than authored, so most accents just work:
+`--ds-on-accent` (the label on an accent fill) flips to dark when white would be
+illegible, and `--ds-accent-ink` moves toward or away from white depending on whether
+the preset's surfaces are dark or light.
+
+`/styleguide/{preset}` renders the payload under any preset for comparison, and reports
+in-page when the accent would not pass there — only the shipping preset fails the build.
+
 ## Checks
 
 ```
 pnpm check                 # types
 pnpm build                 # schema validation, contrast, asset budgets
 pnpm run stress -- fresh    # + links, og:image, Lighthouse, responsive overflow
-pnpm run stress             # all four presets
+pnpm run stress             # all five presets
 ```
+
+A sweep skips any preset the payload's accent cannot meet AA under, and says so. That is
+reported rather than counted as a failure: an accent only has to pass on the preset its
+client ships.

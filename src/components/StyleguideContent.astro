@@ -18,7 +18,7 @@ import CTABanner from './CTABanner.astro';
 import SocialLinks from './SocialLinks.astro';
 import Footer from './Footer.astro';
 import { getServices, getAreas, getHome, getFaqs } from '../lib/content';
-import { getPreset, ALL_PRESETS } from '../styles/presets';
+import { getPreset, ALL_PRESETS, accentContrastIssues } from '../styles/presets';
 import { siteConfig } from '../lib/site-config';
 
 interface Props {
@@ -40,6 +40,7 @@ const service = services[0].data;
 const h = home.data;
 const { theme, brand, defaults } = siteConfig;
 const preset = getPreset(presetName);
+const contrastIssues = accentContrastIssues(presetName, theme.accentColor);
 
 const COLORS = [
   ['--ds-accent', 'accent (fills)'],
@@ -110,6 +111,31 @@ A closing paragraph after the list.`;
       <code>{preset.motif.cardStyle}</code> · headings <code>{preset.motif.headingCase}</code>
       · deepTint <code>{preset.deepTint}</code>
     </p>
+
+    {/* A client accent is only required to pass on the preset that client ships.
+        Previewing it elsewhere used to fail the build; now the mismatch is reported
+        here, which is what a compare view is for. */}
+    {
+      contrastIssues.length > 0 && (
+        <div class="sg-contrast" role="note">
+          <p>
+            <strong>
+              Accent {theme.accentColor} does not meet WCAG AA under {presetName}.
+            </strong>{' '}
+            {presetName === theme.preset
+              ? 'This is the shipping preset, so the build for a real page fails — fix the accent or the preset.'
+              : `Comparison only — this payload ships ${theme.preset}, where it passes.`}
+          </p>
+          <ul>
+            {contrastIssues.map((i) => (
+              <li>
+                {i.what}: <strong>{i.ratio.toFixed(2)}:1</strong> — needs {i.min}:1
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
   </div>
 </div>
 
@@ -472,6 +498,21 @@ A closing paragraph after the list.`;
   .preset-meta {
     margin-top: 0.75rem;
     font-size: 0.875rem;
+    color: var(--ds-ink-soft);
+  }
+
+  /* Deliberately not accent-tinted: the accent is what the note is complaining about. */
+  .sg-contrast {
+    margin-top: 1.25rem;
+    padding: 0.9rem 1.1rem;
+    border-left: 3px solid #c2410c;
+    background: color-mix(in srgb, #c2410c 10%, transparent);
+    font-size: 0.875rem;
+  }
+
+  .sg-contrast ul {
+    margin: 0.5rem 0 0;
+    padding-left: 1.2rem;
     color: var(--ds-ink-soft);
   }
 

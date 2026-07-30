@@ -10,7 +10,7 @@ shortDescription: "Piston aircraft detailing covers appearance care for single e
 
 heroImage:
   src: "./assets/service-piston-aircraft-detailing.jpg"
-  alt: "PLACEHOLDER piston aircraft detailing image — JetSpa"
+  alt: "A technician machine-polishing a fuselage panel"
 
 heroIntro: |
   Piston aircraft owners often DIY the wash and wipe-down themselves, and that works fine for a Cessna 172 kept in a clean hangar. What DIY does not work for is the ceramic coating that protects paint value over years of tie-down exposure, the machine polish that undoes a decade of oxidation, or the interior detail that removes cabin odors before you list the aircraft. JetSpa details piston aircraft with the same OEM-approved chemistry and technique we use on jets, scaled to the class.

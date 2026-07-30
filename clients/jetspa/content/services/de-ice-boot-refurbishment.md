@@ -10,7 +10,7 @@ shortDescription: "De-ice boot refurbishment is the conditioning and restoration
 
 heroImage:
   src: "./assets/service-de-ice-boot-refurbishment.jpg"
-  alt: "PLACEHOLDER de-ice boot refurbishment image — JetSpa"
+  alt: "A high-gloss aircraft leading-edge surface reflecting hangar lighting"
 
 heroIntro: |
   De-ice boots are the black rubber pneumatic surfaces on the leading edges of your wings, horizontal stabilizer, and vertical fin. They are safety equipment. When they deteriorate, they crack, lose flexibility, and fail to shed ice at the exact moment your aircraft needs them to. Refurbishing de-ice boots requires manufacturer-approved conditioners, correct technique, and a 24 to 48 hour ground time after service. JetSpa refurbishes de-ice boots to full function using OEM-approved chemistry.
