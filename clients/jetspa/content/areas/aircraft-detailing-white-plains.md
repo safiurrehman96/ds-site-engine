@@ -20,6 +20,9 @@ localCopy:
     An aircraft that lives at HPN needs a detailer who can move quickly, coordinate with the FBO of record, and deliver work that reflects the standard of a corridor that hosts some of the highest-value aircraft in North America.
 
     JetSpa holds current badge access at KHPN and coordinates work directly with the ramp operators on the field, without third-party escort delay or scheduling bottleneck.
+  image:
+    src: "./assets/service-aircraft-interior-detailing.jpg"
+    alt: "A private jet cabin with cream leather seating and a polished table"
 
 localDetail:
   heading: "KHPN-Specific Considerations"

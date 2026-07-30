@@ -20,6 +20,9 @@ localCopy:
     Many KABE-based owners operate turboprops, light jets, and piston aircraft that fly regionally, which means more takeoff and landing cycles per flight hour and more frequent leading edge and boot exposure to weather.
 
     JetSpa is 15 to 20 minutes from KABE, holds badge access to the field, and can coordinate scheduling around your calendar without long dispatch times.
+  image:
+    src: "./assets/service-brightwork-polishing.jpg"
+    alt: "A high-gloss aircraft surface reflecting hangar lighting"
 
 localDetail:
   heading: "KABE-Specific Considerations"

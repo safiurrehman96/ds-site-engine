@@ -20,6 +20,9 @@ localCopy:
     An aircraft that spends its life at KTEB needs a detailer who understands the airport's specific service dynamics: FBO relationships, hangar space coordination, weather window management, and the flow of aircraft in and out of a facility that operates near capacity.
 
     JetSpa holds current badge access at KTEB, has service history at every major FBO on the field, and can coordinate scheduling around your flight department's calendar without external escort delays or gate coordination bottlenecks.
+  image:
+    src: "./assets/service-aircraft-exterior-detailing.jpg"
+    alt: "A gloved hand drying an aircraft fuselage with a microfibre cloth"
 
 localDetail:
   heading: "KTEB-Specific Considerations"

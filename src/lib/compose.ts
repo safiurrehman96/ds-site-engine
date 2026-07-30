@@ -49,9 +49,16 @@ export type Composed<T extends ComposableBlock> =
  */
 export const CALLOUT_MAX_WORDS = 60;
 
-/** Photo blocks rotate through these. `overlap` is omitted deliberately: it needs a
- *  tall image to read, and payload photography is not reliably shot that way. */
-const PHOTO_VARIANTS: SplitVariant[] = ['beside', 'wide', 'stack'];
+/**
+ * Photo blocks rotate through these, so consecutive ones never match.
+ *
+ * A recipe may pass its own order. Which composition *leads* is a page-level
+ * decision — About opens its photo run beside a founder portrait, an area page opens
+ * with a card over a photo — and a single global order cannot express both. What a
+ * recipe cannot do is hand a specific variant to a specific block; the rotation still
+ * guarantees the variety.
+ */
+const DEFAULT_PHOTO_VARIANTS: SplitVariant[] = ['beside', 'wide', 'stack'];
 
 const wordCount = (s: string) => s.trim().split(/\s+/).filter(Boolean).length;
 
@@ -64,11 +71,17 @@ export interface ComposeOptions {
   allowCallout?: boolean;
   /** Starting index for SplitSection's own left/right alternation. */
   startIndex?: number;
+  /** Overrides the rotation order for photo blocks. See DEFAULT_PHOTO_VARIANTS. */
+  photoVariants?: SplitVariant[];
 }
 
 export function composeBlocks<T extends ComposableBlock>(
   blocks: T[],
-  { allowCallout = true, startIndex = 0 }: ComposeOptions = {},
+  {
+    allowCallout = true,
+    startIndex = 0,
+    photoVariants = DEFAULT_PHOTO_VARIANTS,
+  }: ComposeOptions = {},
 ): Composed<T>[] {
   let photoIndex = 0;
   let splitIndex = startIndex;
@@ -89,7 +102,7 @@ export function composeBlocks<T extends ComposableBlock>(
       return {
         block,
         kind: 'photo',
-        variant: PHOTO_VARIANTS[photoIndex++ % PHOTO_VARIANTS.length],
+        variant: photoVariants[photoIndex++ % photoVariants.length],
         index: splitIndex++,
       };
     }

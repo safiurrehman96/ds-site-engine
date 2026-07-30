@@ -51,10 +51,19 @@ const h1 = a.h1 ?? buildH1(seo.category, a.name, a.state);
  * page's last word before the banner, and that has always been its job here.
  */
 const leadingBlocks = [a.localCopy, a.localDetail].filter((b) => b !== undefined);
-const composed = composeBlocks([
-  ...leadingBlocks,
-  { ...a.whyUs, cta: a.whyUs.cta ?? { label: 'Get A Quote', href: '/get-quote' } },
-]);
+const composed = composeBlocks(
+  [...leadingBlocks, { ...a.whyUs, cta: a.whyUs.cta ?? { label: 'Get A Quote', href: '/get-quote' } }],
+  {
+    /*
+     * Overlap leads here, where About leads with beside. The first block sits
+     * directly under a full-bleed video hero, and overlap's solid copy card is the
+     * one photo composition that answers a moving background with a calm reading
+     * surface rather than a second image band — `wide` would stack two full-bleed
+     * bands. It also gives area pages a signature About does not repeat.
+     */
+    photoVariants: ['overlap', 'beside', 'stack'],
+  },
+);
 
 const leading = composed.slice(0, leadingBlocks.length);
 const trailing = composed.slice(leadingBlocks.length);

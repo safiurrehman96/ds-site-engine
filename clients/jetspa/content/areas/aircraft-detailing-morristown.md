@@ -20,6 +20,9 @@ localCopy:
     An aircraft that lives at Morristown needs a detailer who works within those windows, coordinates with the FBO, and delivers work that holds up to the same scrutiny a G450 buyer would apply during a pre-purchase inspection.
 
     JetSpa holds current badge access at KMMU and coordinates work directly with the FBO staff on the field, without external escort delay or scheduling bottleneck.
+  image:
+    src: "./assets/service-aircraft-ceramic-coating.jpg"
+    alt: "A gloved hand applying coating to a dark blue fuselage panel"
 
 localDetail:
   heading: "KMMU-Specific Considerations"
