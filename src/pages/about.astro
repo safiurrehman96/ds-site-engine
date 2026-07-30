@@ -27,9 +27,12 @@ const about = (await getAbout()).data;
 const { brand, modules, defaults } = siteConfig;
 
 // Composed as one run, then sliced: the grid interrupts the page, not the rules.
+// The split point keeps at least one block after the grid, so short payloads
+// (three blocks) still close with copy rather than ending on the grid.
 const composed = composeBlocks(about.blocks);
-const opening = composed.slice(0, 3);
-const closing = composed.slice(3);
+const splitAt = Math.min(3, composed.length - 1);
+const opening = composed.slice(0, splitAt);
+const closing = composed.slice(splitAt);
 ---
 
 <BaseLayout
@@ -38,7 +41,7 @@ const closing = composed.slice(3);
   path="/about"
   ogImage={about.heroImage.src}
 >
-  <Hero heading={about.heroHeadline} />
+  <Hero heading={about.heroHeadline} body={about.heroIntro} />
 
   <ContentBlocks entries={opening} badge={modules.credentialBadge} />
 

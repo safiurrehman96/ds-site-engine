@@ -1,20 +1,12 @@
 ---
 metaDescription: "Meet the JetSpa team. Certified aircraft detailing specialists serving Teterboro, Morristown, Allentown, and White Plains with insured, OEM-approved care."
 heroHeadline: "The Team Behind Every JetSpa Detail"
+heroIntro: "Private aviation detailing for owners, flight departments, pilots, and FBOs who can't afford anything less than exact work — built to close the gap between overbooked competitors and unqualified subcontractors."
 heroImage:
   src: "./assets/intro.jpg"
   alt: "A technician working a rotary polisher across a fuselage panel"
 
 blocks:
-  - heading: "Who We Are"
-    body: |
-      JetSpa is a private aviation detailing company built for owners, flight departments, pilots, and FBOs who cannot afford anything less than exact work.
-
-      We built the business around a gap we saw in the Northeast market: aircraft owners were choosing between overbooked competitors and unqualified subcontractors, with almost nothing in between. That gap is what JetSpa exists to close.
-    cta:
-      label: "Get A Quote"
-      href: "/get-quote"
-
   - heading: "Built by Operators, Not Outsiders"
     body: |
       JetSpa was founded by Karan Gogna, an entrepreneur with more than a decade of experience serving high-value clients in private transportation. His chauffeur company has served internationally recognized artists across the tri-state area for years, which taught him what discretion and punctuality mean when expectations leave no room for error.

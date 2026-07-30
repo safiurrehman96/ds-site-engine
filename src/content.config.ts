@@ -280,6 +280,12 @@ const about = defineCollection({
     heroImage: image,
     heroHeadline: prose,
     /**
+     * Optional hero lede (same slot as home's heroIntro). One or two sentences of
+     * positioning, so About can open with a statement instead of a bare headline —
+     * an alternative to spending the first block on a "Who We Are" text section.
+     */
+    heroIntro: prose.optional(),
+    /**
      * Ordered content blocks. About is the one page with a variable block count,
      * which is why each block carries its own optional photo and CTA — a recipe that
      * does not know whether it will be handed two blocks or nine cannot hand-compose
