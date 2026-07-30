@@ -29,7 +29,7 @@ const prose = z
     'unresolved merge field — every {{custom_values.*}} token must be resolved at import time',
   );
 
-/** A heading + body pair. Every SplitSection in every recipe is one of these. */
+/** A heading + body pair. Most SplitSections in most recipes are one of these. */
 const proseBlock = z.object({
   heading: prose,
   body: prose,
@@ -64,6 +64,29 @@ const headingOverrides = {
   title: prose.optional(),
   h1: prose.optional(),
 };
+
+/**
+ * A block on a variable-length page (About), which needs more than heading + body.
+ *
+ * The About recipe used to receive bare proseBlocks and could therefore only render
+ * bare text — every block after the first came out as the same centred column, no
+ * matter what SplitSection was capable of. The engine's compositions were reachable
+ * from the component and unreachable from the payload.
+ *
+ * What is added here is *content*, not design: whether a block has a photo, and
+ * whether it closes on an action. The recipe still decides the composition from
+ * those facts (spec §13 — variants are earned, not fiddled with per page), so a
+ * payload cannot art-direct its own page.
+ */
+const pageBlock = proseBlock.extend({
+  image: image.optional(),
+  cta: z
+    .object({
+      label: prose,
+      href: z.string().min(1),
+    })
+    .optional(),
+});
 
 /** Before/after pair. Two images per instance — mind the asset budget. */
 const beforeAfter = z
@@ -253,8 +276,13 @@ const about = defineCollection({
     metaDescription,
     heroImage: image,
     heroHeadline: prose,
-    /** Ordered SplitSections. About is the one page with a variable block count. */
-    blocks: z.array(proseBlock).min(1),
+    /**
+     * Ordered content blocks. About is the one page with a variable block count,
+     * which is why each block carries its own optional photo and CTA — a recipe that
+     * does not know whether it will be handed two blocks or nine cannot hand-compose
+     * the page, so the variety has to come from what each block brings with it.
+     */
+    blocks: z.array(pageBlock).min(1),
     ctaHeadline: prose,
   }),
 });

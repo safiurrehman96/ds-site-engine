@@ -207,7 +207,16 @@ const copyLayout: CopyLayout | undefined = image
 
   /* ========== copy-only: centred — flowing prose at a reading measure ========== */
 
+  /*
+   * width: 100% is load-bearing, not belt-and-braces. `margin-inline: auto`
+   * suppresses a grid item's default stretch, leaving .copy shrink-to-fit — and
+   * Prose declares `container-type: inline-size`, whose size containment makes the
+   * prose contribute *nothing* to max-content. Without an explicit width the column
+   * collapses to the width of its own <h2>, so a block headed "Who We Are" sets two
+   * words per line while one headed "Built by Operators, Not Outsiders" looks fine.
+   */
   .split[data-copy='centred'] .copy {
+    width: 100%;
     max-width: 64ch;
     margin-inline: auto;
     text-align: center;
@@ -243,6 +252,16 @@ const copyLayout: CopyLayout | undefined = image
     /* The h2 keeps its place in the type scale; the rail is sized to hold it. */
     .split[data-copy='rail'] .copy-head h2 {
       margin-top: 0;
+    }
+
+    /*
+     * Paragraphs get a reading measure; the grids Prose builds do not, and keep the
+     * full column. Without this a rail of flowing prose sets ~85ch lines, which is
+     * well past where the eye loses the start of the next line — the reason the
+     * centred composition capped at 64ch in the first place.
+     */
+    .split[data-copy='rail'] .copy-body :global(.ds-prose > p) {
+      max-width: 66ch;
     }
   }
 
@@ -449,8 +468,10 @@ const copyLayout: CopyLayout | undefined = image
     order: 1;
   }
 
+  /* width: 100% for the same reason as the centred composition above. */
   .split[data-variant='stack'] .copy {
     order: 2;
+    width: 100%;
     max-width: 64ch;
     margin-inline: auto;
     text-align: center;

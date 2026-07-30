@@ -7,6 +7,7 @@ import type { Preset } from '../config-schema';
 import Hero from './Hero.astro';
 import Inline from './Inline.astro';
 import SplitSection from './SplitSection.astro';
+import Callout from './Callout.astro';
 import ServicesGrid from './ServicesGrid.astro';
 import AreasGrid from './AreasGrid.astro';
 import PackageCard from './PackageCard.astro';
@@ -353,6 +354,25 @@ const PROSE_WITH_POINTS = `A paragraph introducing a run of labelled points.
   layout="centred"
   heading="Points, Forced Centred"
   body={PROSE_WITH_POINTS}
+/>
+
+{/* The counterweight to a page of SplitSections. Shown right after them because the
+    only way to judge it is against the blocks it is meant to interrupt — on its own
+    an accent panel always looks fine. */}
+<p class="sg-label ds-container">
+  Callout — accent panel, <strong>one per page</strong> (About's recipe refuses a second)
+</p>
+<Callout
+  heading="A Short Statement, Set On The Accent"
+  body="Deliberately capped: the recipe only reaches for this on a block under sixty words, because an accent field behind six lines of body copy stops being emphasis and becomes a legibility problem."
+  cta={{ label: 'Get A Quote', href: '/get-quote' }}
+/>
+
+<p class="sg-label ds-container">Callout — with eyebrow, no CTA</p>
+<Callout
+  eyebrow="Eyebrow slot"
+  heading="Serving The Entire Region"
+  body="The button inverts on this surface: neither the primary accent fill nor the accent outline reads against an accent panel, so the panel's own on-accent colour becomes the button's fill."
 />
 
 <p class="sg-label ds-container">ServicesGrid — variant: cards</p>

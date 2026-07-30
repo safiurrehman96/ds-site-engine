@@ -1,8 +1,25 @@
 ---
-/** Recipe D — About. Variable number of SplitSection blocks from about.md. */
+/**
+ * Recipe D — About. Variable number of content blocks from about.md.
+ *
+ * WHY THIS ISN'T `blocks.map(<SplitSection>)`
+ * It was, and the result was the page's defining problem: four identical centred
+ * text columns in a row. A variable block count means the recipe cannot hand-compose
+ * the page, so the variety has to be derived — from what each block carries, not
+ * from its position. Each block now brings an optional photo and CTA (spec §08), and
+ * the composition follows:
+ *
+ *   photo    → beside / wide / stack, rotating, so no two photo blocks match
+ *   short    → Callout, the accent panel; the page's one raised voice
+ *   neither  → SplitSection copy-only, which picks rail or centred from its own copy
+ *
+ * The ServicesGrid lands after the opening run rather than immediately after block
+ * one, so the page opens with copy and photography rather than a 9-card grid.
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import SplitSection from '../components/SplitSection.astro';
+import Callout from '../components/Callout.astro';
 import ServicesGrid from '../components/ServicesGrid.astro';
 import SocialStrip from '../components/SocialStrip.astro';
 import AreasGrid from '../components/AreasGrid.astro';
@@ -13,7 +30,53 @@ import { siteConfig } from '../lib/site-config';
 const about = (await getAbout()).data;
 const { brand, modules, defaults } = siteConfig;
 
-const [first, ...rest] = about.blocks;
+/**
+ * Short enough to survive being set on an accent fill. Above this a callout stops
+ * reading as a statement and becomes a paragraph with a loud background.
+ */
+const CALLOUT_MAX_WORDS = 60;
+
+/** Photo blocks rotate through these so consecutive ones never share a composition. */
+const PHOTO_VARIANTS = ['beside', 'wide', 'stack'] as const;
+
+const wordCount = (s: string) => s.trim().split(/\s+/).filter(Boolean).length;
+
+/**
+ * Resolve each block's composition once, up front. `photoIndex` counts only the
+ * blocks that actually got a photo, so the rotation is unbroken by callouts and
+ * copy-only blocks sitting between them — and `splitIndex` likewise drives
+ * SplitSection's own left/right alternation across only the blocks it renders.
+ */
+let photoIndex = 0;
+let splitIndex = 0;
+let calloutUsed = false;
+
+const composed = about.blocks.map((block, i) => {
+  if (block.image) {
+    return {
+      block,
+      kind: 'photo' as const,
+      variant: PHOTO_VARIANTS[photoIndex++ % PHOTO_VARIANTS.length],
+      index: splitIndex++,
+    };
+  }
+
+  // At most one callout, and never the opening block. A second accent panel is not
+  // a second emphasis — it halves the first one, and the page is back to repeating
+  // itself in a louder colour. The opening block is excluded because a page that
+  // starts by shouting has nowhere left to go.
+  if (i > 0 && !calloutUsed && wordCount(block.body) <= CALLOUT_MAX_WORDS) {
+    calloutUsed = true;
+    return { block, kind: 'callout' as const, variant: undefined, index: 0 };
+  }
+
+  return { block, kind: 'copy' as const, variant: undefined, index: splitIndex++ };
+});
+
+// The opening run, then the grid, then whatever remains. Slicing rather than
+// interleaving keeps this correct for a payload with only one block.
+const opening = composed.slice(0, 3);
+const closing = composed.slice(3);
 ---
 
 <BaseLayout
@@ -24,19 +87,30 @@ const [first, ...rest] = about.blocks;
 >
   <Hero heading={about.heroHeadline} />
 
-  <SplitSection
-    index={0}
-    heading={first.heading}
-    body={first.body}
-    image={about.heroImage}
-    badge={modules.credentialBadge}
-  />
+  {
+    [opening, closing].map((run, runIndex) => (
+      <>
+        {run.map(({ block, kind, variant, index }, i) =>
+          kind === 'callout' ? (
+            <Callout heading={block.heading} body={block.body} cta={block.cta} />
+          ) : (
+            <SplitSection
+              index={index}
+              variant={variant}
+              tone={index % 2 === 0 ? 'paper' : 'card'}
+              heading={block.heading}
+              body={block.body}
+              image={block.image}
+              cta={block.cta}
+              badge={runIndex === 0 && i === 0 ? modules.credentialBadge : undefined}
+            />
+          ),
+        )}
 
-  <ServicesGrid tone="card" heading={`What ${brand.name} Offers`} />
-
-  {rest.map((block, i) => (
-    <SplitSection index={i + 1} tone={i % 2 === 0 ? 'paper' : 'card'} heading={block.heading} body={block.body} />
-  ))}
+        {runIndex === 0 && <ServicesGrid tone="card" heading={`What ${brand.name} Offers`} />}
+      </>
+    ))
+  }
 
   <SocialStrip image={defaults.socialImage} />
 
