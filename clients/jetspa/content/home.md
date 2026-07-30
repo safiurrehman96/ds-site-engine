@@ -2,14 +2,12 @@
 metaDescription: "Certified aircraft detailing at KTEB, KMMU, KABE, and KHPN. OEM-approved chemistry, $200K/$1.5M insurance, ADA-certified team. Serving the Northeast."
 heroHeadline: "Certified Private Jet Detailing at Teterboro, Morristown, Allentown & White Plains"
 heroIntro: |
-  Your aircraft is a multi-million dollar asset with a service history the underwriter will inspect and a paint finish the manufacturer warranties. The wrong contractor can turn a routine detail into a fabric damage claim, a coating failure that voids that warranty, or a delay that costs your flight department a scheduled departure. JetSpa exists so you never have to make that trade.
-
-  We are a New Jersey based aircraft detailing company operating out of four of the busiest general aviation airports in the Northeast. Our team specializes in appearance care for private aviation exclusively. We do not detail cars, boats, or RVs. Aircraft is what we do, and it is all we do.
+  A New Jersey based detailing company on the ramp at four of the busiest general aviation airports in the Northeast. Aircraft is what we do, and it is all we do.
 
 intro:
   heading: "Why Owners, Pilots, and Flight Departments Choose JetSpa"
   body: |
-    The difference between a professional aircraft detailer and someone with a bottle of ceramic coating is measured in liability, chemistry, and credential. Every technician on our team clears all three bars.
+    Your aircraft is a multi-million dollar asset with a service history the underwriter will inspect and a paint finish the manufacturer warranties. The wrong contractor can turn a routine detail into a fabric damage claim, a coating failure that voids that warranty, or a delay that costs your flight department a scheduled departure. JetSpa exists so you never have to make that trade.
 
     **Certified.** Every detailer on staff holds Aircraft Detailing Specialist certification from the Aircraft Detailing Association (ADA). Certification covers exterior work, interior work, ceramic coating application, brightwork polishing, and boot refurbishment across every aircraft class in general aviation.
 

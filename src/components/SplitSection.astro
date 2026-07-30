@@ -522,6 +522,29 @@ const structured = isStructuredProse(body);
     max-width: 46rem;
   }
 
+  /* Structured copy takes the full band: a points grid wedged into the 46rem
+     column is three crowded columns, at full width it's three generous ones.
+     Flowing paragraphs keep their measure so only the grids spread. */
+  .split[data-variant='wide'][data-structured] .copy {
+    max-width: none;
+  }
+
+  .split[data-variant='wide'][data-structured] .copy-body :global(.ds-prose > p) {
+    max-width: 62ch;
+  }
+
+  /* The full-width copy leaves the horizontal scrim's bright right edge with text
+     on it; fall back to the uniform vertical scrim at full strength. */
+  @media (min-width: 900px) {
+    .split[data-variant='wide'][data-structured] .media::after {
+      background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--ds-deep) 62%, transparent) 0%,
+        color-mix(in srgb, var(--ds-deep) 80%, transparent) 100%
+      );
+    }
+  }
+
   .split[data-variant='wide'][data-side='left'] .copy {
     margin-left: auto;
     text-align: right;

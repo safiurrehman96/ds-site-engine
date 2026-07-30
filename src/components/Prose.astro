@@ -154,7 +154,7 @@ const blocks = proseBlocks(body);
 
   .ds-prose-points dt {
     font-family: var(--ds-font-display);
-    font-size: 0.8125rem;
+    font-size: 1rem;
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -189,6 +189,35 @@ const blocks = proseBlocks(body);
 
     .ds-prose-points > div:nth-child(even) {
       padding-right: 0;
+      border-left: 1px solid var(--ds-line);
+    }
+  }
+
+  /* Three columns once the container can give each point a ~13rem measure — the
+     wide split's copy panel, the rail body, and full-width bands all qualify. The
+     2-col odd/even gutter rules are re-derived for a 3-wide grid: the hairline
+     goes on every column but the row's first. */
+  @container (min-width: 42rem) {
+    .ds-prose-points {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .ds-prose-points > div,
+    .ds-prose-points > div:nth-child(odd),
+    .ds-prose-points > div:nth-child(even) {
+      border-left: 0;
+      padding-inline: clamp(1rem, 0.5rem + 1.5vw, 2rem);
+    }
+
+    .ds-prose-points > div:nth-child(3n + 1) {
+      padding-left: 0;
+    }
+
+    .ds-prose-points > div:nth-child(3n) {
+      padding-right: 0;
+    }
+
+    .ds-prose-points > div:not(:nth-child(3n + 1)) {
       border-left: 1px solid var(--ds-line);
     }
   }
