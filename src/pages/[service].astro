@@ -57,7 +57,14 @@ let splitIndex = 0;
 >
   <Hero heading={h1} body={s.heroIntro} />
 
-  <SplitSection index={splitIndex++} heading={s.intro.heading} body={s.intro.body} />
+  {/* Pinned to centred: rail already carries enough of this page, and the centred
+      composition now widens for structured copy instead of needing the rail. */}
+  <SplitSection
+    index={splitIndex++}
+    layout="centred"
+    heading={s.intro.heading}
+    body={s.intro.body}
+  />
 
   {
     s.explainer && (
