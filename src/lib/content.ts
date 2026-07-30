@@ -144,3 +144,121 @@ export function paragraphs(body: string): string[] {
     .map((p) => p.trim())
     .filter(Boolean);
 }
+
+/* ---------------------------------------------------------------------------
+ * Prose block classification
+ *
+ * Payload copy is not markdown, but it is not flowing prose either. Authors write
+ * three distinct shapes into the same string field, and the difference is the whole
+ * reason copy-only sections used to look like a wall of grey text: a scannable spec
+ * sheet was being rendered as an essay.
+ *
+ *   text   — an actual paragraph
+ *   list   — a block whose every line begins with "- "
+ *   points — a *run* of paragraphs opening "**Label.** explanation", which is a
+ *            labelled list the author happened to type as prose
+ *
+ * Classifying here rather than in Prose.astro lets SplitSection ask the same
+ * question the renderer will answer, so layout and content agree on what the body is.
+ * ------------------------------------------------------------------------ */
+
+export type ProseBlock =
+  | { kind: 'text'; text: string }
+  | { kind: 'list'; items: string[] }
+  | { kind: 'points'; items: ProsePoint[] };
+
+export interface ProsePoint {
+  label: string;
+  body: string;
+}
+
+/**
+ * A list this long stops reading as a sentence continued into bullets and starts
+ * reading as an inventory, which is what earns it the two-column grid treatment.
+ * Below the threshold a list stays inline under its introducing paragraph.
+ */
+export const LIST_GRID_MIN = 4;
+
+/** A label longer than this is a bolded sentence, not a lead-in. */
+const MAX_LABEL_LENGTH = 60;
+
+/**
+ * `**Insured.** We carry $200,000 …` → { label: 'Insured', body: 'We carry …' }.
+ *
+ * The terminating period *inside* the bold is required, and it is what separates the
+ * two things authors write with the same syntax:
+ *
+ *   **Insured.** We carry $200,000 …        ← a label; a new sentence follows
+ *   **Weather at KTEB** includes cold …     ← the subject of one continuing sentence
+ *
+ * Only the first is a point. Promoting the second to a heading strips the sentence of
+ * its subject and leaves the body opening on a bare verb ("includes cold winters…"),
+ * which is exactly how it read before this check existed. The punctuation is the
+ * author's signal, so a payload opts in by writing the lead-in convention.
+ *
+ * Also rejects anything merely emphatic: a wholly bold paragraph with no body after
+ * it, and a bold clause too long to be a label.
+ */
+function asPoint(block: string): ProsePoint | null {
+  const match = block.match(/^\*\*([^*\n]+[.:])\*\*\s*([\s\S]*)$/);
+  if (!match) return null;
+
+  const label = match[1].trim().replace(/[.:]$/, '').trim();
+  const body = match[2].trim();
+  if (!label || !body || label.length > MAX_LABEL_LENGTH) return null;
+
+  return { label, body };
+}
+
+/** Parses an authored body into the blocks a renderer can lay out. */
+export function proseBlocks(body: string): ProseBlock[] {
+  const blocks: ProseBlock[] = [];
+  /** Consecutive lead-in paragraphs, held back until we know how many there are. */
+  let run: { point: ProsePoint; source: string }[] = [];
+
+  const flushRun = () => {
+    // One lead-in is an emphatic paragraph; two or more in a row is a list. A lone
+    // one goes back out as its original text so nothing is silently restructured.
+    if (run.length >= 2) {
+      blocks.push({ kind: 'points', items: run.map((r) => r.point) });
+    } else {
+      for (const r of run) blocks.push({ kind: 'text', text: r.source });
+    }
+    run = [];
+  };
+
+  for (const block of paragraphs(body)) {
+    const lines = block.split('\n').map((l) => l.trim()).filter(Boolean);
+
+    if (lines.length > 0 && lines.every((l) => l.startsWith('- '))) {
+      flushRun();
+      blocks.push({ kind: 'list', items: lines.map((l) => l.slice(2).trim()) });
+      continue;
+    }
+
+    const point = asPoint(block);
+    if (point) {
+      run.push({ point, source: block });
+      continue;
+    }
+
+    flushRun();
+    blocks.push({ kind: 'text', text: block });
+  }
+
+  flushRun();
+  return blocks;
+}
+
+/**
+ * Does this body carry scannable structure?
+ *
+ * Drives SplitSection's copy-only composition (spec §08): structured copy earns the
+ * wide rail layout, where a points grid or checklist has room to be two columns.
+ * Flowing prose keeps the centred measure, which is still the right shape for it.
+ */
+export function isStructuredProse(body: string): boolean {
+  return proseBlocks(body).some(
+    (b) => b.kind === 'points' || (b.kind === 'list' && b.items.length >= LIST_GRID_MIN),
+  );
+}

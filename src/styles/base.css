@@ -228,9 +228,11 @@ ol {
 }
 
 /* stealth — a heavy rule down the left of the whole head block.
-   Skipped on centred copy-only blocks, where a left bar makes no sense. */
+   Still skipped on *centred* copy-only blocks, where a left bar makes no sense; the
+   rail composition has a left edge of its own, so there it marks the heading rail. */
 [data-head='bar'] .ds-section > .ds-container > .head,
-[data-head='bar'] .split[data-media='yes'] .copy {
+[data-head='bar'] .split[data-media='yes'] .copy,
+[data-head='bar'] .split[data-copy='rail'] .copy-head {
   border-left: 4px solid var(--ds-accent);
   padding-left: 1.25rem;
 }

@@ -66,13 +66,40 @@ const RADII = ['--ds-radius-sm', '--ds-radius-md', '--ds-radius-lg', '--ds-radiu
  * lead-in that payload copy uses, and a closing paragraph. Deliberately generic —
  * it asserts nothing about any client.
  */
-const PROSE_WITH_LIST = `A paragraph of prose introducing a list. The list below is authored as lines beginning with "- " in the payload; Prose turns a block of those into a real <ul>.
+const PROSE_WITH_LIST = `A paragraph of prose introducing a list. The list below is authored as lines beginning with "- " in the payload; Prose turns a block of those into a real <ul>. Under LIST_GRID_MIN items it stays an inline bulleted list like this one.
 
 - A short item.
 - **A labelled item.** The lead-in is bold, the rest is not, and the whole row wraps at the column width rather than centring line by line.
 - A long item that has to wrap onto a second and probably a third line so the flush left edge is actually visible in this specimen.
 
 A closing paragraph after the list.`;
+
+/* Past LIST_GRID_MIN items the same syntax becomes a two-column checklist, and the
+   block counts as structured — which is what moves the section into the rail layout.
+   Item lengths here are deliberately uneven: that is the case multicol exists for. */
+const PROSE_WITH_CHECKLIST = `A paragraph introducing a longer list. Nothing about the payload syntax changes — only the item count.
+
+- A short item.
+- An item long enough to wrap onto a second and third line, so the balance between the two columns is actually visible in this specimen.
+- Another short one.
+- **A labelled item.** Inline bold still works inside a checklist row.
+- One more, of middling length, to make the column balance uneven.
+- A sixth item so the list runs three rows deep per column.
+
+A closing paragraph after the checklist.`;
+
+/* A run of lead-in paragraphs. The terminating period inside the bold is required:
+   without it the bold is a sentence subject, not a label, and the paragraph is left
+   alone. The last block below is that case, and stays a paragraph. */
+const PROSE_WITH_POINTS = `A paragraph introducing a run of labelled points.
+
+**Certified.** Two or more consecutive lead-in paragraphs become a labelled grid. One on its own stays a paragraph, because a single bold opener is emphasis rather than a list.
+
+**Insured.** The label is set in the display face and the body beneath it; hairlines divide the rows and the two columns.
+
+**Honest about downtime.** A label longer than a couple of words still works, and an odd item count leaves the last point alone on its row.
+
+**Weather at KTEB** includes no terminating period inside the bold, so this paragraph is a sentence with a bold subject and is left exactly as authored.`;
 ---
 
 {
@@ -267,17 +294,20 @@ A closing paragraph after the list.`;
   ))
 }
 
-<p class="sg-label ds-container">SplitSection — no image (copy-only, centred; variant ignored)</p>
+{/* The four copy-only specimens below are the ones that matter most for a payload
+    like JetSpa's, where a whole service page is copy-only SplitSections and nothing
+    else. The composition is chosen from the body, so all four are the same component
+    with the same props — only the copy differs. Bodies are engine filler, not client
+    claims: no payload is guaranteed to contain a list or a lead-in run, and the point
+    here is the layout. */}
+<p class="sg-label ds-container">
+  SplitSection — copy-only, <strong>centred</strong> (flowing prose; variant ignored)
+</p>
 <SplitSection preset={presetName} index={2} heading={h.trust.heading} body={h.trust.body} />
 
-{/* Bulleted prose inside a centred copy-only block. This combination was missing
-    from the styleguide, which is why it shipped looking broken: service pages list
-    what a job includes, and every SplitSection on a service page is copy-only. The
-    body is engine filler, not a client claim — no payload is guaranteed to contain
-    a list, and the point here is the layout. */}
 <p class="sg-label ds-container">
-  SplitSection — copy-only + <strong>bulleted Prose</strong> (list stays flush left inside centred
-  copy)
+  SplitSection — copy-only + <strong>short bulleted Prose</strong> (under LIST_GRID_MIN: stays
+  inline, flush left inside centred copy)
 </p>
 <SplitSection
   preset={presetName}
@@ -285,6 +315,44 @@ A closing paragraph after the list.`;
   tone="card"
   heading="Prose With A List"
   body={PROSE_WITH_LIST}
+/>
+
+<p class="sg-label ds-container">
+  SplitSection — copy-only + <strong>checklist</strong> (LIST_GRID_MIN+ items ⇒ structured ⇒
+  <strong>rail</strong> layout, two-column multicol)
+</p>
+<SplitSection
+  preset={presetName}
+  index={4}
+  heading="Prose With A Checklist"
+  body={PROSE_WITH_CHECKLIST}
+/>
+
+<p class="sg-label ds-container">
+  SplitSection — copy-only + <strong>labelled points</strong> (lead-in run ⇒ structured ⇒
+  <strong>rail</strong> layout, hairline grid)
+</p>
+<SplitSection
+  preset={presetName}
+  index={5}
+  tone="card"
+  eyebrow="Eyebrow slot"
+  heading="Prose With Labelled Points"
+  body={PROSE_WITH_POINTS}
+  cta={{ label: 'Get A Quote', href: '/get-quote' }}
+/>
+
+{/* The escape hatch, and the reason it exists: structured copy that the author wants
+    held to a reading measure anyway. Same body as the specimen above. */}
+<p class="sg-label ds-container">
+  SplitSection — copy-only, <strong>layout="centred"</strong> override on structured copy
+</p>
+<SplitSection
+  preset={presetName}
+  index={6}
+  layout="centred"
+  heading="Points, Forced Centred"
+  body={PROSE_WITH_POINTS}
 />
 
 <p class="sg-label ds-container">ServicesGrid — variant: cards</p>
