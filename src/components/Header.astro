@@ -132,7 +132,7 @@ const areaLinks = areas.map((a) => ({
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    min-height: 68px;
+    min-height: 84px;
   }
 
   .brand {
@@ -143,14 +143,55 @@ const areaLinks = areas.map((a) => ({
   }
 
   .brand :global(.brand-logo) {
-    height: 40px;
+    height: 52px;
     width: auto;
     object-fit: contain;
   }
 
   @media (min-width: 1024px) {
     .brand :global(.brand-logo) {
-      height: 46px;
+      height: 64px;
+    }
+  }
+
+  /*
+   * Shrink on scroll with zero JS: scroll-driven animations (guardrail — prefer
+   * native HTML/CSS over client JS). The header condenses over the first 140px of
+   * scroll and holds there (`fill: both`). Unsupporting browsers keep the full-size
+   * header — a taller sticky bar, not a broken one.
+   */
+  @supports (animation-timeline: scroll()) {
+    .inner {
+      animation: header-condense linear both;
+      animation-timeline: scroll();
+      animation-range: 0 140px;
+    }
+
+    .brand :global(.brand-logo) {
+      animation: logo-condense linear both;
+      animation-timeline: scroll();
+      animation-range: 0 140px;
+    }
+  }
+
+  @keyframes header-condense {
+    to {
+      min-height: 64px;
+    }
+  }
+
+  @keyframes logo-condense {
+    to {
+      height: 40px;
+    }
+  }
+
+  /* The condensed sizes match the header's pre-enlargement dimensions per tier. */
+  @media (min-width: 1024px) {
+    @keyframes logo-condense {
+      to {
+        height: 46px;
+      }
     }
   }
 
@@ -244,7 +285,7 @@ const areaLinks = areas.map((a) => ({
     border-bottom: 1px solid var(--ds-line);
     box-shadow: var(--ds-shadow-lg);
     padding: 0.75rem clamp(1rem, 0.5rem + 2vw, 2.5rem) 1.25rem;
-    max-height: calc(100dvh - 68px);
+    max-height: calc(100dvh - 84px);
     overflow-y: auto;
   }
 
