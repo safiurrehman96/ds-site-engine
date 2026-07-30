@@ -33,7 +33,9 @@ const title = buildHomeTitle(siteConfig);
   path="/"
   ogImage={siteConfig.defaults.heroVideo.poster.src}
 >
-  <Hero heading={home.heroHeadline} body={home.heroIntro} />
+  {/* The homepage opens fullbleed — copy on the footage itself — while interior
+      pages keep the preset's quieter composition. */}
+  <Hero layout="fullbleed" proof={false} heading={home.heroHeadline} body={home.heroIntro} />
 
   <SplitSection
     index={0}
