@@ -57,6 +57,20 @@ const COLORS = [
 ];
 
 const RADII = ['--ds-radius-sm', '--ds-radius-md', '--ds-radius-lg', '--ds-radius-pill'];
+
+/**
+ * Filler for the bulleted-Prose specimen below: a lead paragraph, a list mixing
+ * short items with ones long enough to wrap, some with the `**Label.** detail`
+ * lead-in that payload copy uses, and a closing paragraph. Deliberately generic —
+ * it asserts nothing about any client.
+ */
+const PROSE_WITH_LIST = `A paragraph of prose introducing a list. The list below is authored as lines beginning with "- " in the payload; Prose turns a block of those into a real <ul>.
+
+- A short item.
+- **A labelled item.** The lead-in is bold, the rest is not, and the whole row wraps at the column width rather than centring line by line.
+- A long item that has to wrap onto a second and probably a third line so the flush left edge is actually visible in this specimen.
+
+A closing paragraph after the list.`;
 ---
 
 {
@@ -228,6 +242,23 @@ const RADII = ['--ds-radius-sm', '--ds-radius-md', '--ds-radius-lg', '--ds-radiu
 
 <p class="sg-label ds-container">SplitSection — no image (copy-only, centred; variant ignored)</p>
 <SplitSection preset={presetName} index={2} heading={h.trust.heading} body={h.trust.body} />
+
+{/* Bulleted prose inside a centred copy-only block. This combination was missing
+    from the styleguide, which is why it shipped looking broken: service pages list
+    what a job includes, and every SplitSection on a service page is copy-only. The
+    body is engine filler, not a client claim — no payload is guaranteed to contain
+    a list, and the point here is the layout. */}
+<p class="sg-label ds-container">
+  SplitSection — copy-only + <strong>bulleted Prose</strong> (list stays flush left inside centred
+  copy)
+</p>
+<SplitSection
+  preset={presetName}
+  index={3}
+  tone="card"
+  heading="Prose With A List"
+  body={PROSE_WITH_LIST}
+/>
 
 <p class="sg-label ds-container">ServicesGrid — variant: cards</p>
 <ServicesGrid variant="cards" heading="Our Services" intro="Variant: cards — with descriptions." />

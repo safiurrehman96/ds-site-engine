@@ -46,11 +46,22 @@ const blocks = paragraphs(body).map((block) => {
 </div>
 
 <style>
+  /*
+   * inline-grid, not grid, and text-align: left regardless of the surrounding
+   * block. A copy-only SplitSection centres its column, and a centred bulleted
+   * list is unreadable: every line is ragged on both edges and the markers sit
+   * off on their own, nowhere near the text they belong to. Shrink-to-fit plus
+   * left-aligned items keeps the list centred *as a block* while the rows stay
+   * flush, which is what the centring was actually for.
+   */
   .ds-prose-list {
-    display: grid;
+    display: inline-grid;
+    vertical-align: top;
+    max-width: 100%;
     gap: 0.5rem;
     margin-block: 1rem;
     padding-left: 1.25rem;
+    text-align: left;
     list-style: disc;
   }
 

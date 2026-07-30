@@ -96,18 +96,67 @@ record: a field that is null there has not been supplied, whatever the config sa
 
 ## Deploying
 
-Each client is a separate application on the host, all pointing at **the same repo and
-branch**, differing only by `DS_CLIENT` and domain. The build is fully static, so
+Each client is a separate application on the host (Dokploy), all pointing at **the same
+repo**, differing only by `DS_CLIENT`, git ref, and domain. The build is fully static, so
 `DS_CLIENT` must be set at **build time** — a runtime env var does nothing.
 
-Two things to know before the first deploy:
+### One engine, but a live site never moves on its own
 
-- **A push rebuilds every client** unless the platform can filter by changed path.
-  Restrict each application to `src/**` plus its own `clients/<slug>/**` where
-  supported, or disable auto-deploy for settled clients.
+A shipped site is a static `dist/` on the server. An engine change cannot alter it; only
+a rebuild can. So the isolation between clients lives in **what each application builds
+from**, and each one is pinned to a tag rather than tracking a branch head:
+
+```
+git tag jetspa/v1        # cut when the site goes live
+```
+
+- Each Dokploy application's ref is that tag. **Auto-deploy stays off.**
+- Push whatever you like to `master`; JetSpa keeps building `jetspa/v1` indefinitely.
+- Updating a client is a deliberate act: cut `jetspa/v2`, bump that one application's
+  ref. One client at a time, on your schedule — never as a side effect of an engine
+  commit.
+
+A finished site is therefore frozen by the ref, not by convention.
+
+### Why not a copy of the engine per client
+
+Because every fix would need making N times, and would get made once. Concrete case: a
+bulleted `Prose` block inside a copy-only `SplitSection` inherited `text-align: center`,
+which stranded the list markers away from their text. One fix in `src/components/Prose.astro`
+covers every client. Forked, it would be live on four sites nobody looked at again.
+
+Divergence that is genuinely per-client belongs in the payload — preset, accent, config,
+content already cover most of it. If a client ever needs a bespoke section, add
+`clients/<slug>/overrides/Foo.astro`, resolved ahead of `src/components/Foo.astro`, rather
+than branching the engine. One mechanism, one place to look. (Not built yet — no client
+has needed it.)
+
+### Bumping a pin safely
+
+Pinned deploys have exactly one failure mode: nobody dares bump the pin, and clients rot
+on a months-old engine, missing accessibility, contrast, and SEO fixes. The answer is to
+make *"what would change if I bumped this?"* a command rather than a guess.
+
+**Not built yet — `scripts/release-diff.mjs`:** build a client at its pinned tag and at
+`HEAD`, then diff the extracted visible text per route plus page and asset weight, and
+print which pages would move. Empty output means the bump is mechanically safe; anything
+else gets read before promoting. This generalises the text-diff used as the regression
+check while making the engine client-shape-agnostic — comparing rendered text rather than
+bytes, since markup and hashed filenames churn for reasons that do not reach the page.
+`pnpm run stress` already covers the rest (links, og:image, contrast, Lighthouse,
+responsive overflow). Worth writing before the second client goes live, which is the
+first time a pin bump has stakes.
+
+### Also before the first deploy
+
+- **Set `DS_STRICT=1`** in the pipeline, so a payload still carrying `PLACEHOLDER` values
+  fails the build instead of shipping.
 - **`_redirects` is a Netlify/Cloudflare format.** Serving `dist/` with nginx or Caddy
   ignores it, so migration 301s silently do nothing. Translate the file into the
   server's own config, or serve behind a CDN that understands it.
+- **Path filtering is not a substitute for pinning.** Restricting an application to
+  `src/**` plus its own `clients/<slug>/**` still rebuilds every client on any `src/`
+  commit — which is the thing being avoided here.
 
 ## Checks
 
