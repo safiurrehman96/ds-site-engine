@@ -48,7 +48,10 @@ interface Props {
   tone?: 'paper' | 'card';
   /** Overrides the preset's composition. */
   variant?: SplitVariant;
-  /** Overrides the copy-only composition. Ignored when the block has an image. */
+  /**
+   * Overrides the copy-only composition. `rail` also accepts an image, which then
+   * renders inside the heading column rather than beside the copy.
+   */
   layout?: CopyLayout;
   /** Render under a preset other than the configured one (styleguide only). */
   preset?: Preset;
@@ -227,23 +230,23 @@ const railMedia = Boolean(image && copyLayout === 'rail');
     object-fit: cover;
   }
 
-  /* Rail media sits inside the head column, so it is sized by the rail, not the
-     grid. Portrait-ish: the rail is narrow and a landscape crop there reads as a
-     stray thumbnail rather than a deliberate column. */
+  /* Rail media sits inside the head column, under the heading. It keeps the crop and
+     surface treatment the beside rules already give a .media image. */
   .rail-media {
     margin-top: 1.5rem;
   }
 
-  .rail-media :global(img) {
-    aspect-ratio: 4 / 5;
-    border-radius: var(--ds-radius-lg);
-    box-shadow: var(--ds-shadow-lg);
-  }
-
-  /* Stacked, the rail is full width and a 4:5 crop would be enormous. */
-  @media (max-width: 899px) {
-    .rail-media :global(img) {
-      aspect-ratio: 16 / 9;
+  /*
+   * The accent panel behind the photo is offset outward, so on a left-side block it
+   * reaches 1.1rem past the photo's own left edge — past the heading's edge, right up
+   * against the bar head motif's accent rule. Shifting the photo right by the same
+   * amount puts the panel's edge where the heading's is, instead of in the gutter.
+   *
+   * Bounded below at 641px because that is where the panel stops being drawn.
+   */
+  @media (min-width: 641px) {
+    .split[data-copy='rail'][data-side='left'] .rail-media {
+      margin-left: 1.1rem;
     }
   }
 
