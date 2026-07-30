@@ -87,7 +87,7 @@ export const siteConfig = {
   },
 
   theme: {
-    preset: 'stealth' as const,
+    preset: 'fresh' as const,
     accentColor: '#1f6f8b',
   },
 

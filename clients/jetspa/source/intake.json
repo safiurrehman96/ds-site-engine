@@ -65,7 +65,7 @@
     "gtmId": null
   },
   "theme": {
-    "preset": "stealth",
+    "preset": "fresh",
     "accentColor": "#1f6f8b"
   },
   "modules": {
@@ -195,7 +195,7 @@
   "notes": [
     "Owner confirmed as Karan Gogna. Resolves {{custom_values.business_owner}}, which appears in the About page copy; the rest of the site keeps company-front framing.",
     "The phone number is a 714 area code (Orange County, CA) for a business operating out of NJ/NY/PA airports. Mobile numbers travel, so this is not necessarily wrong — but a local 201/862/973 number reads as more credible to a Teterboro flight department, and area code is one of the few local-SEO signals a service business has. Worth raising with the client.",
-    "theme: preset 'stealth' chosen by Detailer Systems (near-black, condensed uppercase display, sharp corners). accentColor #1f6f8b is still the original proposal and has not been confirmed with the client; contrast is validated at build.",
+    "theme: preset 'fresh' being trialled by Detailer Systems (light surfaces, rounded corners, Plus Jakarta Sans), replacing an earlier trial of 'stealth'. Not signed off. accentColor #1f6f8b is still the original proposal and has not been confirmed with the client either; contrast is validated at build.",
     "The contact email is a personal Gmail address, and it will render publicly on Privacy Policy, Terms of Service, and Request a Quote as the business contact. jetspa.co already exists as a domain; a karan@jetspa.co style address would cost nothing and match the credential-heavy positioning the copy leans on.",
     "websiteUrl: the domain jetspa.co is stated in the client's Privacy Policy as 'http://jetspa.co'. Recorded here as https — confirm the canonical scheme and whether www redirects.",
     "legal.source is 'client': JetSpa supplied its own Privacy Policy and Terms of Service with aviation-specific insurance, warranty, and AOG liability clauses. That text has NOT been through Detailer Systems' legal review.",
