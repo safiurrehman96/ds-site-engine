@@ -58,7 +58,14 @@ const h1 = a.h1 ?? buildH1(seo.category, a.name, a.state);
     )
   }
 
+  {/*
+    Tiles, as on About. An area page is already a wall of words about one location —
+    the nine service descriptions repeated verbatim under every area added nothing a
+    visitor had not read on home, and they are one click away on the service pages
+    themselves. The per-area `servicesIntro` still carries the local framing.
+  */}
   <ServicesGrid
+    variant="tiles"
     tone="card"
     heading={`Services Available in ${areaLabel(a)}`}
     intro={a.servicesIntro}
