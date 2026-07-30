@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { siteConfig } from './src/lib/site-config';
 import { assetBudget } from './src/integrations/asset-budget';
+import { sitemapAlias } from './src/integrations/sitemap-alias';
 
 export default defineConfig({
   site: siteConfig.site.url,
@@ -25,5 +26,7 @@ export default defineConfig({
       // ever be reached by redirect from a GHL calendar.
       filter: (page) => !page.includes('/styleguide') && !page.includes('/booking-confirmed'),
     }),
+    // After sitemap() — both hook astro:build:done, and the alias copies its output.
+    sitemapAlias(),
   ],
 });
