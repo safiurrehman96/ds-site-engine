@@ -26,6 +26,16 @@ by relative path, and three `import.meta.glob` calls hardcode `client/assets/**`
 Vite requires those glob patterns to be static literals, so the mount point has to
 stay put — the link moves instead.
 
+> **A running `astro dev` does not survive the link moving.** The content glob resolves
+> *through* the symlink, so Vite's watcher and Astro's content store key on
+> `clients/<slug>/…`. Repointing the link changes what the pattern resolves to without
+> touching a watched file, nothing invalidates, and the next request throws
+> `Missing payload file` for a file that is plainly on disk. Note that
+> `DS_CLIENT=kleen pnpm build` or `pnpm run stress` **in another terminal repoints the
+> shared link too**, which is the usual way this happens by surprise. `pnpm use` warns
+> when it moves the link with a dev server running; the fix is always
+> `astro dev stop`, then `pnpm dev`.
+
 ## Adding a client
 
 ```

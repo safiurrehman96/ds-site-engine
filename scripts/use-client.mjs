@@ -18,6 +18,7 @@
  */
 import { readdir, readlink, rm, symlink, copyFile, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
+import { execFile } from 'node:child_process';
 import path from 'node:path';
 
 const CLIENTS_DIR = 'clients';
@@ -44,6 +45,37 @@ async function currentClient() {
   } catch {
     return null;
   }
+}
+
+/**
+ * A running `astro dev` cannot survive the link moving under it.
+ *
+ * The content collections are loaded by a glob over `client/content/**`, and both Vite's
+ * watcher and Astro's content store key on the *resolved* path — `clients/jetspa/...`,
+ * not `client/...`. Repointing the symlink changes what that pattern resolves to without
+ * touching any watched file, so no invalidation fires: the dev server keeps serving a
+ * store built for the previous payload, and the first request for an entry it no longer
+ * holds throws "Missing payload file" for a file that is sitting right there on disk.
+ *
+ * Nothing can be done about that from here — the fix is a restart — so this warns rather
+ * than pretending. It cannot be a refusal: `prebuild` and `prestress` repoint the link on
+ * purpose, and a `DS_CLIENT=kleen pnpm build` in another terminal is a legitimate thing to
+ * do while a dev server runs. It just leaves that dev server stale.
+ */
+async function warnIfDevServerRunning(from, to) {
+  const running = await new Promise((resolve) => {
+    execFile('pgrep', ['-f', 'astro.mjs dev'], (err, stdout) =>
+      resolve(err ? [] : stdout.trim().split('\n').filter(Boolean)),
+    );
+  });
+  if (!running.length) return;
+
+  console.warn(
+    `\n⚠️  ${running.length} astro dev server(s) running (pid ${running.join(', ')}) while the\n` +
+      `   client link moved ${from ?? 'unset'} → ${to}. Their content store is now stale and\n` +
+      `   requests will fail with "Missing payload file" for files that exist.\n` +
+      `   Restart them:  astro dev stop  (then pnpm dev)\n`,
+  );
 }
 
 async function main() {
@@ -76,6 +108,7 @@ async function main() {
   if (existing !== slug) {
     await rm(LINK, { force: true });
     await symlink(path.join(CLIENTS_DIR, slug), LINK);
+    await warnIfDevServerRunning(existing, slug);
   }
 
   // public/ is shared engine territory (fonts); redirects are per client and would

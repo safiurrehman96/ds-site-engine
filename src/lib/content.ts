@@ -108,10 +108,15 @@ async function getSingleton<C extends 'home' | 'about' | 'faqs' | 'booking' | 'g
   const entry = await getEntry(collection, file);
   if (!entry) {
     throw new Error(
-      `Missing payload file: client/content/${file}.md\n` +
-        `If that file exists, a dev server started before the last change to ` +
-        `src/content.config.ts is serving from a cleared content store — restart it ` +
-        `(astro dev stop, then pnpm dev).`,
+      `Missing payload file: client/content/${file}.md\n\n` +
+        `If that file exists on disk, this is a stale dev server, not a missing file. ` +
+        `Its content store was built for a different state of the payload and nothing ` +
+        `invalidated it. Two things do that, and neither produces a watcher event:\n` +
+        `  · the client link moved (pnpm use <slug>, or a DS_CLIENT=<slug> build or ` +
+        `stress run in another terminal — those repoint client/ too). The glob resolves ` +
+        `through the symlink to clients/<slug>/, so the watcher never sees the swap.\n` +
+        `  · src/content.config.ts changed, which clears the store before it is rebuilt.\n\n` +
+        `Either way: astro dev stop, then pnpm dev.`,
     );
   }
   return entry;
