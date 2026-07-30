@@ -82,11 +82,21 @@ let splitIndex = 0;
     )
   }
 
+  {/*
+    Numerals rather than the preset's stepsStyle. The process is the one section on a
+    service page that is neither prose nor a grid of cards, and the oversized ghosted
+    index is what makes it read that way at a glance.
+
+    Paper, not card: with packages, beforeAfter and addons all optional and commonly
+    absent, this sits directly between the explainer and crossSell SplitSections,
+    which are both card-toned. At card it made three identical bands in a row.
+  */}
   <StepsList
+    variant="numerals"
     heading={s.processHeading}
     steps={s.processSteps}
     note={s.processNote}
-    tone="card"
+    tone="paper"
   />
 
   {

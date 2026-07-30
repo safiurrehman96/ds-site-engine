@@ -271,7 +271,16 @@ const active: StepsVariant =
     /* Sub-1 line-height so the box hugs the digits; digits have no descenders,
        so this keeps the copy's clearance tight without any collision. */
     line-height: 0.8;
-    color: color-mix(in srgb, var(--ds-accent) 26%, transparent);
+    /*
+     * 55%, not the 26% this shipped with. The ghost is meant to be quiet, but at 26%
+     * it measured 1.59:1 on paper and 1.64:1 on card — against the 3.0 that WCAG
+     * 1.4.3 asks of large text, which this is at ~70px/700. It failed on every tone,
+     * so it had been failing wherever `bold` (the preset whose stepsStyle is
+     * numerals) was configured; the service page only surfaced it by opting in on a
+     * page the stress gate samples. 55% clears 3.0 with a little room and still
+     * reads as a muted ordinal rather than a solid accent number.
+     */
+    color: color-mix(in srgb, var(--ds-accent) 55%, transparent);
     pointer-events: none;
   }
 
