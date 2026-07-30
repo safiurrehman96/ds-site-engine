@@ -40,7 +40,7 @@ const {
   preset: presetOverride,
 } = Astro.props;
 
-const { theme, tracking } = siteConfig;
+const { theme, tracking, modules } = siteConfig;
 const preset = presetOverride ?? activePreset;
 
 /*
@@ -105,7 +105,7 @@ const graphs = [
 
     <a class="ds-skip-link" href="#main">Skip to content</a>
 
-    <TopBar />
+    {modules.topBar && <TopBar />}
     <Header />
 
     <main id="main">

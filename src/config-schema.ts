@@ -112,6 +112,12 @@ export const siteConfigSchema = z.object({
   }),
 
   modules: z.object({
+    /**
+     * The announcement strip above the header: opening hours + service-area line +
+     * socials. All derived from config, so it costs a client nothing to keep — but a
+     * client whose hours or coverage story doesn't fit a one-liner turns it off here.
+     */
+    topBar: z.boolean().default(true),
     /** Home "How It Works" StepsList. */
     howItWorks: z.boolean(),
     /** Optional badge slot inside the About SplitSection (spec §11 decision 2). */

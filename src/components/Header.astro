@@ -13,6 +13,10 @@ import { siteConfig } from '../lib/site-config';
 const [services, areas] = await Promise.all([getServices(), getAreas()]);
 const { brand, contact, modules } = siteConfig;
 
+// Material "phone" glyph, inlined like the SocialLinks icons (zero extra requests).
+const PHONE_ICON_PATH =
+  'M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z';
+
 const serviceLinks = services.map((s) => ({ href: `/${s.data.slug}`, label: s.data.name }));
 const areaLinks = areas.map((a) => ({
   href: `/${a.data.slug}`,
@@ -71,11 +75,20 @@ const areaLinks = areas.map((a) => ({
 
       <div class="nav-cta">
         <a class="ds-btn ds-btn--secondary phone-cta" href={`tel:${contact.phone}`}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+            <path d={PHONE_ICON_PATH} />
+          </svg>
           {contact.phoneDisplay}
         </a>
         <a class="ds-btn ds-btn--primary" href="/booking">Book Today</a>
       </div>
     </nav>
+
+    <a class="call-btn" href={`tel:${contact.phone}`} aria-label={`Call ${contact.phoneDisplay}`}>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+        <path d={PHONE_ICON_PATH} />
+      </svg>
+    </a>
 
     <details class="menu">
       <summary aria-label="Toggle navigation menu">
@@ -109,6 +122,9 @@ const areaLinks = areas.map((a) => ({
 
         <div class="nav-cta">
           <a class="ds-btn ds-btn--secondary" href={`tel:${contact.phone}`}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+              <path d={PHONE_ICON_PATH} />
+            </svg>
             {contact.phoneDisplay}
           </a>
           <a class="ds-btn ds-btn--primary" href="/booking">Book Today</a>
@@ -249,13 +265,24 @@ const areaLinks = areas.map((a) => ({
     display: none;
   }
 
+  /* Icon-only tap-to-call, mobile header bar only — the desktop nav has the full number. */
+  .call-btn {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-left: auto;
+    border: 1px solid var(--ds-line);
+    border-radius: var(--ds-radius-sm);
+    color: var(--ds-accent);
+  }
+
   .menu > summary {
     list-style: none;
     display: grid;
     place-items: center;
     width: 44px;
     height: 44px;
-    margin-left: auto;
     border: 1px solid var(--ds-line);
     border-radius: var(--ds-radius-sm);
     cursor: pointer;
@@ -306,10 +333,18 @@ const areaLinks = areas.map((a) => ({
     flex: 1 1 auto;
   }
 
+  .nav-cta .ds-btn--secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+  }
+
   /* ---------- desktop ---------- */
 
   @media (min-width: 1024px) {
-    .menu {
+    .menu,
+    .call-btn {
       display: none;
     }
 
@@ -355,7 +390,7 @@ const areaLinks = areas.map((a) => ({
     }
   }
 
-  /* The phone button duplicates the TopBar number; only show it once there is room. */
+  /* At narrow desktop widths the nav + both CTAs overflow; drop the phone first. */
   @media (min-width: 1024px) and (max-width: 1279px) {
     .nav--desktop .phone-cta {
       display: none;
