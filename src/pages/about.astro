@@ -107,7 +107,15 @@ const closing = composed.slice(3);
           ),
         )}
 
-        {runIndex === 0 && <ServicesGrid tone="card" heading={`What ${brand.name} Offers`} />}
+        {/*
+          Tiles, not cards: About is a page about the company, so the service list is
+          a gesture at the range rather than a menu to choose from — the home and area
+          pages already carry the card variant with its descriptions. Dropping those
+          descriptions also takes ~250 words off a page whose whole problem was text.
+        */}
+        {runIndex === 0 && (
+          <ServicesGrid variant="tiles" tone="card" heading={`What ${brand.name} Offers`} />
+        )}
       </>
     ))
   }
