@@ -30,7 +30,7 @@ interface Props {
   layout?: HeroLayout;
   /** Render under a preset other than the configured one (styleguide only). */
   preset?: Preset;
-  video?: { src: string; fallbackSrc?: string };
+  video?: { src: string; fallbackSrc?: string; loop?: boolean };
   poster?: { src: string; alt: string };
   priority?: boolean;
   proof?: boolean;
@@ -86,8 +86,22 @@ const proofPoints = siteConfig.defaults.heroProof ?? [
       it and then never starts playback.
 
       This deliberately does NOT honour prefers-reduced-motion — see PHASE-4-NOTES.md.
+
+      `loop` is payload-controlled because it is a property of the footage, not of the
+      engine: a continuous clip should loop, and a one-shot reveal that restarts every
+      few seconds reads as a glitch. A non-looping video holds its final frame, so the
+      hero still ends on an image rather than going blank.
     */}
-    <video class="media-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1">
+    <video
+      class="media-video"
+      autoplay
+      muted
+      loop={video.loop ?? true}
+      playsinline
+      preload="metadata"
+      aria-hidden="true"
+      tabindex="-1"
+    >
       {sources.map((s) => <source src={s.url} type={s.type} />)}
     </video>
   </div>

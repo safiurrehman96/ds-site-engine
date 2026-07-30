@@ -189,6 +189,14 @@ export const siteConfigSchema = z.object({
         .string()
         .regex(/\.mp4$/, 'heroVideo.fallbackSrc must be a .mp4 file')
         .optional(),
+      /**
+       * Whether the clip repeats. True for continuous footage, which is most of it.
+       *
+       * Set false for a one-shot piece — a reveal, a title animation, anything with a
+       * beginning and an end. Those restart visibly and read as a glitch on loop. A
+       * non-looping video holds its last frame, so the hero still ends on an image.
+       */
+      loop: z.boolean().default(true),
       poster: imageRef,
     }),
   }),

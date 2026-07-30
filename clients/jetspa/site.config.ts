@@ -118,6 +118,9 @@ export const siteConfig = {
     heroVideo: {
       src: './assets/hero.webm',
       fallbackSrc: './assets/hero.mp4',
+      // A 7-second one-shot reveal: the jet's outline draws itself out of black and the
+      // aircraft resolves. Looping would snap it back to an empty frame every 7s.
+      loop: false,
       poster: {
         src: './assets/hero-poster.jpg',
         alt: 'A business jet emerging from darkness, its outline picked out in light',

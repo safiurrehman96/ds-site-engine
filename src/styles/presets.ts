@@ -286,7 +286,16 @@ const noir: PresetTokens = {
     shadowLg: '0 0 0 1px rgba(251, 251, 251, .08), 0 18px 48px rgba(0, 0, 0, .6)',
     border: '1px solid var(--ds-line)',
   },
-  motif: { divider: 'angle', cardStyle: 'outline', headingCase: 'uppercase', headingTracking: '0.02em', headStyle: 'bar', texture: 'grid', buttonStyle: 'square', heroLayout: 'fullbleed', stepsStyle: 'ledger', ctaStyle: 'deep', splitStyle: 'wide', footerStyle: 'compact', motion: 'sharp' },
+  /*
+   * Motifs are stealth's with one departure: `split` rather than `fullbleed`.
+   *
+   * On a light preset, full-bleed footage under a scrim is what separates the hero from
+   * the page. On a near-black page there is nothing to separate — the scrim, the page
+   * and dark footage are all the same value, so the hero loses its edges and the copy
+   * looks like it is floating on the background. `split` gives the video a contained
+   * panel with a real boundary, which is also how the client's own site frames it.
+   */
+  motif: { divider: 'angle', cardStyle: 'outline', headingCase: 'uppercase', headingTracking: '0.02em', headStyle: 'bar', texture: 'grid', buttonStyle: 'square', heroLayout: 'split', stepsStyle: 'ledger', ctaStyle: 'deep', splitStyle: 'wide', footerStyle: 'compact', motion: 'sharp' },
   /*
    * Lighter than every other preset, which is the opposite of what a dark theme
    * suggests. The scrim exists to stop bright footage washing out hero copy; on a
