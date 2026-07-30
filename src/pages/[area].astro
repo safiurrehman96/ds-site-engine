@@ -2,18 +2,24 @@
 /**
  * Recipe C — Location page. One per client/content/areas/*.md.
  *
- * Hero → SplitSection(local) → ServicesGrid → SocialStrip →
- * SplitSection(why-us) → CTABanner
+ * Hero → localCopy → localDetail? → ServicesGrid → BeforeAfter? → SocialStrip →
+ * whyUs → CTABanner
+ *
+ * The three content blocks go through composeBlocks() rather than being rendered as
+ * three identical SplitSections. They used to be exactly that, and localCopy and
+ * localDetail sit back to back — two centred columns of the same width and rhythm,
+ * on every area page a client has.
  */
 import type { InferGetStaticPropsType } from 'astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import SplitSection from '../components/SplitSection.astro';
+import ContentBlocks from '../components/ContentBlocks.astro';
 import ServicesGrid from '../components/ServicesGrid.astro';
 import SocialStrip from '../components/SocialStrip.astro';
 import CTABanner from '../components/CTABanner.astro';
 import BeforeAfter from '../components/BeforeAfter.astro';
 import { getAreas, areaLabel } from '../lib/content';
+import { composeBlocks } from '../lib/compose';
 import { buildTitle, buildH1 } from '../lib/seo';
 import { siteConfig } from '../lib/site-config';
 
@@ -35,6 +41,23 @@ const { seo, defaults } = siteConfig;
 // Authored strings win; the formula is the fallback for payloads that supply neither.
 const title = a.title ?? buildTitle(siteConfig, seo.category, a.name, a.state);
 const h1 = a.h1 ?? buildH1(seo.category, a.name, a.state);
+
+/**
+ * Composed as one run even though ServicesGrid and SocialStrip land between them:
+ * the photo rotation, the one-callout-per-page limit and the adjacency pass are all
+ * page-level rules, and slicing after the fact keeps them that way.
+ *
+ * whyUs closes on a quote CTA whether or not the payload supplied one — it is the
+ * page's last word before the banner, and that has always been its job here.
+ */
+const leadingBlocks = [a.localCopy, a.localDetail].filter((b) => b !== undefined);
+const composed = composeBlocks([
+  ...leadingBlocks,
+  { ...a.whyUs, cta: a.whyUs.cta ?? { label: 'Get A Quote', href: '/get-quote' } },
+]);
+
+const leading = composed.slice(0, leadingBlocks.length);
+const trailing = composed.slice(leadingBlocks.length);
 ---
 
 <BaseLayout
@@ -45,18 +68,7 @@ const h1 = a.h1 ?? buildH1(seo.category, a.name, a.state);
 >
   <Hero heading={h1} body={a.heroIntro} />
 
-  <SplitSection index={0} heading={a.localCopy.heading} body={a.localCopy.body} />
-
-  {
-    a.localDetail && (
-      <SplitSection
-        index={1}
-        tone="card"
-        heading={a.localDetail.heading}
-        body={a.localDetail.body}
-      />
-    )
-  }
+  <ContentBlocks entries={leading} />
 
   {/*
     Tiles, as on About. An area page is already a wall of words about one location —
@@ -79,12 +91,7 @@ const h1 = a.h1 ?? buildH1(seo.category, a.name, a.state);
 
   <SocialStrip image={defaults.socialImage} />
 
-  <SplitSection
-    index={2}
-    heading={a.whyUs.heading}
-    body={a.whyUs.body}
-    cta={{ label: 'Get A Quote', href: '/get-quote' }}
-  />
+  <ContentBlocks entries={trailing} />
 
   <CTABanner headline={a.ctaHeadline} />
 </BaseLayout>

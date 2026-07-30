@@ -26,13 +26,16 @@ localDetail:
   body: |
     Morristown Municipal Airport (ICAO code: KMMU, IATA code: MMU) is a general aviation focused airport in Morris County, New Jersey, approximately 30 miles west of Midtown Manhattan. It handles both light general aviation traffic and heavy business jet operations, and is a preferred base for many New Jersey corporate flight departments.
 
-    **FBO operations** include Signature Flight Support Morristown along with additional operators on the field. Our team coordinates directly with the appropriate FBO staff for hangar access, ground handling, and scheduling.
+    **FBO operations.** Signature Flight Support Morristown operates on the field alongside additional providers. Our team coordinates directly with the appropriate FBO staff for hangar access, ground handling, and scheduling.
 
-    **Aircraft classes commonly based at KMMU** include light and midsize corporate jets (Phenom, Citation, Learjet, Hawker), turboprops (King Air, TBM, PC-12), and piston aircraft. Larger aircraft (Challenger, Global, Gulfstream) also operate through KMMU regularly.
+    **Aircraft classes.** Light and midsize corporate jets (Phenom, Citation, Learjet, Hawker), turboprops (King Air, TBM, PC-12), and piston aircraft are based here. Larger aircraft (Challenger, Global, Gulfstream) operate through KMMU regularly.
 
-    **Weather at KMMU** includes cold winters with significant deicing chemistry exposure, humid summers, and Northeast weather variability. Aircraft based at Morristown benefit from proactive decontamination cycles and coating maintenance to counter the chemical exposure.
+    **Weather.** Cold winters bring significant deicing chemistry exposure, summers are humid, and Northeast conditions are variable. Aircraft based at Morristown benefit from proactive decontamination cycles and coating maintenance to counter the chemical exposure.
 
-    **Scheduling considerations** at KMMU include hangar space coordination with the FBO, and the noise abatement expectations that shape operating hours. Coating and boot work require 24 to 48 hours of ground time, which we coordinate against your calendar.
+    **Scheduling.** Hangar space is coordinated with the FBO, and noise abatement expectations shape operating hours. Coating and boot work require 24 to 48 hours of ground time, which we coordinate against your calendar.
+  image:
+    src: "./assets/service-aog-emergency-cleaning.jpg"
+    alt: "A business jet nose-on in a hangar at night"
 
 whyUs:
   heading: "The JetSpa Guarantee"

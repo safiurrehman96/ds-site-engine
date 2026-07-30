@@ -26,13 +26,16 @@ localDetail:
   body: |
     Westchester County Airport (ICAO code: KHPN, IATA code: HPN) is located in White Plains, New York, approximately 30 miles north of Midtown Manhattan. It handles both commercial passenger traffic and heavy general aviation activity, and it consistently ranks among the busiest business aviation airports in the country by movement count.
 
-    **FBO operations** at KHPN include multiple FBO providers serving corporate and charter operations. Our team coordinates directly with the appropriate FBO staff for hangar access, ground handling, and multi-day scheduling.
+    **FBO operations.** Multiple FBO providers serve corporate and charter operations on the field. Our team coordinates directly with the appropriate FBO staff for hangar access, ground handling, and multi-day scheduling.
 
-    **Aircraft classes commonly based at KHPN** include midsize and large corporate jets, super-corporate airframes, and a strong corporate flight department presence. Charter activity is significant, which drives elevated demand for AOG services and interior detail between legs.
+    **Aircraft classes.** Midsize and large corporate jets, super-corporate airframes, and a strong corporate flight department presence define the field. Charter activity is significant, which drives elevated demand for AOG services and interior detail between legs.
 
-    **Weather at KHPN** includes cold winters with heavy deicing chemistry exposure, humid summers, and coastal moisture that accelerates paint oxidation. Aircraft based at Westchester County benefit from proactive decontamination and coating maintenance to counter this exposure.
+    **Weather.** Cold winters bring heavy deicing chemistry exposure, summers are humid, and coastal moisture accelerates paint oxidation. Aircraft based at Westchester County benefit from proactive decontamination and coating maintenance to counter this exposure.
 
-    **Scheduling considerations** at KHPN include hangar space competition during peak seasons, operator curfews, and coordination with FBO staff on ground handling. Coating and boot work require 24 to 48 hours of ground time, which we build into scheduling during the scope call.
+    **Scheduling.** Hangar space is competitive during peak seasons, operator curfews apply, and ground handling runs through FBO staff. Coating and boot work require 24 to 48 hours of ground time, which we build into scheduling during the scope call.
+  image:
+    src: "./assets/service-piston-aircraft-detailing.jpg"
+    alt: "A technician machine-polishing a fuselage panel"
 
 whyUs:
   heading: "The JetSpa Guarantee"

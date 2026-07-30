@@ -66,15 +66,17 @@ const headingOverrides = {
 };
 
 /**
- * A block on a variable-length page (About), which needs more than heading + body.
+ * A block that lib/compose.ts can compose — heading and body, plus the two facts
+ * that let a recipe give it a composition of its own.
  *
- * The About recipe used to receive bare proseBlocks and could therefore only render
- * bare text — every block after the first came out as the same centred column, no
- * matter what SplitSection was capable of. The engine's compositions were reachable
- * from the component and unreachable from the payload.
+ * Recipes used to receive bare proseBlocks and could therefore only render bare
+ * text: every block came out as the same centred column, no matter what
+ * SplitSection was capable of. The engine's compositions were reachable from the
+ * component and unreachable from the payload, which is why About shipped as four
+ * identical columns and area pages as two.
  *
  * What is added here is *content*, not design: whether a block has a photo, and
- * whether it closes on an action. The recipe still decides the composition from
+ * whether it closes on an action. composeBlocks() still decides the composition from
  * those facts (spec §13 — variants are earned, not fiddled with per page), so a
  * payload cannot art-direct its own page.
  */
@@ -223,15 +225,15 @@ const areas = defineCollection({
     servicesIntro: prose,
 
     /** "Why {Area} Residents Choose Mobile Detailing" — the hyper-local block. */
-    localCopy: proseBlock,
+    localCopy: pageBlock,
     /**
      * Second local block, for clients whose area pages carry genuinely page-specific
      * detail (an airport's FBOs, weather, and scheduling constraints) beyond the
      * "why here" pitch. Rendered after localCopy.
      */
-    localDetail: proseBlock.optional(),
+    localDetail: pageBlock.optional(),
     /** "Why {Brand} for {Area}" trust block. */
-    whyUs: proseBlock,
+    whyUs: pageBlock,
 
     beforeAfter,
 

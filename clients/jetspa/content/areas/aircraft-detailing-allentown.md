@@ -26,13 +26,16 @@ localDetail:
   body: |
     Lehigh Valley International Airport (ICAO code: KABE, IATA code: ABE) is located in Allentown, Pennsylvania, in the eastern Lehigh Valley. It serves both commercial passenger traffic and general aviation, with a general aviation footprint that includes hangars, tie-downs, and FBO operations.
 
-    **FBO and ground operations** at KABE include commercial general aviation service providers on the field. Our team coordinates directly with the appropriate ground staff for hangar access, aircraft handling, and scheduling.
+    **Ground operations.** Commercial general aviation service providers operate on the field. Our team coordinates directly with the appropriate ground staff for hangar access, aircraft handling, and scheduling.
 
-    **Aircraft classes commonly based at KABE** include piston aircraft (Cessna, Cirrus, Piper, Beech), turboprops (King Air, TBM), and light corporate jets (Phenom, Citation, Learjet). Aircraft that transit through KABE include midsize and large corporate jets serving eastern Pennsylvania and the Lehigh Valley business community.
+    **Aircraft classes.** Piston aircraft (Cessna, Cirrus, Piper, Beech), turboprops (King Air, TBM), and light corporate jets (Phenom, Citation, Learjet) are based here. Midsize and large corporate jets serving eastern Pennsylvania and the Lehigh Valley business community transit through regularly.
 
-    **Weather at KABE** includes cold winters with deicing exposure, humid summers, and the seasonal pollution of an active industrial region. Aircraft based at Lehigh Valley benefit from regular decontamination to counter this exposure profile.
+    **Weather.** Cold winters bring deicing exposure, summers are humid, and an active industrial region adds seasonal pollution. Aircraft based at Lehigh Valley benefit from regular decontamination to counter this exposure profile.
 
-    **Scheduling considerations** at KABE benefit from lower total traffic volume than Teterboro or White Plains, which typically translates to more flexible ground time windows and easier hangar coordination for multi-day work like coating and boot refurbishment.
+    **Scheduling.** Total traffic volume is lower than Teterboro or White Plains, which typically means more flexible ground time windows and easier hangar coordination for multi-day work like coating and boot refurbishment.
+  image:
+    src: "./assets/service-turboprop-aircraft-detailing.jpg"
+    alt: "A gloved hand applying coating to a fuselage panel"
 
 whyUs:
   heading: "The JetSpa Guarantee"

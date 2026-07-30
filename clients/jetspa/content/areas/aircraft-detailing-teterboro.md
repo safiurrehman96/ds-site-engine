@@ -26,13 +26,16 @@ localDetail:
   body: |
     Teterboro Airport (ICAO code: KTEB, IATA code: TEB) is a general aviation focused airport in Bergen County, New Jersey, approximately 12 miles from Midtown Manhattan. It is the primary business aviation gateway to New York City and consistently ranks among the busiest general aviation airports in the country by movement count.
 
-    **Major FBOs on the field** include Signature Flight Support, Atlantic Aviation, Jet Aviation, and Meridian Teterboro. Each has its own hangar footprint, line service crew, and vendor access protocols. Our team is familiar with each of them and coordinates work directly with the appropriate FBO staff.
+    **Major FBOs.** Signature Flight Support, Atlantic Aviation, Jet Aviation, and Meridian Teterboro all operate on the field. Each has its own hangar footprint, line service crew, and vendor access protocols, and our team coordinates work directly with the appropriate FBO staff.
 
-    **Aircraft classes commonly based at KTEB** include midsize and large corporate jets (Challenger, Falcon, Gulfstream, Global), super-corporate airframes, and a growing number of long-range business jets. AOG demand at KTEB is elevated because of the frequency of same-day departures and the volume of charter operations based on the field.
+    **Aircraft classes.** Midsize and large corporate jets (Challenger, Falcon, Gulfstream, Global), super-corporate airframes, and a growing number of long-range business jets are based here. AOG demand is elevated by the frequency of same-day departures and the volume of charter operations on the field.
 
-    **Weather at KTEB** includes hot humid summers with regular thunderstorm activity, cold winters with heavy deicing chemistry exposure, and coastal moisture that accelerates paint oxidation. Aircraft based at Teterboro benefit from more frequent decontamination cycles and shorter ceramic coating renewal intervals than aircraft based in drier climates.
+    **Weather.** Hot humid summers bring regular thunderstorm activity, winters bring heavy deicing chemistry exposure, and coastal moisture accelerates paint oxidation. Aircraft based at Teterboro benefit from more frequent decontamination cycles and shorter ceramic coating renewal intervals than aircraft in drier climates.
 
-    **Scheduling considerations** at KTEB include hangar space limitations, ground handling coordination with the FBO, and the noise curfew that affects morning and evening operations. Coating and boot refurbishment work requires 24 to 48 hours of ground time, which we coordinate against your calendar during the scope call.
+    **Scheduling.** Hangar space is limited, ground handling runs through the FBO, and a noise curfew affects morning and evening operations. Coating and boot refurbishment require 24 to 48 hours of ground time, which we coordinate against your calendar during the scope call.
+  image:
+    src: "./assets/service-corporate-jet-detailing.jpg"
+    alt: "A business jet nose-on in a hangar"
 
 whyUs:
   heading: "The JetSpa Guarantee"

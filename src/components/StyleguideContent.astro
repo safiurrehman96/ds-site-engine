@@ -343,6 +343,24 @@ const PROSE_WITH_POINTS = `A paragraph introducing a run of labelled points.
   cta={{ label: 'Get A Quote', href: '/get-quote' }}
 />
 
+{/* Structured copy WITH a photo. The photo goes into the rail rather than beside the
+    copy, because `beside` would halve the body width — and the grids need ~32rem to
+    go two columns, which is exactly where beside's copy column lands. It also stops
+    the rail running empty below its heading, which on a long block was several
+    hundred pixels of dead space. composeBlocks() picks this automatically. */}
+<p class="sg-label ds-container">
+  SplitSection — <strong>rail + photo</strong> (structured copy with an image: media moves into
+  the heading rail; the head is sticky at ≥900px)
+</p>
+<SplitSection
+  preset={presetName}
+  index={7}
+  layout="rail"
+  heading="Rail With A Photo"
+  body={PROSE_WITH_POINTS}
+  image={service.heroImage}
+/>
+
 {/* The escape hatch, and the reason it exists: structured copy that the author wants
     held to a reading measure anyway. Same body as the specimen above. */}
 <p class="sg-label ds-container">

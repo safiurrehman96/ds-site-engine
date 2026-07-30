@@ -73,19 +73,28 @@ const side = imageSide ?? (index % 2 === 0 ? 'right' : 'left');
 const active: SplitVariant =
   variant ?? getPreset(preset ?? activePreset).motif.splitStyle;
 
-// Only meaningful without an image; beside/overlap/wide/stack already say where the
-// heading goes when there is one.
-const copyLayout: CopyLayout | undefined = image
-  ? undefined
-  : (layout ?? (isStructuredProse(body) ? 'rail' : 'centred'));
+const copyLayout: CopyLayout | undefined =
+  layout ?? (image ? undefined : isStructuredProse(body) ? 'rail' : 'centred');
+
+/**
+ * The rail can carry a photo, and when it does the photo goes in the rail column
+ * under the heading rather than beside the copy as a second grid child.
+ *
+ * Two things fall out of that. The rail column stops being empty below its heading —
+ * on a long block that was several hundred pixels of dead space next to the copy it
+ * was supposed to be labelling. And the body keeps the full remaining width, which
+ * `beside` would have halved: a points grid or checklist needs ~32rem to go two
+ * columns, and `beside`'s copy column lands right on that boundary.
+ */
+const railMedia = Boolean(image && copyLayout === 'rail');
 ---
 
 <section
   class="split ds-section"
   data-tone={tone}
   data-side={side}
-  data-media={image ? 'yes' : 'no'}
-  data-variant={image ? active : 'beside'}
+  data-media={image && !railMedia ? 'yes' : 'no'}
+  data-variant={image && !railMedia ? active : 'beside'}
   data-copy={copyLayout}
 >
   {/*
@@ -99,7 +108,7 @@ const copyLayout: CopyLayout | undefined = image
     container styling can capture it.
   */}
   {
-    image && active === 'wide' && (
+    image && !railMedia && active === 'wide' && (
       <div class="media">
         <Img
           src={image.src}
@@ -121,6 +130,19 @@ const copyLayout: CopyLayout | undefined = image
       <div class="copy-head">
         {eyebrow && <p class="ds-kicker">{eyebrow}</p>}
         <h2>{heading}</h2>
+
+        {
+          railMedia && image && (
+            <div class="media rail-media">
+              <Img
+                src={image.src}
+                alt={image.alt}
+                widths={[320, 480, 768]}
+                sizes="(min-width: 900px) 19rem, 100vw"
+              />
+            </div>
+          )
+        }
       </div>
 
       <div class="copy-body">
@@ -153,7 +175,7 @@ const copyLayout: CopyLayout | undefined = image
     </div>
 
     {
-      image && active !== 'wide' && (
+      image && !railMedia && active !== 'wide' && (
         <div class="media">
           <Img
             src={image.src}
@@ -205,6 +227,26 @@ const copyLayout: CopyLayout | undefined = image
     object-fit: cover;
   }
 
+  /* Rail media sits inside the head column, so it is sized by the rail, not the
+     grid. Portrait-ish: the rail is narrow and a landscape crop there reads as a
+     stray thumbnail rather than a deliberate column. */
+  .rail-media {
+    margin-top: 1.5rem;
+  }
+
+  .rail-media :global(img) {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-lg);
+  }
+
+  /* Stacked, the rail is full width and a 4:5 crop would be enormous. */
+  @media (max-width: 899px) {
+    .rail-media :global(img) {
+      aspect-ratio: 16 / 9;
+    }
+  }
+
   /* ========== copy-only: centred — flowing prose at a reading measure ========== */
 
   /*
@@ -252,6 +294,23 @@ const copyLayout: CopyLayout | undefined = image
     /* The h2 keeps its place in the type scale; the rail is sized to hold it. */
     .split[data-copy='rail'] .copy-head h2 {
       margin-top: 0;
+    }
+
+    /*
+     * Sticky, so the heading follows its own copy instead of scrolling away and
+     * leaving a blank column beside the block it labels. Works only because the rail
+     * grid sets `align-items: start` — a stretched grid item fills the row and has no
+     * room to move within it, so sticky silently does nothing.
+     *
+     * Offset clears the sticky site header (68px, Header.astro).
+     */
+    .split[data-copy='rail'] .copy-head {
+      position: sticky;
+      top: calc(68px + 2rem);
+    }
+
+    .split[data-copy='rail'] .rail-media {
+      margin-top: 1.75rem;
     }
 
     /*
