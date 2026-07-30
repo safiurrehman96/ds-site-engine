@@ -10,7 +10,7 @@ h1: "Aircraft Detailing at White Plains Airport (KHPN)"
 heroIntro: |
   Westchester County Airport, known operationally as White Plains and coded KHPN, is one of the busiest corporate aviation gateways in the Northeast and a primary alternative to Teterboro for aircraft serving the greater New York region. With more than 400 aircraft movements per day, KHPN is home to serious corporate operators, charter fleets, and high-value private aircraft. JetSpa holds badge access at KHPN and services aircraft on the ramp with certified technicians and OEM-approved chemistry.
 
-servicesIntro: "Every service we offer is available at White Plains: - [Aircraft ceramic coating](/aircraft-ceramic-coating) with 1, 2, or 5 year warranty options - [Aircraft i"
+servicesIntro: "Every service we offer is available at White Plains — ceramic coating, interior and exterior detailing, brightwork polishing, de-ice boot refurbishment, and AOG emergency cleaning."
 
 localCopy:
   heading: "Why Aircraft Detailing at White Plains Requires a Specialist"

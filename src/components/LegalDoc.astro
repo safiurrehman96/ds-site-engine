@@ -1,6 +1,7 @@
 ---
 /** Renders a LegalDocument (Recipe E). Numbering is generated, not authored. */
 import type { LegalDocument } from '../lib/legal';
+import Inline from './Inline.astro';
 import { siteConfig } from '../lib/site-config';
 
 interface Props {
@@ -17,7 +18,7 @@ const { contact, site, legal } = siteConfig;
     <h1>{title}</h1>
     <p class="effective">Effective Date: {legal.effectiveDate}</p>
 
-    {doc.intro.map((p) => <p class="lede">{p}</p>)}
+    {doc.intro.map((p) => <p class="lede"><Inline text={p} /></p>)}
 
     {
       doc.sections.map((section, i) => (
@@ -28,7 +29,7 @@ const { contact, site, legal } = siteConfig;
             </span>
             {section.heading}
           </h2>
-          {section.body?.map((p) => <p>{p}</p>)}
+          {section.body?.map((p) => <p><Inline text={p} /></p>)}
           {section.bullets && (
             <ul class="bullets">
               {section.bullets.map((b) => (
@@ -50,7 +51,7 @@ const { contact, site, legal } = siteConfig;
 
     <section class="sec">
       <h2>{doc.contact.heading}</h2>
-      <p>{doc.contact.intro}</p>
+      <p><Inline text={doc.contact.intro} /></p>
       <ul class="bullets">
         <li>
           <strong>Phone:</strong>{' '}

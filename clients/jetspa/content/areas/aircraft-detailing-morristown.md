@@ -10,7 +10,7 @@ h1: "Aircraft Detailing at Morristown Airport (KMMU)"
 heroIntro: |
   Morristown Municipal Airport handles roughly 200 aircraft movements per day and is the second busiest general aviation airport in New Jersey. It is home to corporate flight departments, charter operators, and privately owned aircraft ranging from light jets to super-corporate airframes. When your aircraft is based at KMMU, the appearance care team you choose reflects the standard your operator and passengers expect. JetSpa holds badge access at KMMU and services aircraft on the ramp with certified technicians and OEM-approved chemistry.
 
-servicesIntro: "Every service we offer is available at Morristown: - [Aircraft ceramic coating](/aircraft-ceramic-coating) with 1, 2, or 5 year warranty options - [Aircraft int"
+servicesIntro: "Every service we offer is available at Morristown — ceramic coating, interior and exterior detailing, brightwork polishing, de-ice boot refurbishment, and AOG emergency cleaning."
 
 localCopy:
   heading: "Why Aircraft Detailing at Morristown Requires a Specialist"

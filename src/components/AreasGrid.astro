@@ -7,6 +7,7 @@
  *           images actually differ per area; otherwise it is N identical tiles.
  */
 import Img from './Img.astro';
+import Inline from './Inline.astro';
 import { getAreas, areaLabel, areaShortLabel } from '../lib/content';
 import { siteConfig } from '../lib/site-config';
 
@@ -39,7 +40,7 @@ const fallback = siteConfig.defaults.heroVideo.poster;
     <div class="head">
       {kicker && <p class="ds-kicker">{kicker}</p>}
       <h2>{heading}</h2>
-      {intro && <p class="ds-lede">{intro}</p>}
+      {intro && <p class="ds-lede"><Inline text={intro} /></p>}
     </div>
 
     <ul class="grid">

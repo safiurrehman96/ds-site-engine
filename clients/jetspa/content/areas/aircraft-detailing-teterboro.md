@@ -10,7 +10,7 @@ h1: "Aircraft Detailing at Teterboro Airport (KTEB)"
 heroIntro: |
   Teterboro Airport is the busiest general aviation-only airport in the United States, handling more than 400 aircraft movements per day and hosting some of the highest-value aircraft based on the East Coast. When your aircraft is parked at Signature, Meridian, Atlantic Aviation, or Jet Aviation, you cannot afford to hand it to an uninsured contractor with off-brand chemistry and no badge access. JetSpa holds badge access at KTEB and services aircraft on the ramp at every major FBO on the field.
 
-servicesIntro: "Every service we offer is available at Teterboro: - [Aircraft ceramic coating](/aircraft-ceramic-coating) with 1, 2, or 5 year warranty tiers - [Aircraft interi"
+servicesIntro: "Every service we offer is available at Teterboro — ceramic coating, interior and exterior detailing, brightwork polishing, de-ice boot refurbishment, and AOG emergency cleaning."
 
 localCopy:
   heading: "Why Aircraft Detailing at Teterboro Requires a Specialist"

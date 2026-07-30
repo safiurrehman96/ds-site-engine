@@ -5,6 +5,7 @@
  */
 import type { Preset } from '../config-schema';
 import Hero from './Hero.astro';
+import Inline from './Inline.astro';
 import SplitSection from './SplitSection.astro';
 import ServicesGrid from './ServicesGrid.astro';
 import AreasGrid from './AreasGrid.astro';
@@ -165,7 +166,7 @@ A closing paragraph after the list.`;
     <h3>H3 — Clean From Every Angle</h3>
     <h4>H4 — Engine Bay Cleaning</h4>
     <p class="ds-lede">Lede — {h.intro.heading}</p>
-    <p>Body — {h.trust.body.split('\n')[0]}</p>
+    <p>Body — <Inline text={h.trust.body.split('\n')[0]} /></p>
     <p class="ds-eyebrow">Eyebrow — Book Your Detail Today</p>
   </div>
 

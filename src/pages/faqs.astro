@@ -1,6 +1,7 @@
 ---
 /** Recipe D — FAQs. Grouped Q&As + FAQPage JSON-LD across every group. */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Inline from '../components/Inline.astro';
 import FAQAccordion from '../components/FAQAccordion.astro';
 import CTABanner from '../components/CTABanner.astro';
 import { getFaqs } from '../lib/content';
@@ -22,7 +23,7 @@ const allFaqs = faqs.groups.flatMap((g) => g.faqs);
   <section class="intro ds-section">
     <div class="ds-container inner">
       <h1>{faqs.heroHeadline}</h1>
-      <p class="ds-lede">{faqs.heroIntro}</p>
+      <p class="ds-lede"><Inline text={faqs.heroIntro} /></p>
     </div>
   </section>
 

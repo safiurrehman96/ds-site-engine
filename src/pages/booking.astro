@@ -8,6 +8,7 @@
  * here. The calendar entries themselves come from ghl.bookingUrls.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Inline from '../components/Inline.astro';
 import CTABanner from '../components/CTABanner.astro';
 import GHLEmbed from '../components/GHLEmbed.astro';
 import { getBooking } from '../lib/content';
@@ -25,7 +26,7 @@ const embedSingleCalendar = ghl.embed && ghl.bookingUrls.length === 1;
   <section class="choose ds-section">
     <div class="ds-container">
       <h1>{page.heroHeadline}</h1>
-      <p class="ds-lede">{page.heroIntro}</p>
+      <p class="ds-lede"><Inline text={page.heroIntro} /></p>
 
       {
         embedSingleCalendar ? (
@@ -51,7 +52,7 @@ const embedSingleCalendar = ghl.embed && ghl.bookingUrls.length === 1;
   <section class="help ds-section">
     <div class="ds-container inner">
       <h2>{page.helpBlock.heading}</h2>
-      <p class="ds-lede">{page.helpBlock.body}</p>
+      <p class="ds-lede"><Inline text={page.helpBlock.body} /></p>
       <p class="btns">
         <a class="ds-btn ds-btn--primary" href={`tel:${contact.phone}`}>
           Call {contact.phoneDisplay}

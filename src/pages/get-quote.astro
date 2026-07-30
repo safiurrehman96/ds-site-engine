@@ -4,6 +4,7 @@
  * engine never rebuilds booking or quote forms).
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Inline from '../components/Inline.astro';
 import SocialLinks from '../components/SocialLinks.astro';
 import CTABanner from '../components/CTABanner.astro';
 import GHLEmbed from '../components/GHLEmbed.astro';
@@ -20,7 +21,7 @@ const { contact, hours, ghl, serviceArea } = siteConfig;
     <div class="ds-container grid">
       <div class="copy">
         <h1>{page.heroHeadline}</h1>
-        <p class="ds-lede">{page.heroIntro}</p>
+        <p class="ds-lede"><Inline text={page.heroIntro} /></p>
 
         {
           ghl.embed ? (

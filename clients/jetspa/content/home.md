@@ -35,6 +35,6 @@ trust:
     If you have never worked with a certified aircraft detailer before, [request a quote](/get-quote) with your aircraft type and home base. We will walk you through what your specific airframe needs, when, and why. To learn more about the team and how the business was built, visit our [About page](/about).
 
 servicesIntro: "JetSpa provides a complete menu of aircraft appearance care, from routine cleans between charter legs to five year ceramic coatings for owner-operated aircraft."
-areasIntro: "We are on the ramp at four of the busiest general aviation airports in the Northeast: - [Aircraft Detailing at Teterboro Airport (KTEB)](/aircraft-detailing-tet"
+areasIntro: "We are on the ramp at four of the busiest general aviation airports in the Northeast."
 ctaHeadline: "Book Your Aircraft's Next Detail"
 ---

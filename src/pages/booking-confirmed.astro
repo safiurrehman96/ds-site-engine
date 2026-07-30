@@ -12,6 +12,7 @@
  *    two have to be kept in step — noindex alone still leaves it advertised.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Inline from '../components/Inline.astro';
 import SplitSection from '../components/SplitSection.astro';
 import CTABanner from '../components/CTABanner.astro';
 import { getBookingConfirmed } from '../lib/content';
@@ -29,7 +30,7 @@ const page = (await getBookingConfirmed()).data;
     <div class="ds-container inner">
       <p class="ds-kicker">Confirmed</p>
       <h1>{page.heroHeadline}</h1>
-      <p class="ds-lede">{page.heroIntro}</p>
+      <p class="ds-lede"><Inline text={page.heroIntro} /></p>
     </div>
   </section>
 
