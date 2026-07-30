@@ -26,15 +26,19 @@ by relative path, and three `import.meta.glob` calls hardcode `client/assets/**`
 Vite requires those glob patterns to be static literals, so the mount point has to
 stay put — the link moves instead.
 
-> **A running `astro dev` does not survive the link moving.** The content glob resolves
-> *through* the symlink, so Vite's watcher and Astro's content store key on
-> `clients/<slug>/…`. Repointing the link changes what the pattern resolves to without
+> **Moving the link restarts a running dev server**, on purpose. The content glob
+> resolves *through* the symlink, so Vite's watcher and Astro's content store key on
+> `clients/<slug>/…`; repointing the link changes what the pattern resolves to without
 > touching a watched file, nothing invalidates, and the next request throws
-> `Missing payload file` for a file that is plainly on disk. Note that
-> `DS_CLIENT=kleen pnpm build` or `pnpm run stress` **in another terminal repoints the
-> shared link too**, which is the usual way this happens by surprise. `pnpm use` warns
-> when it moves the link with a dev server running; the fix is always
-> `astro dev stop`, then `pnpm dev`.
+> `Missing payload file` for a file that is plainly on disk. Nothing can fix that from
+> inside the running server, so `use-client.mjs` reads `.astro/dev.json` and restarts it
+> with `--force` (which clears the content layer cache) on the same port.
+>
+> This matters because the link also moves as a **side effect** — `DS_CLIENT=kleen pnpm
+> build` or `pnpm run stress` in another terminal repoints the shared link, so the dev
+> server you are looking at can go stale from a command you did not run. It was a warning
+> first; a warning aimed at the wrong person and got ignored every time. Set
+> `DS_NO_DEV_RESTART=1` to be warned instead of restarted.
 
 ## Adding a client
 

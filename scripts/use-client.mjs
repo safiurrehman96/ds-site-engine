@@ -16,7 +16,7 @@
  * package.json, so a stale link cannot quietly build the wrong client: every entry
  * point re-establishes it from DS_CLIENT first.
  */
-import { readdir, readlink, rm, symlink, copyFile, stat } from 'node:fs/promises';
+import { readdir, readlink, readFile, rm, symlink, copyFile, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { execFile } from 'node:child_process';
 import path from 'node:path';
@@ -47,34 +47,76 @@ async function currentClient() {
   }
 }
 
-/**
- * A running `astro dev` cannot survive the link moving under it.
- *
- * The content collections are loaded by a glob over `client/content/**`, and both Vite's
- * watcher and Astro's content store key on the *resolved* path — `clients/jetspa/...`,
- * not `client/...`. Repointing the symlink changes what that pattern resolves to without
- * touching any watched file, so no invalidation fires: the dev server keeps serving a
- * store built for the previous payload, and the first request for an entry it no longer
- * holds throws "Missing payload file" for a file that is sitting right there on disk.
- *
- * Nothing can be done about that from here — the fix is a restart — so this warns rather
- * than pretending. It cannot be a refusal: `prebuild` and `prestress` repoint the link on
- * purpose, and a `DS_CLIENT=kleen pnpm build` in another terminal is a legitimate thing to
- * do while a dev server runs. It just leaves that dev server stale.
- */
-async function warnIfDevServerRunning(from, to) {
-  const running = await new Promise((resolve) => {
-    execFile('pgrep', ['-f', 'astro.mjs dev'], (err, stdout) =>
-      resolve(err ? [] : stdout.trim().split('\n').filter(Boolean)),
+const DEV_STATE = path.join('.astro', 'dev.json');
+
+const exec = (cmd, args) =>
+  new Promise((resolve) => {
+    execFile(cmd, args, (err, stdout, stderr) =>
+      resolve({ ok: !err, out: `${stdout ?? ''}${stderr ?? ''}` }),
     );
   });
-  if (!running.length) return;
 
-  console.warn(
-    `\n⚠️  ${running.length} astro dev server(s) running (pid ${running.join(', ')}) while the\n` +
-      `   client link moved ${from ?? 'unset'} → ${to}. Their content store is now stale and\n` +
-      `   requests will fail with "Missing payload file" for files that exist.\n` +
-      `   Restart them:  astro dev stop  (then pnpm dev)\n`,
+/** The background dev server's recorded state, or null when none is alive. */
+async function runningDevServer() {
+  try {
+    const state = JSON.parse(await readFile(DEV_STATE, 'utf8'));
+    if (!state?.pid) return null;
+    // Signal 0 tests liveness without touching the process; throws if it is gone.
+    process.kill(state.pid, 0);
+    return state;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * A running `astro dev` cannot survive the link moving under it, so restart it.
+ *
+ * Collections load through a glob over `client/content/**`, and both Vite's watcher and
+ * Astro's content store key on the *resolved* path — `clients/jetspa/…`, not `client/…`.
+ * Repointing the symlink changes what that pattern resolves to without touching any
+ * watched file, so nothing invalidates: the server keeps serving a store built for the
+ * previous payload and the next request throws "Missing payload file" for a file that is
+ * sitting on disk. `.astro/data-store.json` shows it plainly — every collection an empty
+ * Map.
+ *
+ * This used to be a warning. A warning was the wrong shape: the link moves as a *side
+ * effect* of `DS_CLIENT=kleen pnpm build` or `pnpm run stress` in another terminal, so the
+ * person who has to act on it is not the person who ran the command, and it was ignored
+ * every single time — including by the author of the warning, twice in one session. The
+ * state is recoverable automatically, so recover it.
+ *
+ * `--force` clears the content layer cache, which is exactly the invalidation the swap
+ * failed to trigger. Skipped under `predev`, which is about to start a server of its own,
+ * and under DS_NO_DEV_RESTART=1 for anyone who would rather it kept its hands off.
+ */
+async function restartDevServerIfRunning(from, to) {
+  if (process.env.npm_lifecycle_event === 'predev') return;
+
+  const server = await runningDevServer();
+  if (!server) return;
+
+  if (process.env.DS_NO_DEV_RESTART === '1') {
+    console.warn(
+      `\n⚠️  dev server (pid ${server.pid}) is stale: the client link moved ${from ?? 'unset'} → ${to}.\n` +
+        `   DS_NO_DEV_RESTART=1 is set, so it was left alone. Requests will fail with\n` +
+        `   "Missing payload file" until you run: astro dev stop, then pnpm dev\n`,
+    );
+    return;
+  }
+
+  const stop = await exec('pnpm', ['exec', 'astro', 'dev', 'stop']);
+  if (!stop.ok) {
+    console.warn(`⚠️  could not stop dev server (pid ${server.pid}) — restart it by hand.`);
+    return;
+  }
+
+  const args = ['exec', 'astro', 'dev', '--background', '--force', '--port', String(server.port)];
+  const start = await exec('pnpm', args);
+  console.log(
+    start.ok
+      ? `↻ restarted dev server on port ${server.port} (the link moved, its content store was stale)`
+      : `⚠️  stopped the stale dev server but could not restart it — run: pnpm dev`,
   );
 }
 
@@ -108,7 +150,6 @@ async function main() {
   if (existing !== slug) {
     await rm(LINK, { force: true });
     await symlink(path.join(CLIENTS_DIR, slug), LINK);
-    await warnIfDevServerRunning(existing, slug);
   }
 
   // public/ is shared engine territory (fonts); redirects are per client and would
@@ -122,6 +163,10 @@ async function main() {
   }
 
   console.log(`▸ client: ${slug}${existing === slug ? '' : ` (was ${existing ?? 'unset'})`}`);
+
+  // After the link and _redirects are both settled, so a restarted server reads the
+  // finished state rather than a half-applied one.
+  if (existing !== slug) await restartDevServerIfRunning(existing, slug);
 }
 
 main().catch((err) => {
