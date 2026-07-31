@@ -9,7 +9,7 @@
     "dev": "astro dev",
     "prebuild": "node scripts/use-client.mjs",
     "build": "astro build",
-    "postbuild": "node scripts/finish-dev-restart.mjs",
+    "postbuild": "node scripts/finish-dev-restart.mjs && node scripts/verify-dist.mjs",
     "prepreview": "node scripts/use-client.mjs",
     "preview": "astro preview",
     "postpreview": "node scripts/finish-dev-restart.mjs",
