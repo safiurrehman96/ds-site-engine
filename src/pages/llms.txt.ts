@@ -10,12 +10,12 @@
  */
 import type { APIRoute } from 'astro';
 import { siteConfig } from '../lib/site-config';
-import { getServices, getAreas, areaLabel } from '../lib/content';
+import { getServices, getAreas, getPosts, areaLabel } from '../lib/content';
 import { canonical } from '../lib/seo';
 
 export const GET: APIRoute = async () => {
   const { brand, contact, serviceArea, seo, site } = siteConfig;
-  const [services, areas] = await Promise.all([getServices(), getAreas()]);
+  const [services, areas, posts] = await Promise.all([getServices(), getAreas(), getPosts()]);
 
   const link = (name: string, path: string, note?: string) =>
     `- [${name}](${canonical(siteConfig, path)})${note ? `: ${note}` : ''}`;
@@ -42,6 +42,15 @@ export const GET: APIRoute = async () => {
     link('Book an appointment', '/booking'),
     link('Get a quote', '/get-quote'),
     '',
+    // Section only when the client publishes natively — an empty heading is noise.
+    ...(posts.length
+      ? [
+          '## Blog',
+          '',
+          ...posts.map((p) => link(p.data.title, `/blog/${p.data.slug}`, p.data.metaDescription)),
+          '',
+        ]
+      : []),
     `Full page list: ${site.url}/sitemap.xml`,
     '',
   ].join('\n');

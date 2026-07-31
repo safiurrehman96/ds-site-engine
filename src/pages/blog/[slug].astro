@@ -1,0 +1,166 @@
+---
+/**
+ * Recipe H — Blog post. Hero → rendered markdown article → CTABanner.
+ *
+ * The one recipe that renders a markdown *body* (see the blog collection in
+ * content.config.ts for why posts break the frontmatter-only rule). The body is
+ * free-form, so unlike every other recipe this page composes nothing — it styles
+ * whatever the article brings, top to bottom.
+ */
+import type { InferGetStaticPropsType } from 'astro';
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import CTABanner from '../../components/CTABanner.astro';
+import { getPosts } from '../../lib/content';
+import { blogPostingJsonLd, blogBreadcrumbJsonLd } from '../../lib/seo';
+import { siteConfig } from '../../lib/site-config';
+
+// Deliberately unannotated — see [service].astro.
+export const getStaticPaths = async () => {
+  const posts = await getPosts();
+  return posts.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+};
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { entry } = Astro.props as Props;
+const p = entry.data;
+const { brand, defaults } = siteConfig;
+
+const { Content } = await render(entry);
+
+const graph = [
+  blogPostingJsonLd(siteConfig, {
+    title: p.title,
+    description: p.metaDescription,
+    slug: p.slug,
+    publishDate: p.publishDate,
+    updatedDate: p.updatedDate,
+  }),
+  blogBreadcrumbJsonLd(siteConfig, { title: p.title, slug: p.slug }),
+];
+
+const dateLabel = p.publishDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout
+  title={`${p.title} | ${brand.name}`}
+  description={p.metaDescription}
+  path={`/blog/${p.slug}`}
+  ogImage={p.heroImage?.src ?? defaults.socialImage.src}
+  jsonLd={graph}
+>
+  <Hero eyebrow={dateLabel} heading={p.title} body={p.metaDescription} proof={false} />
+
+  <article class="ds-section">
+    <div class="ds-container post-body">
+      <Content />
+    </div>
+    <div class="ds-container post-footer">
+      <a href="/blog/">&larr; All posts</a>
+      {p.updatedDate && <p class="updated">Updated {p.updatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>}
+    </div>
+  </article>
+
+  <CTABanner headline={defaults.ctaHeadline} />
+</BaseLayout>
+
+<style>
+  /*
+   * Article measure: markdown prose reads best at ~70ch, well under the site
+   * container. Styles are :global because <Content /> renders raw markdown HTML
+   * that scoped selectors cannot reach.
+   */
+  .post-body,
+  .post-footer {
+    max-width: 72ch;
+  }
+
+  .post-body :global(h2) {
+    margin: 2.25rem 0 0.75rem;
+    font-size: 1.5rem;
+  }
+
+  .post-body :global(h3) {
+    margin: 1.75rem 0 0.5rem;
+    font-size: 1.1875rem;
+  }
+
+  .post-body :global(p) {
+    margin-block: 1rem;
+    color: var(--ds-ink-soft);
+  }
+
+  .post-body :global(ul),
+  .post-body :global(ol) {
+    margin-block: 1rem;
+    padding-left: 1.5rem;
+    color: var(--ds-ink-soft);
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .post-body :global(li)::marker {
+    color: var(--ds-accent);
+  }
+
+  .post-body :global(a) {
+    color: var(--ds-accent-ink);
+    text-decoration: underline;
+  }
+
+  .post-body :global(img) {
+    max-width: 100%;
+    height: auto;
+    margin-block: 1.5rem;
+    border-radius: var(--ds-radius-lg);
+  }
+
+  .post-body :global(blockquote) {
+    margin-block: 1.5rem;
+    padding: 0.25rem 0 0.25rem 1.25rem;
+    border-left: 3px solid var(--ds-accent);
+    color: var(--ds-ink-soft);
+    font-style: italic;
+  }
+
+  .post-body :global(hr) {
+    margin-block: 2rem;
+    border: 0;
+    border-top: 1px solid var(--ds-line);
+  }
+
+  .post-footer {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--ds-line);
+  }
+
+  .post-footer a {
+    color: var(--ds-accent-ink);
+    font-family: var(--ds-font-display);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .post-footer a:hover {
+    text-decoration: underline;
+  }
+
+  .updated {
+    font-size: 0.875rem;
+    color: var(--ds-ink-soft);
+  }
+</style>

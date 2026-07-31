@@ -402,7 +402,35 @@ const legal = defineCollection({
   }),
 });
 
+/**
+ * Blog posts — the one collection whose prose lives in the markdown *body*, not
+ * frontmatter. Posts are free-form articles (a how-to, a listicle, three paragraphs
+ * of news) with no repeating shape for the composition system to compose, so the
+ * structured-frontmatter rule buys nothing here. Frontmatter still carries the
+ * validated facts; the body's merge-field check happens in getPosts() (lib/content.ts)
+ * because zod never sees the body.
+ *
+ * Optional per client: an empty client/content/blog/ builds no /blog routes at all —
+ * no index, no nav link (see Header.astro) — rather than an empty archive page.
+ */
+const blog = defineCollection({
+  loader: glob({ base: `${BASE}/blog`, pattern: '**/*.md' }),
+  schema: z.object({
+    title: prose,
+    /** Must match the filename and the live URL: /blog/{slug} */
+    slug,
+    metaDescription,
+    publishDate: z.coerce.date(),
+    updatedDate: z.coerce.date().optional(),
+    /** Card image on the index and og:image; falls back to defaults.socialImage. */
+    heroImage: image.optional(),
+    /** Drafts build in dev for preview and are excluded from production builds. */
+    draft: z.boolean().default(false),
+  }),
+});
+
 export const collections = {
+  blog,
   services,
   areas,
   home,

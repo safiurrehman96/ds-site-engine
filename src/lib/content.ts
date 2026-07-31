@@ -11,6 +11,7 @@ import { getCollection, getEntry } from 'astro:content';
  */
 const RESERVED_SLUGS = new Set([
   'about',
+  'blog',
   'booking',
   'booking-confirmed',
   'faqs',
@@ -79,6 +80,41 @@ export async function getAreas() {
   ]);
   assertUniqueSlugs(services, areas);
   return areas.sort((a, b) => a.data.order - b.data.order);
+}
+
+/**
+ * Published posts, newest first. Drafts render in dev (for preview) and are dropped
+ * from production builds. Zero posts is a normal state — every /blog surface (index,
+ * nav link, RSS, llms.txt section) checks this list and disappears when it is empty.
+ *
+ * Posts are the one collection whose prose is the markdown body, which zod never
+ * sees — so the unresolved-merge-field check that `prose` applies to every
+ * frontmatter string (see content.config.ts) is re-applied to the body here. Post
+ * slugs share the /blog/ namespace with no other collection, so unlike services and
+ * areas they only need to be unique among themselves.
+ */
+export async function getPosts() {
+  const posts = await getCollection('blog', ({ data }) => import.meta.env.DEV || !data.draft);
+
+  const seen = new Map<string, string>();
+  for (const post of posts) {
+    if (post.body?.includes('{{')) {
+      throw new Error(
+        `Unresolved merge field in blog post body: client/content/blog/${post.id} — ` +
+          `every {{custom_values.*}} token must be resolved at import time.`,
+      );
+    }
+    const owner = seen.get(post.data.slug);
+    if (owner) {
+      throw new Error(
+        `Blog slug collision: "${post.data.slug}" is used by both ${owner} and ${post.id} — ` +
+          `both would render at /blog/${post.data.slug}.`,
+      );
+    }
+    seen.set(post.data.slug, post.id);
+  }
+
+  return posts.sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
 }
 
 /**

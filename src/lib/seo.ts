@@ -183,6 +183,52 @@ export function localBusinessJsonLd(
   };
 }
 
+/**
+ * Blog posts: BlogPosting with the business as both author and publisher — these are
+ * company articles, not bylined journalism, and inventing a person would be a lie.
+ */
+export function blogPostingJsonLd(
+  config: SiteConfig,
+  post: {
+    title: string;
+    description: string;
+    slug: string;
+    publishDate: Date;
+    updatedDate?: Date;
+  },
+): Record<string, unknown> {
+  const url = canonical(config, `/blog/${post.slug}`);
+  return {
+    '@type': 'BlogPosting',
+    '@id': `${url}#post`,
+    headline: post.title,
+    description: post.description,
+    url,
+    mainEntityOfPage: { '@id': `${url}#webpage` },
+    datePublished: post.publishDate.toISOString(),
+    ...(post.updatedDate ? { dateModified: post.updatedDate.toISOString() } : {}),
+    author: { '@id': `${config.site.url}/#business` },
+    publisher: { '@id': `${config.site.url}/#business` },
+  };
+}
+
+/** Home → Blog → {Post}. The middle crumb is the real /blog index, unlike services. */
+export function blogBreadcrumbJsonLd(
+  config: SiteConfig,
+  post: { title: string; slug: string },
+): Record<string, unknown> {
+  const url = canonical(config, `/blog/${post.slug}`);
+  return {
+    '@type': 'BreadcrumbList',
+    '@id': `${url}#breadcrumb`,
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${config.site.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: canonical(config, '/blog') },
+      { '@type': 'ListItem', position: 3, name: post.title },
+    ],
+  };
+}
+
 /** FAQPage, emitted wherever FAQAccordion renders. */
 export function faqPageJsonLd(faqs: Array<{ q: string; a: string }>): Record<string, unknown> {
   return {

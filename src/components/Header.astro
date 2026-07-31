@@ -7,11 +7,15 @@
  * elements (guardrail — prefer native HTML over JS).
  */
 import Img from './Img.astro';
-import { getServices, getAreas, areaLabel } from '../lib/content';
+import { getServices, getAreas, getPosts, areaLabel } from '../lib/content';
 import { siteConfig } from '../lib/site-config';
 
-const [services, areas] = await Promise.all([getServices(), getAreas()]);
+const [services, areas, posts] = await Promise.all([getServices(), getAreas(), getPosts()]);
 const { brand, contact, modules } = siteConfig;
+
+// The native blog wins over modules.blogUrl: a client with published posts links
+// /blog; one without falls back to their external blog, if any. Neither → no entry.
+const blogHref = posts.length ? '/blog/' : modules.blogUrl;
 
 // Material "phone" glyph, inlined like the SocialLinks icons (zero extra requests).
 const PHONE_ICON_PATH =
@@ -69,7 +73,7 @@ const areaLinks = areas.map((a) => ({
         </li>
         <li><a href="/about">About</a></li>
         <li><a href="/faqs">FAQs</a></li>
-        {modules.blogUrl && <li><a href={modules.blogUrl}>Blog</a></li>}
+        {blogHref && <li><a href={blogHref}>Blog</a></li>}
         <li><a href="/get-quote">Contact</a></li>
       </ul>
 
@@ -116,7 +120,7 @@ const areaLinks = areas.map((a) => ({
           </li>
           <li><a href="/about">About</a></li>
           <li><a href="/faqs">FAQs</a></li>
-          {modules.blogUrl && <li><a href={modules.blogUrl}>Blog</a></li>}
+          {blogHref && <li><a href={blogHref}>Blog</a></li>}
           <li><a href="/get-quote">Contact</a></li>
         </ul>
 
