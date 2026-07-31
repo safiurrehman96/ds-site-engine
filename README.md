@@ -47,6 +47,11 @@ stay put — the link moves instead.
 >   fires by itself when the store file was last written by a build, whose config digest
 >   never matches dev's) leaves every collection an empty Map. A missing file has no
 >   digest to mismatch, so boot-from-nothing takes the genuine full-load path.
+>
+> Both details depend on **undocumented Astro internals**, and the failure mode of an
+> upgrade shifting them is silent (a dev server that renders from empty collections).
+> After every Astro upgrade, run `pnpm smoke` — it boots dev from a cold store and
+> asserts the collections actually populated.
 
 ## Adding a client
 
@@ -61,6 +66,7 @@ clients/<slug>/
   content/
     home.md  about.md  faqs.md  booking.md  get-quote.md  booking-confirmed.md
     services/*.md  areas/*.md
+    blog/               # optional posts; zero posts = no /blog routes at all
     legal/              # optional authored Privacy/ToS; empty = generated template
 ```
 
@@ -98,6 +104,26 @@ inferred, because a wrong guess there builds cleanly and reads like nonsense.
 **4. Author the payload**, drop the assets in (budgets are enforced at build: 1536KB
 hero video, 600KB per image), then `pnpm use <slug> && pnpm build`. Every missing or
 malformed field fails the build by name.
+
+Blog posts are the one collection whose prose lives in the markdown *body* (they are
+free-form articles; every other collection is frontmatter-only, and a body written
+there is silently ignored — `pnpm lint` catches it). Mind the two image conventions:
+frontmatter paths are client-relative (`./assets/x.jpg`, like every collection), body
+paths are file-relative (`../../assets/x.jpg`), and body images need their alt text
+written in the `![alt](…)` brackets — no schema enforces it there.
+
+**5. Lint it.**
+
+```
+pnpm lint <slug>            # or --all
+```
+
+Source-level checks the schema cannot make: fact drift between intake.json and
+site.config.ts, duplicate or thin metaDescriptions, dead or altless blog body images,
+future-dated non-drafts, prose in a body that will not render. Errors fail; judgement
+calls warn. (The built site gets its own pass — scripts/verify-dist.mjs runs on every
+build: dead internal links, duplicate titles, missing alt, merge fields, sitemap
+agreement.)
 
 ### Building before the facts arrive
 

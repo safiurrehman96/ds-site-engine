@@ -19,7 +19,7 @@
  */
 import { spawn } from 'node:child_process';
 import { createServer } from 'node:http';
-import { readFile, readdir, rm, cp, stat } from 'node:fs/promises';
+import { readFile, readdir, rm, cp } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import * as fsSync from 'node:fs';
 import path from 'node:path';
@@ -306,7 +306,7 @@ async function main() {
       }
     }
   } finally {
-    await chrome.kill();
+    chrome.kill();
   }
 
   console.log(

@@ -26,7 +26,7 @@ const imageRef = z.object({
 export const siteConfigSchema = z.object({
   site: z.object({
     /** Absolute production origin, no trailing slash. Drives canonicals + sitemap. */
-    url: z.string().url().refine((u) => !u.endsWith('/'), 'site.url must not have a trailing slash'),
+    url: z.url().refine((u) => !u.endsWith('/'), 'site.url must not have a trailing slash'),
   }),
 
   brand: z.object({
@@ -50,7 +50,7 @@ export const siteConfigSchema = z.object({
     phone: z.string().regex(/^\+[1-9]\d{7,14}$/, 'phone must be E.164, e.g. "+18775208638"'),
     /** Human-readable form used in visible copy. */
     phoneDisplay: z.string().min(1),
-    email: z.string().email(),
+    email: z.email(),
     address: z.object({
       street: z.string().min(1),
       city: z.string().min(1),
@@ -74,10 +74,10 @@ export const siteConfigSchema = z.object({
     .min(1),
 
   socials: z.object({
-    facebook: z.string().url().optional(),
-    instagram: z.string().url().optional(),
-    tiktok: z.string().url().optional(),
-    youtube: z.string().url().optional(),
+    facebook: z.url().optional(),
+    instagram: z.url().optional(),
+    tiktok: z.url().optional(),
+    youtube: z.url().optional(),
   }),
 
   ghl: z.object({
@@ -86,12 +86,12 @@ export const siteConfigSchema = z.object({
      * calendar per vehicle class. `/booking` renders these as a selector.
      */
     bookingUrls: z
-      .array(z.object({ label: z.string().min(1), url: z.string().url() }))
+      .array(z.object({ label: z.string().min(1), url: z.url() }))
       .min(1),
     /** GHL form/funnel URL that `/get-quote` links out to. Never rebuilt in Astro. */
-    quoteUrl: z.string().url(),
+    quoteUrl: z.url(),
     /** Optional "leave us a review" destination (Kleen links one from /faqs). */
-    reviewUrl: z.string().url().optional(),
+    reviewUrl: z.url().optional(),
     /**
      * Embed the GHL form/calendar inline on /booking and /get-quote instead of
      * linking out. Off by default, and deliberately limited to those two routes:
@@ -122,14 +122,14 @@ export const siteConfigSchema = z.object({
     howItWorks: z.boolean(),
     /** Optional badge slot inside the About SplitSection (spec §11 decision 2). */
     credentialBadge: z
-      .object({ image: z.string().min(1), alt: z.string().min(1), href: z.string().url().optional() })
+      .object({ image: z.string().min(1), alt: z.string().min(1), href: z.url().optional() })
       .optional(),
     /**
      * Blog stays on GHL for now — the engine renders a nav link out rather than
      * owning posts. Set to a URL to show the link, omit to hide it entirely.
      * TODO(decision): bring /blog into the engine as a third collection, or keep external.
      */
-    blogUrl: z.string().url().optional(),
+    blogUrl: z.url().optional(),
   }),
 
   seo: z.object({

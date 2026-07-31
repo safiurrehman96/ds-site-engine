@@ -54,6 +54,7 @@ const og = await ogImageUrl(ogImage ?? siteConfig.defaults.heroVideo.poster.src,
 {
   jsonLd.length > 0 && (
     <script
+      is:inline
       type="application/ld+json"
       set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': jsonLd })}
     />

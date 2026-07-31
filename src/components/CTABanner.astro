@@ -32,10 +32,9 @@ interface Props {
 
 const { headline, body, variant, preset, image } = Astro.props;
 
-const { contact, defaults, theme } = siteConfig;
+const { contact, defaults } = siteConfig;
 const active: CTAVariant = variant ?? getPreset(preset ?? activePreset).motif.ctaStyle;
 const bg = image ?? defaults.heroVideo.poster;
-const centred = active === 'image' || active === 'panel';
 ---
 
 <section

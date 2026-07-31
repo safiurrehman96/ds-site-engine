@@ -28,7 +28,7 @@ interface Props {
 const { variant, preset } = Astro.props;
 
 const areas = await getAreas();
-const { brand, contact, hours, serviceArea, theme } = siteConfig;
+const { brand, contact, hours, serviceArea } = siteConfig;
 const year = new Date().getFullYear();
 const active: FooterVariant =
   variant ?? getPreset(preset ?? activePreset).motif.footerStyle;

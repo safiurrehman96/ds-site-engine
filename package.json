@@ -24,6 +24,7 @@
     "placeholders": "node scripts/make-placeholder-assets.mjs",
     "draft": "node scripts/draft-payload.mjs",
     "lint": "node scripts/lint-payload.mjs",
+    "smoke": "node scripts/smoke-dev.mjs",
     "test": "vitest run"
   },
   "dependencies": {

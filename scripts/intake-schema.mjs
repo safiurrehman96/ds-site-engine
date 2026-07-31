@@ -26,7 +26,7 @@ const slug = z
   .string()
   .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'must be lowercase and hyphen-separated');
 
-const url = z.string().url();
+const url = z.url();
 const hex = z.string().regex(/^#[0-9a-fA-F]{6}$/, 'must be a 6-digit hex colour');
 
 /** Matches src/config-schema.ts so intake cannot accept what the engine will reject. */
@@ -75,7 +75,7 @@ export const intakeSchema = z.object({
     phone: pending(z.string().regex(/^\+[1-9]\d{7,14}$/, 'must be E.164, e.g. "+12015550100"')),
     /** Human-readable form used in visible copy. */
     phoneDisplay: pending(z.string().min(1)),
-    email: pending(z.string().email()),
+    email: pending(z.email()),
     /**
      * Required by the engine for LocalBusiness JSON-LD. A client working out of
      * hangars or without a public premises still needs one — use the registered
@@ -104,12 +104,12 @@ export const intakeSchema = z.object({
   hours: pending(z.array(z.object({ days: z.string().min(1), hours: z.string().min(1) })).min(1)),
 
   socials: z.object({
-    facebook: z.string().url().nullish(),
-    instagram: z.string().url().nullish(),
-    tiktok: z.string().url().nullish(),
-    youtube: z.string().url().nullish(),
+    facebook: z.url().nullish(),
+    instagram: z.url().nullish(),
+    tiktok: z.url().nullish(),
+    youtube: z.url().nullish(),
     /** "Leave us a review" destination. Changes what the FAQs CTA offers. */
-    reviewUrl: z.string().url().nullish(),
+    reviewUrl: z.url().nullish(),
   }),
 
   ghl: z.object({
@@ -147,10 +147,10 @@ export const intakeSchema = z.object({
     /** Home "How It Works" steps. */
     howItWorks: z.boolean().default(true),
     credentialBadge: z
-      .object({ image: z.string().min(1), alt: z.string().min(1), href: z.string().url().nullish() })
+      .object({ image: z.string().min(1), alt: z.string().min(1), href: z.url().nullish() })
       .nullish(),
     /** Set to show a nav link out to a blog still hosted elsewhere. */
-    blogUrl: z.string().url().nullish(),
+    blogUrl: z.url().nullish(),
   }),
 
   legal: z.object({
