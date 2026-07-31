@@ -22,7 +22,8 @@
     "import": "node scripts/import-notion.mjs",
     "intake": "node scripts/check-intake.mjs",
     "placeholders": "node scripts/make-placeholder-assets.mjs",
-    "draft": "node scripts/draft-payload.mjs"
+    "draft": "node scripts/draft-payload.mjs",
+    "test": "vitest run"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
@@ -34,6 +35,7 @@
     "chrome-launcher": "^1.2.1",
     "lighthouse": "^13.4.1",
     "sharp": "^0.35.3",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.10"
   }
 }
