@@ -30,7 +30,8 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Validate client slug
-        run: test -d "clients/${{ inputs.client }}" || { echo "no such client: ${{ inputs.client }}"; exit 1; }
+        run: |
+          test -d "clients/${{ inputs.client }}" || { echo "no such client: ${{ inputs.client }}"; exit 1; }
 
       - uses: docker/setup-buildx-action@v3
 
