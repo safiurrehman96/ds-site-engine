@@ -179,8 +179,12 @@ applications use the **Docker** provider and just pull:
 - **Preview** (`.github/workflows/preview.yml`): manual dispatch
   (`gh workflow run preview.yml -f client=jetspa`) builds current `master` with
   `DS_STRICT=0` and overwrites `ds-site-jetspa:preview`, then pings the preview
-  app's Dokploy webhook (repo secret `DOKPLOY_PREVIEW_WEBHOOKS`, a JSON map of
-  slug → webhook URL) so it redeploys itself.
+  app's Dokploy webhook so it redeploys itself. **Not wired up yet:** the repo
+  secret `DOKPLOY_PREVIEW_WEBHOOKS` (a JSON map of slug → the app's deploy
+  webhook URL from its Dokploy settings) doesn't exist, so the step skips and
+  previews need a manual Deploy press in Dokploy after each build. Create the
+  secret to make `gh workflow run preview.yml -f client=<slug>` fully
+  hands-off.
 
 Each Dokploy application: Docker provider, image `ds-site-<slug>:<tag>`,
 container port `80`, HTTPS off (Cloudflare terminates TLS; traffic arrives via
