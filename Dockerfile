@@ -11,9 +11,12 @@ FROM node:24-alpine AS build
 ARG DS_CLIENT
 RUN test -n "$DS_CLIENT" || (echo "DS_CLIENT build arg is required" && exit 1)
 
-# A payload still carrying PLACEHOLDER values must fail the build, never ship.
+# A payload still carrying PLACEHOLDER values must fail the build, never ship —
+# except on preview apps, which exist to show work-in-progress: those set
+# DS_STRICT=0 in the application's environment.
+ARG DS_STRICT=1
 ENV DS_CLIENT=$DS_CLIENT \
-    DS_STRICT=1 \
+    DS_STRICT=$DS_STRICT \
     CI=1
 
 RUN corepack enable && corepack prepare pnpm@11.1.2 --activate
