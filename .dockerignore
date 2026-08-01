@@ -1,0 +1,10 @@
+node_modules
+dist
+.git
+.astro
+client
+*.html
+PHASE-*-NOTES.md
+IMPLEMENTATION_PLAN.md
+test
+vitest.config.ts

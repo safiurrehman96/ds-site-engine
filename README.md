@@ -166,6 +166,31 @@ git tag jetspa/v1        # cut when the site goes live
 
 A finished site is therefore frozen by the ref, not by convention.
 
+### Dokploy setup (per client)
+
+The repo ships a multi-stage `Dockerfile`: a Node stage builds `dist/` with
+`DS_STRICT=1` baked in, an nginx stage serves it (config in `deploy/nginx.conf`).
+TLS and domains are handled by Dokploy's Traefik in front; the container speaks
+plain HTTP on port 80.
+
+Create one **Application** per client:
+
+1. **Source**: this repo (GitHub provider or git URL). Branch/ref: the client's
+   tag, e.g. `kleen/v1` — not `master`.
+2. **Build type**: Dockerfile. Build args: `DS_CLIENT=<slug>` (e.g. `DS_CLIENT=kleen`).
+   This is the only per-client difference in the build.
+3. **Auto Deploy: off.** Deploys happen by hand when a pin is bumped, never on push.
+4. **Domain**: the client's domain, HTTPS on, container port `80`.
+5. Deploy once, verify, then point DNS at the server.
+
+To update a client later: cut `kleen/v2`, change that one application's ref,
+press Deploy. Nothing else moves.
+
+Migration 301s: `clients/<slug>/_redirects` is translated into real nginx rules
+at image build time by `scripts/redirects-to-nginx.mjs`, so the Netlify-format
+file is honoured even though nginx serves the site. Unsupported redirect syntax
+fails the build rather than shipping a rule that does nothing.
+
 ### Why not a copy of the engine per client
 
 Because every fix would need making N times, and would get made once. Concrete case: a
@@ -197,11 +222,11 @@ first time a pin bump has stakes.
 
 ### Also before the first deploy
 
-- **Set `DS_STRICT=1`** in the pipeline, so a payload still carrying `PLACEHOLDER` values
-  fails the build instead of shipping.
-- **`_redirects` is a Netlify/Cloudflare format.** Serving `dist/` with nginx or Caddy
-  ignores it, so migration 301s silently do nothing. Translate the file into the
-  server's own config, or serve behind a CDN that understands it.
+- **`DS_STRICT=1` is baked into the Dockerfile**, so a payload still carrying
+  `PLACEHOLDER` values fails the image build instead of shipping.
+- **`_redirects` is a Netlify/Cloudflare format** that nginx ignores — the Dockerfile
+  translates it into real nginx rules via `scripts/redirects-to-nginx.mjs`. If a client
+  is ever deployed some other way, that translation must come along.
 - **Path filtering is not a substitute for pinning.** Restricting an application to
   `src/**` plus its own `clients/<slug>/**` still rebuilds every client on any `src/`
   commit — which is the thing being avoided here.
