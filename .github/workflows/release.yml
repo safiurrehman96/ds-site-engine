@@ -1,0 +1,49 @@
+# Cutting a client release = pushing a tag like `jetspa/v2`.
+#
+# Nothing builds on branch pushes — engine work is inert until a tag makes a
+# release deliberate. The tag name carries everything: client slug and version.
+# Strict mode stays on, so a payload with PLACEHOLDER values fails here, not on
+# a server.
+#
+# Result: ghcr.io/xautomations/ds-site-<client>:<version>, which the client's
+# production Dokploy application pulls when its image tag is bumped by hand.
+
+name: release
+on:
+  push:
+    tags: ['*/v*']
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+    steps:
+      - name: Parse client and version from tag
+        id: tag
+        run: |
+          echo "client=${GITHUB_REF_NAME%%/*}" >> "$GITHUB_OUTPUT"
+          echo "version=${GITHUB_REF_NAME#*/}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          build-args: |
+            DS_CLIENT=${{ steps.tag.outputs.client }}
+          tags: ghcr.io/${{ github.repository_owner }}/ds-site-${{ steps.tag.outputs.client }}:${{ steps.tag.outputs.version }}
+          labels: |
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}

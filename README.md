@@ -166,25 +166,27 @@ git tag jetspa/v1        # cut when the site goes live
 
 A finished site is therefore frozen by the ref, not by convention.
 
-### Dokploy setup (per client)
+### Build in CI, serve from Dokploy
 
-The repo ships a multi-stage `Dockerfile`: a Node stage builds `dist/` with
-`DS_STRICT=1` baked in, an nginx stage serves it (config in `deploy/nginx.conf`).
-TLS and domains are handled by Dokploy's Traefik in front; the container speaks
-plain HTTP on port 80.
+The server never builds. GitHub Actions (Blacksmith runners) runs the
+multi-stage `Dockerfile` — a Node stage builds `dist/`, an nginx stage serves it
+(config in `deploy/nginx.conf`) — and pushes the image to GHCR. Dokploy
+applications use the **Docker** provider and just pull:
 
-Create one **Application** per client:
+- **Release** (`.github/workflows/release.yml`): pushing a tag like `jetspa/v2`
+  builds that one client at that commit, strict mode on, and pushes
+  `ghcr.io/xautomations/ds-site-jetspa:v2`. Branch pushes build nothing.
+- **Preview** (`.github/workflows/preview.yml`): manual dispatch
+  (`gh workflow run preview.yml -f client=jetspa`) builds current `master` with
+  `DS_STRICT=0` and overwrites `ds-site-jetspa:preview`, then pings the preview
+  app's Dokploy webhook (repo secret `DOKPLOY_PREVIEW_WEBHOOKS`, a JSON map of
+  slug → webhook URL) so it redeploys itself.
 
-1. **Source**: this repo (GitHub provider or git URL). Branch/ref: the client's
-   tag, e.g. `kleen/v1` — not `master`.
-2. **Build type**: Dockerfile. Build args: `DS_CLIENT=<slug>` (e.g. `DS_CLIENT=kleen`).
-   This is the only per-client difference in the build.
-3. **Auto Deploy: off.** Deploys happen by hand when a pin is bumped, never on push.
-4. **Domain**: the client's domain, HTTPS on, container port `80`.
-5. Deploy once, verify, then point DNS at the server.
-
-To update a client later: cut `kleen/v2`, change that one application's ref,
-press Deploy. Nothing else moves.
+Each Dokploy application: Docker provider, image `ds-site-<slug>:<tag>`,
+container port `80`, HTTPS off (Cloudflare terminates TLS; traffic arrives via
+the tunnel). Production apps pin a version tag and are redeployed by hand —
+bumping `:v1` to `:v2` in the image field *is* the pin bump. Preview apps track
+`:preview` via the webhook.
 
 Migration 301s: `clients/<slug>/_redirects` is translated into real nginx rules
 at image build time by `scripts/redirects-to-nginx.mjs`, so the Netlify-format

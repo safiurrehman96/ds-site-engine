@@ -1,0 +1,62 @@
+# Refreshing a client preview is a manual dispatch, never a side effect:
+#
+#   gh workflow run preview.yml -f client=jetspa
+#
+# Builds current master with DS_STRICT=0 (previews exist to show work in
+# progress, placeholders included) and overwrites ds-site-<client>:preview.
+# If a Dokploy webhook is configured for the client, the preview app then
+# pulls and swaps on its own.
+#
+# Webhooks live in one repo secret, DOKPLOY_PREVIEW_WEBHOOKS, a JSON map:
+#   { "jetspa": "https://dokploy.../api/deploy/...", "kleen": "..." }
+
+name: preview
+on:
+  workflow_dispatch:
+    inputs:
+      client:
+        description: 'Client slug (directory under clients/)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate client slug
+        run: test -d "clients/${{ inputs.client }}" || { echo "no such client: ${{ inputs.client }}"; exit 1; }
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          build-args: |
+            DS_CLIENT=${{ inputs.client }}
+            DS_STRICT=0
+          tags: ghcr.io/${{ github.repository_owner }}/ds-site-${{ inputs.client }}:preview
+          labels: |
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+
+      - name: Trigger Dokploy deploy
+        env:
+          WEBHOOKS: ${{ secrets.DOKPLOY_PREVIEW_WEBHOOKS }}
+        run: |
+          if [ -z "$WEBHOOKS" ]; then echo "no webhooks configured, skipping"; exit 0; fi
+          url=$(echo "$WEBHOOKS" | jq -r --arg c "${{ inputs.client }}" '.[$c] // empty')
+          if [ -z "$url" ]; then echo "no webhook for ${{ inputs.client }}, skipping"; exit 0; fi
+          curl -fsS -X POST "$url" && echo "deploy triggered"
