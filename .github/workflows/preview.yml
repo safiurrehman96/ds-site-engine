@@ -48,7 +48,7 @@ jobs:
           build-args: |
             DS_CLIENT=${{ inputs.client }}
             DS_STRICT=0
-          tags: ghcr.io/${{ github.repository_owner }}/ds-site-${{ inputs.client }}:preview
+          tags: ghcr.io/xautomations/ds-site-${{ inputs.client }}:preview
           labels: |
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.source=https://github.com/${{ github.repository }}

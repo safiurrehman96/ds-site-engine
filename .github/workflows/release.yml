@@ -43,7 +43,7 @@ jobs:
           push: true
           build-args: |
             DS_CLIENT=${{ steps.tag.outputs.client }}
-          tags: ghcr.io/${{ github.repository_owner }}/ds-site-${{ steps.tag.outputs.client }}:${{ steps.tag.outputs.version }}
+          tags: ghcr.io/xautomations/ds-site-${{ steps.tag.outputs.client }}:${{ steps.tag.outputs.version }}
           labels: |
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
