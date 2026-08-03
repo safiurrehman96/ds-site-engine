@@ -311,11 +311,15 @@ export const aviationAirportSchema = z.object({
         label: prose,
         title: prose,
         body: prose,
+        /** The tile beside the condition copy. Optional — falls back to a placeholder. */
+        image: image.optional(),
       }),
     )
     .min(3)
     .max(5),
   referenceImpacts: z.array(prose).min(3).max(5),
+  /** Full-bleed image beside the closing CTA. Optional, like every other media slot. */
+  conversionImage: image.optional(),
   teaser: prose,
 });
 

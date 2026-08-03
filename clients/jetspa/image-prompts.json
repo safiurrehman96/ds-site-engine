@@ -517,6 +517,227 @@
         "content/services/aircraft-exterior-detailing.md → heroImage"
       ],
       "prompt": "Tight three-quarter view of the forward fuselage and nose of a business jet after a full exterior detail, shot from a low angle close to the skin. The paint is so deep that the ramp, the hangar edge and the dusk sky are all legible as a mirror reflection curving across the fuselage — the reflection is the subject, not the aircraft. Cockpit windows dark, no people, no markings. Shot on a 50mm lens at f/4."
+    },
+    {
+      "id": "kteb-ramp",
+      "out": "kteb-ramp.webp",
+      "alt": "A densely packed business aviation ramp with jets parked wingtip to wingtip",
+      "usedBy": [
+        "content/areas/aircraft-detailing-teterboro.md → localCopy.image"
+      ],
+      "resizeWidth": 1200,
+      "prompt": "A densely packed business aviation ramp at midday, six or seven midsize and large corporate jets parked wingtip to wingtip in a tight row, ground equipment threaded between them and a fuel truck moving down the line. Busy, at capacity, constant movement. A distant city skyline sits hazy on the horizon. No people in the foreground, no tail numbers, no signage. Shot on an 85mm lens at f/4, compressed perspective stacking the aircraft."
+    },
+    {
+      "id": "kmmu-ramp",
+      "out": "kmmu-ramp.webp",
+      "alt": "A quiet general aviation ramp at first light with two jets parked well apart",
+      "usedBy": [
+        "content/areas/aircraft-detailing-morristown.md → localCopy.image"
+      ],
+      "resizeWidth": 1200,
+      "prompt": "A quiet general aviation ramp early in the morning, two business jets parked well apart with a long empty stretch of clean apron between them, hangar rows behind. Calm, unhurried, low soft light and long shadows — the opposite of a crowded field. No people, no tail numbers, no signage. Shot on a 50mm lens at f/4."
+    },
+    {
+      "id": "kabe-ramp",
+      "out": "kabe-ramp.webp",
+      "alt": "A business jet on a ramp shared with commercial and cargo operations",
+      "usedBy": [
+        "content/areas/aircraft-detailing-allentown.md → localCopy.image"
+      ],
+      "resizeWidth": 1200,
+      "prompt": "A general aviation ramp adjacent to commercial operations: a business jet in the foreground with a larger cargo aircraft and a commercial terminal jet bridge visible further down the field behind it. Flat eastern Pennsylvania farmland horizon beyond the fence line. Overcast midday light. No people, no tail numbers, no airline liveries or signage. Shot on a 35mm lens at f/5.6."
+    },
+    {
+      "id": "khpn-ramp",
+      "out": "khpn-ramp.webp",
+      "alt": "A tidy corporate ramp bordered by woodland with jets in an evenly spaced row",
+      "usedBy": [
+        "content/areas/aircraft-detailing-white-plains.md → localCopy.image"
+      ],
+      "resizeWidth": 1200,
+      "prompt": "A tidy corporate ramp bordered by dense deciduous woodland, three business jets parked in a precise evenly spaced row, autumn trees close behind the fence line. Manicured, orderly, suburban-corporate rather than industrial. Late afternoon light. No people, no tail numbers, no signage. Shot on a 50mm lens at f/4."
+    },
+    {
+      "id": "kteb-apron",
+      "out": "kteb-apron.webp",
+      "alt": "A long FBO apron with a line of business jets receding into the distance",
+      "usedBy": [
+        "content/areas/aircraft-detailing-teterboro.md → localDetail.image"
+      ],
+      "resizeWidth": 1600,
+      "prompt": "Extreme wide panoramic view down a long FBO apron, composed for a letterbox crop with everything in the central horizontal band. A line of business jets recedes into the distance in sharp perspective, the apron edge markings running as converging lines toward the vanishing point. Ground power units and baggage carts along the line. Overcast flat light. No people, no tail numbers, no logos or signage. Shot on a 24mm lens at f/8, deep focus."
+    },
+    {
+      "id": "kmmu-apron",
+      "out": "kmmu-apron.webp",
+      "alt": "An open FBO apron with hangars along the far edge and two parked jets",
+      "usedBy": [
+        "content/areas/aircraft-detailing-morristown.md → localDetail.image"
+      ],
+      "resizeWidth": 1600,
+      "prompt": "Extreme wide panoramic view of an FBO apron with a large open expanse of clean concrete in the foreground and a row of hangars along the far edge, two jets parked at the left. Composed for a letterbox crop, subject in the central band. Quiet and spacious. Morning light, long shadows. No people, no tail numbers, no signage. Shot on a 24mm lens at f/8."
+    },
+    {
+      "id": "kabe-apron",
+      "out": "kabe-apron.webp",
+      "alt": "A working general aviation apron with open hangars and a cargo ramp beyond",
+      "usedBy": [
+        "content/areas/aircraft-detailing-allentown.md → localDetail.image"
+      ],
+      "resizeWidth": 1600,
+      "prompt": "Extreme wide panoramic view of a general aviation apron with hangar doors open along the right and a cargo ramp visible far in the background. Composed for a letterbox crop with the subject in the central horizontal band. Utilitarian, working airfield character. Flat overcast light. No people, no tail numbers, no logos or signage. Shot on a 24mm lens at f/8."
+    },
+    {
+      "id": "khpn-apron",
+      "out": "khpn-apron.webp",
+      "alt": "A corporate FBO apron with jets in a precise row against a treeline",
+      "usedBy": [
+        "content/areas/aircraft-detailing-white-plains.md → localDetail.image"
+      ],
+      "resizeWidth": 1600,
+      "prompt": "Extreme wide panoramic view of a corporate FBO apron with jets parked in a precise row and a treeline running the full length behind them. Composed for a letterbox crop, everything in the central band. Clean, orderly, low afternoon sun raking across the concrete. No people, no tail numbers, no signage. Shot on a 24mm lens at f/8."
+    },
+    {
+      "id": "kteb-dusk",
+      "out": "kteb-dusk.webp",
+      "alt": "Business jets parked close together under apron floodlights at dusk",
+      "usedBy": [
+        "content/areas/aircraft-detailing-teterboro.md → airport.conversionImage"
+      ],
+      "resizeWidth": 1400,
+      "prompt": "A busy ramp at deep dusk, several business jets parked close together under bright overhead apron floodlights, the sky a dark blue gradient behind and warm pools of light on wet concrete. Activity still visible — ground equipment positioned, a tug near the nose gear. No people in the foreground, no tail numbers, no signage. Shot on a 35mm lens at f/2.8."
+    },
+    {
+      "id": "kmmu-dusk",
+      "out": "kmmu-dusk.webp",
+      "alt": "A single jet on an empty ramp at dusk under FBO floodlights",
+      "usedBy": [
+        "content/areas/aircraft-detailing-morristown.md → airport.conversionImage"
+      ],
+      "resizeWidth": 1400,
+      "prompt": "A single business jet on an otherwise empty ramp at dusk, lit by one bank of FBO floodlights, hangar doors glowing warm behind it. Deep blue evening sky, still air, nothing else moving. No people, no tail numbers, no signage. Shot on a 35mm lens at f/2.8."
+    },
+    {
+      "id": "kabe-dusk",
+      "out": "kabe-dusk.webp",
+      "alt": "A business jet at dusk with the commercial terminal lit in the distance",
+      "usedBy": [
+        "content/areas/aircraft-detailing-allentown.md → airport.conversionImage"
+      ],
+      "resizeWidth": 1400,
+      "prompt": "A business jet on an apron at dusk with the larger commercial terminal lit in the far background, taxiway edge lights running blue into the distance. Cool evening light with warm floodlight pools. No people, no tail numbers, no liveries or signage. Shot on a 35mm lens at f/2.8."
+    },
+    {
+      "id": "khpn-dusk",
+      "out": "khpn-dusk.webp",
+      "alt": "Two jets on a corporate ramp at late dusk against a dark treeline",
+      "usedBy": [
+        "content/areas/aircraft-detailing-white-plains.md → airport.conversionImage"
+      ],
+      "resizeWidth": 1400,
+      "prompt": "Two business jets parked on a corporate ramp at late dusk, floodlights on, the wooded treeline behind them almost black against a deep indigo sky. Quiet, curfew-hour stillness. No people, no tail numbers, no signage. Shot on a 35mm lens at f/2.8."
+    },
+    {
+      "id": "cond-winter",
+      "out": "cond-winter.webp",
+      "alt": "Dried deicing fluid residue crusted along an aircraft leading edge",
+      "usedBy": [
+        "areas/*.md → airport.conditions[] (Winter) — shared across fields"
+      ],
+      "resizeWidth": 700,
+      "prompt": "Macro view of dried white-grey deicing fluid residue crusted along the leading edge and lower panel seams of a white painted aircraft, streaked and chalky where it has run and dried. Cold blue winter light, frost at the panel edges. Shot on a 100mm macro lens at f/4."
+    },
+    {
+      "id": "cond-summer",
+      "out": "cond-summer.webp",
+      "alt": "A chalky patch of oxidised aircraft paint beside a still-glossy section",
+      "usedBy": [
+        "areas/*.md → airport.conditions[] (Summer) — shared across fields"
+      ],
+      "resizeWidth": 700,
+      "prompt": "Macro view of a hazy, chalky patch of oxidised white aircraft paint under hard summer sun, the clear coat visibly dulled and flat next to an adjacent section that still holds a sharp reflection. Heat shimmer softening the far background. Shot on a 100mm macro lens at f/4."
+    },
+    {
+      "id": "cond-exhaust",
+      "out": "cond-exhaust.webp",
+      "alt": "Jet exhaust soot streaked back across white fuselage paint",
+      "usedBy": [
+        "areas/*.md → airport.conditions[] (Exhaust) — shared across fields"
+      ],
+      "resizeWidth": 700,
+      "prompt": "Macro view of grey-black jet exhaust soot staining streaked back across white painted fuselage skin behind an engine, the deposit heaviest at the leading edge of the stain and fading aft in fine tapering lines. Shot on a 100mm macro lens at f/4."
+    },
+    {
+      "id": "cond-industrial",
+      "out": "cond-industrial.webp",
+      "alt": "A film of industrial fallout on a wing with a clean fingertip swipe through it",
+      "usedBy": [
+        "areas/*.md → airport.conditions[] (Industrial) — shared across fields"
+      ],
+      "resizeWidth": 700,
+      "prompt": "Macro view of a fine grey-brown film of industrial and agricultural fallout settled evenly across a white painted wing surface, with one clean swipe of a gloved fingertip cutting through it to reveal the gloss beneath. Shot on a 100mm macro lens at f/4."
+    },
+    {
+      "id": "cond-cycles",
+      "out": "cond-cycles.webp",
+      "alt": "Brake dust accumulated on a jet main landing gear wheel and hub",
+      "usedBy": [
+        "areas/*.md → airport.conditions[] (Cycles) — shared across fields"
+      ],
+      "resizeWidth": 700,
+      "prompt": "Close view of a business jet main landing gear wheel and brake assembly, the surrounding gear leg and wheel hub coated in fine dark brake dust from repeated cycles. Hangar light from one side. Shot on an 85mm lens at f/2.8."
+    },
+    {
+      "id": "cond-access",
+      "out": "cond-access.webp",
+      "alt": "An access badge presented at an airfield gate reader",
+      "usedBy": [
+        "areas/*.md → airport.conditions[] (Access) — shared across fields"
+      ],
+      "resizeWidth": 700,
+      "prompt": "A gloved hand holding an access badge up to a card reader mounted on an airfield security gate post, chain-link fence and a blurred ramp with parked aircraft behind. The badge face is turned away and unreadable — no text, numbers, photo or logos visible anywhere. Shot on an 85mm lens at f/2.0."
+    },
+    {
+      "id": "cond-dispatch",
+      "out": "cond-dispatch.webp",
+      "alt": "A wrist watch checked against a waiting jet on the ramp",
+      "usedBy": [
+        "areas/*.md → airport.conditions[] (Dispatch) — shared across fields"
+      ],
+      "resizeWidth": 700,
+      "prompt": "A technician's wrist watch checked against a business jet waiting on the ramp behind, shown from the forearm down, the watch face soft and unreadable with no legible numerals or branding. Early morning light, sense of a deadline. Shot on an 85mm lens at f/2.0."
+    },
+    {
+      "id": "cond-standards",
+      "out": "cond-standards.webp",
+      "alt": "A clean white cloth drawn across a mirror-polished panel in a wipe test",
+      "usedBy": [
+        "areas/*.md → airport.conditions[] (Standards) — shared across fields"
+      ],
+      "resizeWidth": 700,
+      "prompt": "Macro view of a folded clean white cloth drawn across a mirror-polished painted panel in a wipe test, the cloth still spotless where it has passed. The panel reflects the cloth and the hangar lights sharply. Shot on a 100mm macro lens at f/4."
+    },
+    {
+      "id": "cond-visibility",
+      "out": "cond-visibility.webp",
+      "alt": "A business jet mirrored in the glass frontage of an FBO terminal",
+      "usedBy": [
+        "areas/*.md → airport.conditions[] (Visibility) — shared across fields"
+      ],
+      "resizeWidth": 700,
+      "prompt": "A business jet reflected in the full-height glass frontage of an FBO terminal, the reflection sharp and complete across several panes, the dim interior just visible through the glass. The aircraft is being looked at. No people, no signage, no legible text. Shot on a 50mm lens at f/4."
+    },
+    {
+      "id": "social-band",
+      "out": "social-band.webp",
+      "alt": "A polished business jet on the ramp at sunset with a second aircraft beyond",
+      "usedBy": [
+        "site.config.ts → defaults.socialImage (airport image band, service page CTA, og:image)",
+        "content/home.md → proof.gallery[0]"
+      ],
+      "resizeWidth": 2000,
+      "prompt": "Extreme wide panoramic photograph of a polished business jet parked on an FBO ramp at sunset, composed for a very wide letterbox crop with all subject matter in the central horizontal band and generous empty sky above and apron below. The aircraft sits three-quarter on across the centre of the frame, its paint mirror-deep and throwing the orange and blue of the sky back off the fuselage. A second jet sits further down the line, smaller and softer. Air stairs down, cabin lights just visible, nobody in frame. Long shadows across clean concrete. No tail numbers, no logos, no signage, no text. Shot on a 50mm lens at f/5.6, deep focus, very high detail across the full width of the frame."
     }
   ]
 }

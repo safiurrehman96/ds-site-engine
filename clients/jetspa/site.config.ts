@@ -103,8 +103,8 @@ export const siteConfig = {
   defaults: {
     ctaHeadline: "Book Your Aircraft's Next Detail",
     socialImage: {
-      src: './assets/social.jpg',
-      alt: 'A polished business jet on the ramp at sunset',
+      src: './assets/social-band.webp',
+      alt: 'A polished business jet on the ramp at sunset with a second aircraft beyond',
     },
     heroVideo: {
       src: './assets/hero.webm',

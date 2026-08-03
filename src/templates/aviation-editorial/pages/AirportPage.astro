@@ -161,7 +161,7 @@ const breadcrumbJsonLd = {
             <article>
               <div>
                 <span>{condition.label}</span>
-                <MediaSlot label={`${condition.label} condition · ${code}`} showCaption={false} />
+                <MediaSlot image={condition.image} label={`${condition.label} condition · ${code}`} showCaption={false} />
               </div>
               <div><h3>{condition.title}</h3><p>{condition.body}</p></div>
             </article>
@@ -218,7 +218,7 @@ const breadcrumbJsonLd = {
   <section class="reference ae-section">
     <div class="ae-container">
       <header><SectionLabel>Field reference</SectionLabel><h2>{area.localDetail.heading}</h2>{referenceIntro?.kind === 'text' && <p>{referenceIntro.text}</p>}</header>
-      <MediaSlot label={`Ramp line and FBO apron · ${code}`} class="reference-media" />
+      <MediaSlot image={area.localDetail.image} label={`Ramp line and FBO apron · ${code}`} class="reference-media" sizes="90vw" />
       <div class="reference-head"><span>Item</span><span>Detail</span><span>What it means for service</span></div>
       <div class="reference-rows">
         {
@@ -241,7 +241,7 @@ const breadcrumbJsonLd = {
   </section>
 
   <section class="airport-conversion">
-    <MediaSlot label={`${code} ramp at dusk · aircraft under FBO lights`} class="conversion-media" />
+    <MediaSlot image={airport.conversionImage} label={`${code} ramp at dusk · aircraft under FBO lights`} class="conversion-media" sizes="50vw" />
     <div class="conversion-copy">
       <SectionLabel>{`Schedule at ${code}`}</SectionLabel>
       <h2>{area.ctaHeadline}</h2>

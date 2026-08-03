@@ -21,8 +21,8 @@ localCopy:
 
     JetSpa holds current badge access at KMMU and coordinates work directly with the FBO staff on the field, without external escort delay or scheduling bottleneck.
   image:
-    src: "./assets/service-aircraft-ceramic-coating.jpg"
-    alt: "A gloved hand applying coating to a dark blue fuselage panel"
+    src: "./assets/kmmu-ramp.webp"
+    alt: "A quiet general aviation ramp at first light with two jets parked well apart"
 
 localDetail:
   heading: "KMMU-Specific Considerations"
@@ -37,8 +37,8 @@ localDetail:
 
     **Scheduling.** Hangar space is coordinated with the FBO, and noise abatement expectations shape operating hours. Coating and boot work require 24 to 48 hours of ground time, which we coordinate against your calendar.
   image:
-    src: "./assets/service-aog-emergency-cleaning.jpg"
-    alt: "A business jet nose-on in a hangar at night"
+    src: "./assets/kmmu-apron.webp"
+    alt: "An open FBO apron with hangars along the far edge and two parked jets"
 
 whyUs:
   heading: "The JetSpa Guarantee"
@@ -72,19 +72,34 @@ airport:
     - label: "Winter"
       title: "Heavy deicing chemistry exposure"
       body: "Cold-weather operations leave residue on paint, leading edges, and boot systems that needs controlled removal."
+      image:
+        src: "./assets/cond-winter.webp"
+        alt: "Dried deicing fluid residue crusted along an aircraft leading edge"
     - label: "Summer"
       title: "Humidity accelerates oxidation"
       body: "Warm, humid conditions and airborne particulate increase exterior contamination and cabin wear."
+      image:
+        src: "./assets/cond-summer.webp"
+        alt: "A chalky patch of oxidised aircraft paint beside a still-glossy section"
     - label: "Dispatch"
       title: "Tight maintenance and flight windows"
       body: "Corporate operators need appearance work coordinated around active maintenance and dispatch calendars."
+      image:
+        src: "./assets/cond-dispatch.webp"
+        alt: "A wrist watch checked against a waiting jet on the ramp"
     - label: "Standards"
       title: "Work that holds up under scrutiny"
       body: "The finished aircraft should meet the standard an operator, passenger, or buyer expects on inspection."
+      image:
+        src: "./assets/cond-standards.webp"
+        alt: "A clean white cloth drawn across a mirror-polished panel in a wipe test"
   referenceImpacts:
     - "We coordinate with the appropriate FBO for hangar access, ground handling, and scheduling."
     - "Service scope is matched to the airframe, from piston and turboprop aircraft through large corporate jets."
     - "Proactive decontamination and coating maintenance counter seasonal chemical exposure."
     - "Multi-day coating and boot work is coordinated against your operating calendar."
+  conversionImage:
+    src: "./assets/kmmu-dusk.webp"
+    alt: "A single jet on an empty ramp at dusk under FBO floodlights"
   teaser: "A major New Jersey corporate aviation base serving light aircraft through large business jets."
 ---

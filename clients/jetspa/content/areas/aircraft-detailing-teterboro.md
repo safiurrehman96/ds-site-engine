@@ -21,8 +21,8 @@ localCopy:
 
     JetSpa holds current badge access at KTEB, has service history at every major FBO on the field, and can coordinate scheduling around your flight department's calendar without external escort delays or gate coordination bottlenecks.
   image:
-    src: "./assets/service-aircraft-exterior-detailing.jpg"
-    alt: "A gloved hand drying an aircraft fuselage with a microfibre cloth"
+    src: "./assets/kteb-ramp.webp"
+    alt: "A densely packed business aviation ramp with jets parked wingtip to wingtip"
 
 localDetail:
   heading: "KTEB-Specific Considerations"
@@ -37,8 +37,8 @@ localDetail:
 
     **Scheduling.** Hangar space is limited, ground handling runs through the FBO, and a noise curfew affects morning and evening operations. Coating and boot refurbishment require 24 to 48 hours of ground time, which we coordinate against your calendar during the scope call.
   image:
-    src: "./assets/service-corporate-jet-detailing.jpg"
-    alt: "A business jet nose-on in a hangar"
+    src: "./assets/kteb-apron.webp"
+    alt: "A long FBO apron with a line of business jets receding into the distance"
 
 whyUs:
   heading: "The JetSpa Guarantee"
@@ -74,19 +74,34 @@ airport:
     - label: "Exhaust"
       title: "Constant ramp exposure to jet exhaust"
       body: "Traffic density deposits soot and oil film on upper and aft surfaces faster than at quieter fields."
+      image:
+        src: "./assets/cond-exhaust.webp"
+        alt: "Jet exhaust soot streaked back across white fuselage paint"
     - label: "Winter"
       title: "Deicing chemistry accumulation"
       body: "Residue builds on paint and de-ice boots through the season and needs controlled decontamination, not pressure."
+      image:
+        src: "./assets/cond-winter.webp"
+        alt: "Dried deicing fluid residue crusted along an aircraft leading edge"
     - label: "Summer"
       title: "Humidity and coastal moisture accelerate oxidation"
       body: "Aircraft based here need more frequent decontamination cycles and shorter coating renewal intervals than aircraft in drier climates."
+      image:
+        src: "./assets/cond-summer.webp"
+        alt: "A chalky patch of oxidised aircraft paint beside a still-glossy section"
     - label: "Visibility"
       title: "Every aircraft on this ramp is being looked at"
       body: "Pilots, brokers, buyers, and prospective charter clients form impressions from what they see parked at KTEB."
+      image:
+        src: "./assets/cond-visibility.webp"
+        alt: "A business jet mirrored in the glass frontage of an FBO terminal"
   referenceImpacts:
     - "We coordinate hangar access and ground handling directly with the appropriate FBO desk."
     - "Scope is written per airframe; charter volume keeps between-leg and AOG demand elevated."
     - "Plan proactive decontamination and coating maintenance around the Northeast exposure cycle."
     - "Coating and boot work needs 24 to 48 hours of ground time, set against your calendar on the scope call."
+  conversionImage:
+    src: "./assets/kteb-dusk.webp"
+    alt: "Business jets parked close together under apron floodlights at dusk"
   teaser: "New York City's primary business aviation gateway and one of the country's busiest general aviation fields."
 ---

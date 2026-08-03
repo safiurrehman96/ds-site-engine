@@ -21,8 +21,8 @@ localCopy:
 
     JetSpa coordinates escorted access directly with the ramp operators on the field and builds that coordination into the confirmed service schedule.
   image:
-    src: "./assets/service-aircraft-interior-detailing.jpg"
-    alt: "A private jet cabin with cream leather seating and a polished table"
+    src: "./assets/khpn-ramp.webp"
+    alt: "A tidy corporate ramp bordered by woodland with jets in an evenly spaced row"
 
 localDetail:
   heading: "KHPN-Specific Considerations"
@@ -37,8 +37,8 @@ localDetail:
 
     **Scheduling.** Hangar space is competitive during peak seasons, operator curfews apply, and ground handling runs through FBO staff. Coating and boot work require 24 to 48 hours of ground time, which we build into scheduling during the scope call.
   image:
-    src: "./assets/service-piston-aircraft-detailing.jpg"
-    alt: "A technician machine-polishing a fuselage panel"
+    src: "./assets/khpn-apron.webp"
+    alt: "A corporate FBO apron with jets in a precise row against a treeline"
 
 whyUs:
   heading: "The JetSpa Guarantee"
@@ -72,19 +72,34 @@ airport:
     - label: "Exhaust"
       title: "High-traffic ramp exposure"
       body: "Frequent corporate and charter movements deposit soot and oil film on upper and aft surfaces."
+      image:
+        src: "./assets/cond-exhaust.webp"
+        alt: "Jet exhaust soot streaked back across white fuselage paint"
     - label: "Winter"
       title: "Heavy deicing chemistry accumulation"
       body: "Residue builds on paint and boots through the season and calls for controlled decontamination."
+      image:
+        src: "./assets/cond-winter.webp"
+        alt: "Dried deicing fluid residue crusted along an aircraft leading edge"
     - label: "Summer"
       title: "Coastal humidity accelerates oxidation"
       body: "Warm, humid conditions increase exterior contamination and place more demand on protective coatings."
+      image:
+        src: "./assets/cond-summer.webp"
+        alt: "A chalky patch of oxidised aircraft paint beside a still-glossy section"
     - label: "Visibility"
       title: "A high-standard corporate corridor"
       body: "Operators, brokers, and passengers expect based and transient aircraft to present at a consistently high level."
+      image:
+        src: "./assets/cond-visibility.webp"
+        alt: "A business jet mirrored in the glass frontage of an FBO terminal"
   referenceImpacts:
     - "Escorted access and FBO coordination are built into the confirmed service schedule."
     - "Scope is matched to large corporate airframes, charter utilization, and between-leg demand."
     - "Proactive decontamination and coating maintenance counter seasonal chemical exposure."
     - "Competitive hangar space means multi-day work must be coordinated early with the FBO."
+  conversionImage:
+    src: "./assets/khpn-dusk.webp"
+    alt: "Two jets on a corporate ramp at late dusk against a dark treeline"
   teaser: "A high-volume corporate aviation gateway serving Westchester and the greater New York region."
 ---

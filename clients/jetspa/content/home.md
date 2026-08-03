@@ -248,8 +248,8 @@ proof:
   gallery:
     - label: "Post-detail release · KTEB"
       image:
-        src: "./assets/social.jpg"
-        alt: "A polished business jet on the ramp at sunset"
+        src: "./assets/social-band.webp"
+        alt: "A polished business jet on the ramp at sunset with a second aircraft beyond"
     - label: "Brightwork · exhaust stack"
       image:
         src: "./assets/service-brightwork-polishing.jpg"

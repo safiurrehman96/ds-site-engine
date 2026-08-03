@@ -21,8 +21,8 @@ localCopy:
 
     JetSpa is 15 to 20 minutes from KABE, holds badge access to the field, and can coordinate scheduling around your calendar without long dispatch times.
   image:
-    src: "./assets/service-brightwork-polishing.jpg"
-    alt: "A high-gloss aircraft surface reflecting hangar lighting"
+    src: "./assets/kabe-ramp.webp"
+    alt: "A business jet on a ramp shared with commercial and cargo operations"
 
 localDetail:
   heading: "KABE-Specific Considerations"
@@ -37,8 +37,8 @@ localDetail:
 
     **Scheduling.** Total traffic volume is lower than Teterboro or White Plains, which typically means more flexible ground time windows and easier hangar coordination for multi-day work like coating and boot refurbishment.
   image:
-    src: "./assets/service-turboprop-aircraft-detailing.jpg"
-    alt: "A gloved hand applying coating to a fuselage panel"
+    src: "./assets/kabe-apron.webp"
+    alt: "A working general aviation apron with open hangars and a cargo ramp beyond"
 
 whyUs:
   heading: "The JetSpa Guarantee"
@@ -72,19 +72,34 @@ airport:
     - label: "Industrial"
       title: "Mixed industrial and agricultural fallout"
       body: "The field's surroundings create seasonal contamination patterns that require regular, surface-safe removal."
+      image:
+        src: "./assets/cond-industrial.webp"
+        alt: "A film of industrial fallout on a wing with a clean fingertip swipe through it"
     - label: "Cycles"
       title: "More takeoff and landing exposure"
       body: "Regional piston and turboprop operations put leading edges, bellies, props, and boots through frequent cycles."
+      image:
+        src: "./assets/cond-cycles.webp"
+        alt: "Brake dust accumulated on a jet main landing gear wheel and hub"
     - label: "Winter"
       title: "Northeast deicing chemistry"
       body: "Cold-weather operations leave residue on paint and boot systems that should be removed methodically."
+      image:
+        src: "./assets/cond-winter.webp"
+        alt: "Dried deicing fluid residue crusted along an aircraft leading edge"
     - label: "Access"
       title: "Flexible scheduling near our base"
       body: "Lower ramp congestion generally creates more workable windows for hangar coordination and multi-day service."
+      image:
+        src: "./assets/cond-access.webp"
+        alt: "An access badge presented at an airfield gate reader"
   referenceImpacts:
     - "We coordinate directly with the appropriate ground staff for access, aircraft handling, and scheduling."
     - "Programs are tailored for piston, turboprop, and corporate jet utilization patterns."
     - "Regular decontamination counters winter chemistry, humidity, and regional pollution."
     - "Lower traffic volume can provide more flexible ground-time windows for coating and boot work."
+  conversionImage:
+    src: "./assets/kabe-dusk.webp"
+    alt: "A business jet at dusk with the commercial terminal lit in the distance"
   teaser: "A mixed-use Lehigh Valley field with flexible access for regional private aviation."
 ---
