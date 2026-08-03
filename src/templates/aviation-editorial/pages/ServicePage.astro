@@ -1,0 +1,605 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Inline from '../../../components/Inline.astro';
+import { getAreas, getServices, paragraphs, proseBlocks } from '../../../lib/content';
+import {
+  buildH1,
+  buildTitle,
+  faqPageJsonLd,
+  serviceBreadcrumbJsonLd,
+  serviceJsonLd,
+} from '../../../lib/seo';
+import { siteConfig } from '../../../lib/site-config';
+import MediaSlot from '../components/MediaSlot.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+interface Props {
+  entry: CollectionEntry<'services'>;
+}
+
+type Overview = 'tiers' | 'ladder' | 'directory' | 'response' | 'compact';
+type Profile = {
+  category: string;
+  overview: Overview;
+  facts: Array<{ label: string; value: string; accent?: boolean }>;
+  metric: { value: string; label: string; note: string };
+  related: string[];
+};
+
+const profiles: Record<string, Profile> = {
+  'aircraft-ceramic-coating': {
+    category: 'exterior protection',
+    overview: 'tiers',
+    facts: [
+      { label: 'Warranty tiers', value: '1 · 2 · 5 yr' },
+      { label: 'Ground time', value: '24-48 hrs', accent: true },
+      { label: 'Application', value: 'Indoors, on site' },
+      { label: 'Chemistry', value: 'OEM-approved' },
+    ],
+    metric: { value: '30-50%', label: 'Faster routine cleaning', note: 'On a protected, maintained finish' },
+    related: ['aircraft-exterior-detailing', 'brightwork-polishing', 'de-ice-boot-refurbishment'],
+  },
+  'aircraft-interior-detailing': {
+    category: 'cabin restoration',
+    overview: 'tiers',
+    facts: [
+      { label: 'Service tiers', value: 'Three' },
+      { label: 'Trip clean', value: '20-45 min' },
+      { label: 'Surfaces', value: 'Cabin · galley · lav' },
+      { label: 'Chemistry', value: 'OEM-approved' },
+    ],
+    metric: { value: '03', label: 'Cabin service levels', note: 'From trip clean through extraction' },
+    related: ['aircraft-exterior-detailing', 'corporate-jet-detailing', 'aog-emergency-cleaning'],
+  },
+  'aircraft-exterior-detailing': {
+    category: 'exterior appearance cycle',
+    overview: 'ladder',
+    facts: [
+      { label: 'Service levels', value: 'Six' },
+      { label: 'Method', value: 'Dry wash' },
+      { label: 'Ground time', value: 'Same day to multi-day' },
+      { label: 'Chemistry', value: 'OEM-approved' },
+    ],
+    metric: { value: '06', label: 'Levels of intervention', note: 'Matched to paint condition' },
+    related: ['aircraft-ceramic-coating', 'brightwork-polishing', 'de-ice-boot-refurbishment'],
+  },
+  'brightwork-polishing': {
+    category: 'specialist exterior care',
+    overview: 'compact',
+    facts: [
+      { label: 'Surfaces', value: 'Leading edges · spinners' },
+      { label: 'Method', value: 'Multi-stage polish' },
+      { label: 'Protection', value: 'Final sealant' },
+      { label: 'Scope', value: 'Quoted per surface' },
+    ],
+    metric: { value: '03', label: 'Polishing stages', note: 'Cut · refine · finish and seal' },
+    related: ['aircraft-exterior-detailing', 'aircraft-ceramic-coating', 'de-ice-boot-refurbishment'],
+  },
+  'de-ice-boot-refurbishment': {
+    category: 'leading-edge systems',
+    overview: 'compact',
+    facts: [
+      { label: 'Ground time', value: '24-48 hrs', accent: true },
+      { label: 'Surfaces', value: 'Boot by boot' },
+      { label: 'Conditioning', value: 'Multi-coat' },
+      { label: 'Chemistry', value: 'OEM-approved' },
+    ],
+    metric: { value: '24-48', label: 'Hours grounded after service', note: 'Required cure window' },
+    related: ['aircraft-exterior-detailing', 'brightwork-polishing', 'aircraft-ceramic-coating'],
+  },
+  'aog-emergency-cleaning': {
+    category: 'emergency response',
+    overview: 'response',
+    facts: [
+      { label: 'Primary catchment', value: 'Typically 1-3 hrs', accent: true },
+      { label: 'Extended Northeast', value: 'Typically 3-6 hrs' },
+      { label: 'Intake', value: 'Phone dispatch' },
+      { label: 'Documentation', value: 'Service record' },
+    ],
+    metric: { value: '1-3 hr', label: 'Typical primary response', note: 'Not guaranteed · ETA confirmed by phone' },
+    related: ['aircraft-interior-detailing', 'corporate-jet-detailing', 'aircraft-exterior-detailing'],
+  },
+  'corporate-jet-detailing': {
+    category: 'by aircraft class',
+    overview: 'directory',
+    facts: [
+      { label: 'Aircraft classes', value: 'Four' },
+      { label: 'Range', value: 'Light jet to BBJ' },
+      { label: 'Scheduling', value: 'Class-dependent' },
+      { label: 'Chemistry', value: 'OEM-approved' },
+    ],
+    metric: { value: '04', label: 'Corporate jet classes', note: 'Crew and timing scale by airframe' },
+    related: ['aircraft-ceramic-coating', 'aircraft-interior-detailing', 'aircraft-exterior-detailing'],
+  },
+  'turboprop-aircraft-detailing': {
+    category: 'by aircraft class',
+    overview: 'directory',
+    facts: [
+      { label: 'Aircraft classes', value: 'Three' },
+      { label: 'Class work', value: 'Spinners · boots · exhaust' },
+      { label: 'Ground time', value: 'Scope-dependent' },
+      { label: 'Chemistry', value: 'OEM-approved' },
+    ],
+    metric: { value: '03', label: 'Turboprop classes', note: 'Single engine through large twin' },
+    related: ['brightwork-polishing', 'de-ice-boot-refurbishment', 'aircraft-ceramic-coating'],
+  },
+  'piston-aircraft-detailing': {
+    category: 'by aircraft class',
+    overview: 'directory',
+    facts: [
+      { label: 'Aircraft classes', value: 'Four' },
+      { label: 'Range', value: 'Single and twin engine' },
+      { label: 'Typical service', value: 'Often single day' },
+      { label: 'Chemistry', value: 'OEM-approved' },
+    ],
+    metric: { value: '04', label: 'Piston aircraft classes', note: 'Same standard, scaled to class' },
+    related: ['aircraft-ceramic-coating', 'brightwork-polishing', 'aircraft-interior-detailing'],
+  },
+};
+
+const { entry } = Astro.props;
+const service = entry.data;
+const profile = profiles[service.slug];
+if (!profile) throw new Error(`No aviation service profile registered for "${service.slug}".`);
+
+const [areas, services] = await Promise.all([getAreas(), getServices()]);
+const { contact, defaults, serviceArea } = siteConfig;
+const isEmergency = profile.overview === 'response';
+const title = service.title ?? buildTitle(siteConfig, service.name, serviceArea.baseCity, serviceArea.baseState);
+const h1 = service.h1 ?? buildH1(service.name, serviceArea.baseCity, serviceArea.baseState);
+const areaCodes = areas.map((area) => area.data.shortName).filter(Boolean).join(' · ');
+const hasEscortedKhpn = areas.some(
+  (area) => area.data.shortName === 'KHPN' && area.data.airport?.access === 'escorted',
+);
+
+const clean = (text: string) =>
+  text
+    .replace(/\[BEFORE\/AFTER IMAGE SECTION\]/gi, '')
+    .replace(/Standard AOG fees range from \$500 to \$2,000[^.]*\./gi, '')
+    .replace(/A (?:full )?repaint on a mid-size jet[^.]*\./gi, '')
+    .trim();
+
+const introBlocks = proseBlocks(service.intro.body);
+const introText = introBlocks.filter((block) => block.kind === 'text').map((block) => clean(block.text)).filter(Boolean);
+const introList = introBlocks.find((block) => block.kind === 'list');
+const overviewItems = introList?.kind === 'list' ? introList.items : [];
+const scopeBlocks = service.explainer ? proseBlocks(service.explainer.body) : [];
+const scopeList = scopeBlocks.find((block) => block.kind === 'list');
+const scopeItems = scopeList?.kind === 'list' ? scopeList.items : [];
+const scopeNotes = scopeBlocks.filter((block) => block.kind === 'text').map((block) => clean(block.text)).filter(Boolean);
+const whyBlocks = service.whyItMatters ? proseBlocks(service.whyItMatters.body) : [];
+const whyIntro = whyBlocks.filter((block) => block.kind === 'text').map((block) => clean(block.text)).filter(Boolean);
+const whyPoints = whyBlocks.find((block) => block.kind === 'points');
+const matterItems = whyPoints?.kind === 'points'
+  ? whyPoints.items.map((item) => ({ ...item, body: clean(item.body) })).filter((item) => item.body)
+  : [];
+const crossSellBlocks = proseBlocks(service.crossSell.body);
+const crossSellIntro = crossSellBlocks.find((block) => block.kind === 'text');
+const crossSellList = crossSellBlocks.find((block) => block.kind === 'list');
+const addOnItems = crossSellList?.kind === 'list' ? crossSellList.items : [];
+
+const splitLabel = (item: string) => {
+  const match = item.match(/^\*\*([^*]+?)[.:]\*\*\s*(.*)$/s);
+  return match ? { label: match[1].trim(), body: clean(match[2]) } : { label: clean(item), body: '' };
+};
+const displayFaqs = service.faqs.map((faq) => {
+  if (service.slug === 'aog-emergency-cleaning' && faq.q.includes('fee structure')) {
+    return {
+      q: faq.q,
+      a: 'AOG response is quoted from the aircraft class, dispatch distance, required response window, and incident scope. The full fee is disclosed and confirmed on the intake call before dispatch. Bookings with 24 or more hours of notice use standard service rates.',
+    };
+  }
+  if (service.slug === 'turboprop-aircraft-detailing' && faq.q.includes('polish propeller spinners')) {
+    return {
+      q: faq.q,
+      a: 'Yes. Spinner polish is a standard turboprop service and can be scoped for a single-engine or twin-engine aircraft. The service is quoted from the aircraft and spinner configuration.',
+    };
+  }
+  return { q: faq.q, a: clean(faq.a) };
+});
+
+const serviceBySlug = new Map(services.map((candidate) => [candidate.data.slug, candidate]));
+const related = profile.related.map((slug) => {
+  const candidate = serviceBySlug.get(slug);
+  if (!candidate) throw new Error(`Service page references missing service "${slug}".`);
+  const summary = clean(paragraphs(candidate.data.intro.body)[0]).split(/(?<=[.!?])\s+/)[0];
+  return { ...candidate.data, summary };
+});
+const conversionBody = isEmergency
+  ? 'Call with the airport or FBO, aircraft type, incident summary, and departure deadline. We will confirm team availability and a realistic ETA before dispatch.'
+  : 'Send your aircraft type, home base airport, condition, and desired scope. We confirm the work, timeline, and quote in writing before scheduling.';
+const graph = [
+  serviceJsonLd(siteConfig, { name: service.name, description: service.metaDescription, slug: service.slug }, areas.map((area) => ({ name: area.data.name, state: area.data.state }))),
+  serviceBreadcrumbJsonLd(siteConfig, { name: service.name, slug: service.slug }),
+  faqPageJsonLd(displayFaqs),
+];
+---
+
+<SiteLayout
+  title={title}
+  description={service.metaDescription}
+  path={`/${service.slug}`}
+  ogImage={service.heroImage.src}
+  jsonLd={graph}
+>
+  <nav class="service-rail" aria-label="Breadcrumb and service status">
+    <div class="crumbs"><a href="/">Home</a><span>/</span><a href="/#services">Services</a><span>/</span><strong>{service.name}</strong></div>
+    <div class:list={['availability', isEmergency && 'availability--urgent']}>
+      {isEmergency && <i aria-hidden="true" />}
+      <span>{isEmergency ? 'AOG line answered 24/7' : 'Available at'}</span>
+      <strong>{isEmergency ? contact.phoneDisplay : areaCodes}</strong>
+    </div>
+  </nav>
+
+  <section class:list={['service-masthead', isEmergency && 'service-masthead--urgent']}>
+    <div class="masthead-copy">
+      <SectionLabel>{`Service · ${profile.category}`}</SectionLabel>
+      <h1>{h1}</h1>
+      <p class="field-line">Teterboro · Morristown · Allentown · White Plains</p>
+      <div class="hero-intro">
+        {paragraphs(service.heroIntro).map((paragraph) => <p><Inline text={paragraph} /></p>)}
+      </div>
+      <div class="hero-actions">
+        {
+          isEmergency ? (
+            <>
+              <a class="ae-button ae-button--primary call-primary" href={`tel:${contact.phone}`}>Call {contact.phoneDisplay}</a>
+              <a class="ae-button" href="/get-quote">Non-urgent request</a>
+            </>
+          ) : (
+            <>
+              <a class="ae-button ae-button--primary" href="/get-quote">Request a Quote</a>
+              <a class="ae-button" href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a>
+            </>
+          )
+        }
+      </div>
+      {isEmergency && <p class="call-guidance"><i aria-hidden="true" /> Call, do not email. Have your location, aircraft type, issue, and departure deadline ready.</p>}
+    </div>
+    <aside class="masthead-aside">
+      <MediaSlot image={service.heroImage} label={`${service.name} · JetSpa`} class="masthead-media" eager sizes="(min-width: 64rem) 29vw, 100vw" />
+      <dl class="masthead-facts">
+        {profile.facts.map((fact) => <div><dt>{fact.label}</dt><dd class:list={[fact.accent && 'accent']}>{fact.value}</dd></div>)}
+      </dl>
+    </aside>
+  </section>
+
+  <section class="definition ae-section">
+    <div class="ae-container">
+      <div class="definition-grid">
+        <header><SectionLabel>Definition</SectionLabel><h2>{service.intro.heading}</h2></header>
+        <div class="definition-copy">
+          {introText.map((text) => <p><Inline {text} /></p>)}
+          <div class="definition-notes">
+            <div><strong>Aircraft-specific</strong><span>Products and scope matched to the airframe</span></div>
+            <div><strong>Documented</strong><span>Written scope and service record</span></div>
+            <div><strong>On location</strong><span>Coordinated with your pilot or flight department</span></div>
+          </div>
+        </div>
+      </div>
+
+      {
+        profile.overview === 'response' ? (
+          <div class="overview response-overview">
+            <div class="plate-label"><span>Typical response windows</span><i /><span>Not guarantees · ETA confirmed on intake</span></div>
+            <div class="response-table">
+              <article><span>Primary catchment</span><strong>1-3 hours</strong><p>KTEB · KMMU · KABE · KHPN</p></article>
+              <article><span>Extended Northeast</span><strong>3-6 hours</strong><p>Distance and team availability apply</p></article>
+              <article><span>Intake requires</span><strong>4 details</strong><p>Location · aircraft · incident · deadline</p></article>
+            </div>
+          </div>
+        ) : overviewItems.length ? (
+          <div class:list={['overview', `overview--${profile.overview}`]}>
+            <div class="plate-label"><span>{profile.overview === 'directory' ? 'Aircraft we service' : profile.overview === 'ladder' ? 'Service ladder' : 'Service tiers'}</span><i /><span>{profile.overview === 'directory' ? 'Not exhaustive · ask about yours' : 'Confirmed with your quote'}</span></div>
+            <div class="overview-items">
+              {overviewItems.map((item, index) => {
+                const parsed = splitLabel(item);
+                return <article><span>{String(index + 1).padStart(2, '0')}</span><h3><Inline text={parsed.label} /></h3>{parsed.body && <p><Inline text={parsed.body} /></p>}</article>;
+              })}
+            </div>
+          </div>
+        ) : (
+          <div class="overview overview--compact">
+            <div class="plate-label"><span>Service profile</span><i /><span>Scope confirmed in writing</span></div>
+            <div class="compact-items">{profile.facts.slice(0, 3).map((fact) => <div><span>{fact.label}</span><strong>{fact.value}</strong></div>)}</div>
+          </div>
+        )
+      }
+      {hasEscortedKhpn && <p class="access-note">Airport access note · KHPN service is escorted and coordinated with the FBO.</p>}
+    </div>
+  </section>
+
+  <section class="scope ae-section">
+    <div class="ae-container">
+      <header class="section-head">
+        <div><SectionLabel tone="light">Scope</SectionLabel><h2>{service.explainer?.heading ?? 'What is included'}</h2>{scopeNotes[0] && <p><Inline text={scopeNotes[0]} /></p>}</div>
+        <span>{String(scopeItems.length).padStart(2, '0')} scope lines<br /><strong>Confirmed before work begins</strong></span>
+      </header>
+      <div class="scope-ledger">
+        {scopeItems.map((item, index) => <div><span>✓</span><strong><Inline text={item} /></strong><small>{index === scopeItems.length - 1 ? 'Documented at handoff' : 'Included as scoped'}</small></div>)}
+      </div>
+      {scopeNotes[1] && <p class="scope-note"><span>Scope note</span><Inline text={scopeNotes[scopeNotes.length - 1]} /></p>}
+    </div>
+  </section>
+
+  <section class="process ae-section">
+    <div class="ae-container">
+      <header class="dark-head"><div><SectionLabel>Method</SectionLabel><h2>{service.processHeading}</h2></div><span>{service.processSteps.length} stages · applied in sequence</span></header>
+      <div class="process-list">
+        {service.processSteps.map((step, index) => (
+          <article>
+            <span class="step-number">{String(index + 1).padStart(2, '0')}</span>
+            <MediaSlot image={step.image} label={`${step.title ?? `Stage ${index + 1}`} · ${service.name}`} showCaption={false} />
+            <div><h3>{step.title ?? `Stage ${index + 1}`}</h3>{paragraphs(clean(step.body)).map((text) => <p><Inline {text} /></p>)}</div>
+            <aside>{index === service.processSteps.length - 1 ? 'Output' : 'Stage'}<strong>{index === service.processSteps.length - 1 ? 'Service record' : 'Scope controlled'}</strong></aside>
+          </article>
+        ))}
+      </div>
+      {service.processNote && <p class="process-note"><Inline text={clean(service.processNote)} /></p>}
+    </div>
+  </section>
+
+  {service.whyItMatters && (
+    <section class="why ae-section">
+      <div class="ae-container why-grid">
+        <header>
+          <SectionLabel>Why it matters</SectionLabel>
+          <h2>{service.whyItMatters.heading}</h2>
+          {whyIntro.map((text) => <p><Inline {text} /></p>)}
+          <div class="metric"><strong>{profile.metric.value}</strong><span>{profile.metric.label}</span><small>{profile.metric.note}</small></div>
+        </header>
+        <div class="why-ledger">
+          {matterItems.map((item) => <article><span>{item.label}</span><div><h3>{item.label}</h3><p><Inline text={item.body} /></p></div></article>)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="related ae-section">
+    <div class="ae-container">
+      <header class="dark-head"><div><SectionLabel>Related work</SectionLabel><h2>{service.crossSell.heading}</h2>{crossSellIntro?.kind === 'text' && <p><Inline text={clean(crossSellIntro.text)} /></p>}</div><span>Build one coordinated service window</span></header>
+      <div class="related-grid">
+        {related.map((item) => <a href={`/${item.slug}`}><MediaSlot image={item.heroImage} label={item.name} showCaption={false} /><div><span>Service</span><h3>{item.name}</h3><p>{item.summary}</p><strong>View service →</strong></div></a>)}
+      </div>
+      {addOnItems.length > 0 && <div class="also-available"><span>Also available in this scope</span><p>{addOnItems.map((item) => clean(item.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1'))).join(' · ')}</p></div>}
+    </div>
+  </section>
+
+  <section class="faqs ae-section">
+    <div class="ae-container">
+      <header class="section-head"><div><SectionLabel tone="light">Questions</SectionLabel><h2>{isEmergency ? 'AOG response, answered' : `${service.name.replace(/^Aircraft /, '')}, answered`}</h2></div><a href="/faqs">All FAQs →</a></header>
+      <div class="faq-rows">
+        {displayFaqs.map((faq) => <article><h3>{faq.q}</h3><div>{paragraphs(faq.a).map((text) => <p><Inline {text} /></p>)}</div></article>)}
+      </div>
+    </div>
+  </section>
+
+  <section class:list={['conversion', isEmergency && 'conversion--urgent']}>
+    <MediaSlot image={defaults.socialImage} label={`${service.name} · schedule with JetSpa`} class="conversion-media" sizes="(min-width: 64rem) 55vw, 100vw" />
+    <div class="conversion-copy">
+      <SectionLabel>{isEmergency ? 'AOG dispatch' : 'Get started'}</SectionLabel>
+      <h2>{isEmergency ? 'Call now for dispatch' : service.ctaHeadline}</h2>
+      <p>{conversionBody}</p>
+      <div class="conversion-actions">
+        {isEmergency ? <a class="ae-button ae-button--primary call-primary" href={`tel:${contact.phone}`}>Call {contact.phoneDisplay}</a> : <a class="ae-button ae-button--primary" href="/get-quote">Request a Quote</a>}
+        {isEmergency ? <a class="ae-button" href="/get-quote">Non-urgent request</a> : <a class="ae-button" href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a>}
+      </div>
+      <nav aria-label="Related services"><span>Related services</span>{related.map((item) => <a href={`/${item.slug}`}>{item.name}<i>→</i></a>)}</nav>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  h1, h2, h3 { text-wrap: balance; }
+  .service-rail { display: flex; min-height: 3.25rem; align-items: center; justify-content: space-between; gap: 2rem; padding: 0 var(--ae-gutter); border-bottom: 1px solid var(--ae-line-soft); font-family: var(--ae-mono); font-size: .67rem; letter-spacing: .16em; text-transform: uppercase; }
+  .crumbs, .availability { display: flex; align-items: center; gap: .75rem; }
+  .crumbs { min-width: 0; color: var(--ae-faint); }
+  .crumbs strong { overflow: hidden; color: var(--ae-copy); font-weight: 400; text-overflow: ellipsis; white-space: nowrap; }
+  .availability { color: var(--ae-muted); }
+  .availability strong { color: var(--ae-bone); font-weight: 400; }
+  .availability i, .call-guidance i { width: .4rem; height: .4rem; flex: 0 0 auto; border-radius: 50%; background: var(--ae-accent); }
+
+  .service-masthead { display: grid; grid-template-columns: minmax(0, 1fr) 26.25rem; gap: 4rem; align-items: start; padding: 5.25rem var(--ae-gutter) 4rem; border-bottom: 1px solid var(--ae-line); }
+  .masthead-copy { min-width: 0; }
+  .masthead-copy h1 { max-width: 48rem; margin-top: 1.5rem; font-size: clamp(2.8rem, 4.5vw, 3.75rem); font-weight: 500; letter-spacing: -.028em; line-height: 1.02; }
+  .field-line { margin-top: 1.4rem; color: var(--ae-muted); font-family: var(--ae-mono); font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; }
+  .hero-intro { max-width: 43rem; margin-top: 1.5rem; color: var(--ae-copy); font-size: 1.05rem; line-height: 1.65; }
+  .hero-intro p + p { margin-top: .8rem; color: var(--ae-muted); font-size: .96rem; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+  .call-primary { min-width: 15rem; }
+  .call-guidance { display: flex; max-width: 41rem; align-items: center; gap: .7rem; margin-top: 1.2rem; color: var(--ae-accent); font-family: var(--ae-mono); font-size: .68rem; letter-spacing: .12em; line-height: 1.6; text-transform: uppercase; }
+  .masthead-aside { display: flex; min-width: 0; flex-direction: column; gap: 1.5rem; }
+  .masthead-aside :global(.masthead-media) { width: 100%; min-height: 0; aspect-ratio: 7 / 5; }
+  .masthead-facts { margin: 0; padding-left: 2rem; border-left: 1px solid var(--ae-line); }
+  .masthead-facts div { display: flex; min-height: 3rem; align-items: center; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--ae-line-soft); }
+  .masthead-facts div:last-child { border: 0; }
+  .masthead-facts dt { color: var(--ae-muted); font-size: .88rem; }
+  .masthead-facts dd { margin: 0; font-family: var(--ae-mono); font-size: .78rem; text-align: right; }
+  .masthead-facts .accent { color: var(--ae-accent); }
+
+  .definition-grid { display: grid; grid-template-columns: minmax(17rem, 26rem) minmax(0, 1fr); gap: clamp(3rem, 6vw, 5rem); align-items: start; }
+  .definition h2, .scope h2, .process h2, .why h2 { margin-top: 1.25rem; font-size: clamp(2rem, 3vw, 2.5rem); font-weight: 500; letter-spacing: -.024em; line-height: 1.12; }
+  .definition-copy > p { max-width: 48rem; color: var(--ae-copy); font-size: 1.03rem; line-height: 1.75; }
+  .definition-copy > p + p { margin-top: 1rem; color: var(--ae-muted); font-size: .95rem; }
+  .definition-copy :global(a), .scope :global(a), .why :global(a), .faqs :global(a) { border-bottom: 1px solid var(--ae-accent-dark); }
+  .definition-notes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.25rem; padding-top: 1.5rem; border-top: 1px solid var(--ae-line); }
+  .definition-notes strong { display: block; color: var(--ae-accent); font-family: var(--ae-mono); font-size: .65rem; font-weight: 400; letter-spacing: .16em; text-transform: uppercase; }
+  .definition-notes span { display: block; margin-top: .65rem; color: var(--ae-muted); font-size: .86rem; line-height: 1.55; }
+  .overview { margin-top: 3.5rem; }
+  .plate-label { display: flex; align-items: center; gap: 1rem; color: var(--ae-muted); font-family: var(--ae-mono); font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; }
+  .plate-label i { height: 1px; flex: 1; background: var(--ae-line); }
+  .overview-items, .response-table, .compact-items { display: grid; gap: 1px; margin-top: 1rem; border: 1px solid var(--ae-line); background: var(--ae-line); }
+  .overview-items { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .overview--directory .overview-items { display: block; border-inline: 0; background: transparent; }
+  .overview-items article { min-width: 0; padding: 1.6rem 1.7rem 1.8rem; background: var(--ae-ink); }
+  .overview--ladder .overview-items article:nth-child(5), .overview--tiers .overview-items article:last-child { border-top: 2px solid var(--ae-accent); background: var(--ae-panel); }
+  .overview-items article > span { color: var(--ae-accent); font-family: var(--ae-mono); font-size: .66rem; letter-spacing: .16em; }
+  .overview-items h3 { margin-top: .8rem; font-size: 1.18rem; font-weight: 500; line-height: 1.3; }
+  .overview-items p { margin-top: .5rem; color: var(--ae-muted); font-size: .86rem; line-height: 1.6; overflow-wrap: anywhere; }
+  .overview--directory article { display: grid; grid-template-columns: 3rem 16rem minmax(0, 1fr); gap: 1.5rem; align-items: baseline; padding: 1.35rem 0; border-bottom: 1px solid var(--ae-line-soft); background: transparent; }
+  .overview--directory h3 { margin: 0; }
+  .overview--directory p { margin: 0; font-family: var(--ae-mono); font-size: .75rem; line-height: 1.9; }
+  .response-table { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .response-table article { padding: 1.6rem; background: var(--ae-ink); }
+  .response-table span, .compact-items span { display: block; color: var(--ae-accent); font-family: var(--ae-mono); font-size: .65rem; letter-spacing: .16em; text-transform: uppercase; }
+  .response-table strong { display: block; margin-top: .75rem; font-family: var(--ae-mono); font-size: 1.8rem; font-weight: 400; }
+  .response-table p { margin-top: .6rem; color: var(--ae-muted); font-size: .84rem; }
+  .compact-items { grid-template-columns: repeat(3, 1fr); }
+  .compact-items div { padding: 1.4rem; background: var(--ae-ink); }
+  .compact-items strong { display: block; margin-top: .7rem; font-size: 1.05rem; font-weight: 500; }
+  .access-note { margin-top: 1.25rem; color: var(--ae-muted); font-family: var(--ae-mono); font-size: .68rem; letter-spacing: .08em; }
+
+  .scope { background: var(--ae-bone); color: var(--ae-paper-ink); }
+  .section-head, .dark-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 3rem; padding-bottom: 1.4rem; border-bottom: 1px solid rgba(21,23,26,.2); }
+  .section-head > div > p { max-width: 42rem; margin-top: 1rem; color: var(--ae-paper-copy); }
+  .section-head > span, .dark-head > span { color: #5f5d59; font-family: var(--ae-mono); font-size: .66rem; letter-spacing: .14em; line-height: 1.8; text-align: right; text-transform: uppercase; }
+  .section-head > span strong { color: var(--ae-paper-ink); font-weight: 400; }
+  .scope-ledger div { display: grid; grid-template-columns: 1.25rem minmax(0, 1fr) 16rem; gap: 1.25rem; align-items: baseline; padding: 1rem 0; border-bottom: 1px solid rgba(21,23,26,.13); }
+  .scope-ledger div > span { color: #765a30; font-family: var(--ae-mono); }
+  .scope-ledger strong { font-size: 1.05rem; font-weight: 500; }
+  .scope-ledger small { color: #5f5d59; font-family: var(--ae-mono); font-size: .7rem; letter-spacing: .04em; }
+  .scope-note { display: flex; gap: 1.25rem; margin-top: 1.4rem; color: var(--ae-paper-copy); font-size: .85rem; }
+  .scope-note > span { flex: 0 0 auto; color: #765a30; font-family: var(--ae-mono); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; }
+
+  .process { background: var(--ae-deck); }
+  .dark-head { border-color: var(--ae-line); }
+  .dark-head h2 { margin-top: 1.2rem; font-size: clamp(2rem, 3vw, 2.5rem); font-weight: 500; line-height: 1.1; }
+  .dark-head > div > p { max-width: 42rem; margin-top: 1rem; color: var(--ae-muted); }
+  .dark-head > span { color: var(--ae-muted); }
+  .process-list article { display: grid; grid-template-columns: 5rem 15rem minmax(0, 1fr) 12rem; gap: 2rem; align-items: start; padding: 1.8rem 0; border-bottom: 1px solid var(--ae-line-soft); }
+  .step-number { font-family: var(--ae-mono); font-size: 2.6rem; letter-spacing: -.03em; line-height: .9; }
+  .process-list article:last-child .step-number { color: var(--ae-accent); }
+  .process-list :global(.media) { width: 100%; min-height: 0; aspect-ratio: 8 / 5; }
+  .process-list h3 { font-size: 1.35rem; font-weight: 500; line-height: 1.3; }
+  .process-list p { max-width: 40rem; margin-top: .55rem; color: var(--ae-muted); font-size: .91rem; line-height: 1.7; }
+  .process-list aside { padding-left: 1.2rem; border-left: 1px solid var(--ae-line); color: var(--ae-muted); font-family: var(--ae-mono); font-size: .68rem; line-height: 1.8; }
+  .process-list aside strong { display: block; color: var(--ae-copy); font-weight: 400; }
+  .process-note { margin-top: 1.25rem; color: var(--ae-muted); font-family: var(--ae-mono); font-size: .72rem; }
+
+  .why-grid { display: grid; grid-template-columns: minmax(18rem, 30rem) minmax(0, 1fr); gap: clamp(3rem, 6vw, 5rem); }
+  .why header > p { margin-top: 1rem; color: var(--ae-muted); line-height: 1.7; }
+  .metric { margin-top: 1.7rem; padding: 1.25rem 1.4rem; border: 1px solid var(--ae-line); }
+  .metric strong { display: block; font-family: var(--ae-mono); font-size: 2rem; font-weight: 400; }
+  .metric span { display: block; margin-top: .3rem; color: var(--ae-muted); font-family: var(--ae-mono); font-size: .65rem; letter-spacing: .15em; text-transform: uppercase; }
+  .metric small { display: block; margin-top: .8rem; padding-top: .7rem; border-top: 1px solid var(--ae-line-soft); color: var(--ae-copy); font-family: var(--ae-mono); font-size: .68rem; }
+  .why-ledger { border-top: 1px solid var(--ae-line); }
+  .why-ledger article { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 1.5rem; padding: 1.35rem 0; border-bottom: 1px solid var(--ae-line-soft); }
+  .why-ledger article > span { color: var(--ae-accent); font-family: var(--ae-mono); font-size: .73rem; letter-spacing: .12em; text-transform: uppercase; }
+  .why-ledger h3 { font-size: 1.08rem; font-weight: 500; }
+  .why-ledger p { margin-top: .4rem; color: var(--ae-muted); font-size: .88rem; line-height: 1.65; }
+
+  .related { border-top: 1px solid var(--ae-line); background: var(--ae-deck); }
+  .related-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin-top: 1.5rem; background: var(--ae-line); }
+  .related-grid > a { display: flex; min-width: 0; background: var(--ae-ink); flex-direction: column; }
+  .related-grid :global(.media) { min-height: 0; aspect-ratio: 16 / 9; border: 0; }
+  .related-grid > a > div { display: flex; flex: 1; padding: 1.25rem 1.4rem 1.4rem; flex-direction: column; }
+  .related-grid div > span { color: var(--ae-accent); font-family: var(--ae-mono); font-size: .62rem; letter-spacing: .16em; text-transform: uppercase; }
+  .related-grid h3 { margin-top: .55rem; font-size: 1.15rem; font-weight: 500; }
+  .related-grid p { margin-top: .5rem; color: var(--ae-muted); font-size: .83rem; line-height: 1.55; }
+  .related-grid div > strong { margin-top: auto; padding-top: 1rem; font-family: var(--ae-mono); font-size: .63rem; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; }
+  .also-available { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: 2rem; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--ae-line); }
+  .also-available span { color: var(--ae-accent); font-family: var(--ae-mono); font-size: .65rem; letter-spacing: .14em; text-transform: uppercase; }
+  .also-available p { color: var(--ae-muted); font-size: .8rem; line-height: 1.8; }
+
+  .faqs { background: var(--ae-bone); color: var(--ae-paper-ink); }
+  .faqs .section-head a { padding-bottom: .2rem; border-bottom: 1px solid #765a30; font-family: var(--ae-mono); font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; }
+  .faq-rows article { display: grid; grid-template-columns: minmax(15rem, 1fr) minmax(0, 1.6fr); gap: 2.5rem; padding: 1.4rem 0; border-bottom: 1px solid rgba(21,23,26,.13); }
+  .faq-rows h3 { max-width: 23rem; font-size: 1.08rem; font-weight: 500; line-height: 1.4; }
+  .faq-rows p { max-width: 45rem; color: var(--ae-paper-copy); font-size: .92rem; line-height: 1.75; }
+  .faq-rows p + p { margin-top: .8rem; }
+
+  .conversion { display: grid; grid-template-columns: minmax(0, 1fr) minmax(28rem, 38.75rem); border-top: 1px solid var(--ae-line); background: var(--ae-ink); }
+  .conversion :global(.conversion-media) { min-height: 30rem; border: 0; }
+  .conversion-copy { display: flex; min-width: 0; padding: 4rem var(--ae-gutter) 3rem; border-left: 1px solid var(--ae-line); flex-direction: column; }
+  .conversion-copy h2 { margin-top: 1.3rem; font-size: clamp(2.2rem, 3.2vw, 2.75rem); font-weight: 500; line-height: 1.08; }
+  .conversion-copy > p { margin-top: 1rem; color: var(--ae-muted); line-height: 1.7; }
+  .conversion-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.7rem; }
+  .conversion-copy nav { margin-top: auto; padding-top: 2.5rem; }
+  .conversion-copy nav > span { color: var(--ae-muted); font-family: var(--ae-mono); font-size: .65rem; letter-spacing: .17em; text-transform: uppercase; }
+  .conversion-copy nav a { display: flex; min-height: 2.65rem; align-items: center; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--ae-line-soft); color: var(--ae-copy); font-size: .87rem; }
+  .conversion-copy nav i { color: var(--ae-accent); font-style: normal; }
+
+  @media (max-width: 64rem) {
+    .service-masthead { grid-template-columns: minmax(0, 1fr) 21rem; gap: 2.5rem; padding-top: 3.5rem; }
+    .definition-grid, .why-grid { grid-template-columns: 18rem minmax(0, 1fr); gap: 3rem; }
+    .process-list article { grid-template-columns: 4rem 11rem minmax(0, 1fr); gap: 1.4rem; }
+    .process-list aside { display: none; }
+    .overview--directory article { grid-template-columns: 2.5rem 13rem minmax(0, 1fr); }
+    .conversion { grid-template-columns: minmax(0, 1fr) 29rem; }
+  }
+
+  @media (max-width: 47.99rem) {
+    .service-rail { min-height: 2.75rem; justify-content: center; overflow: hidden; }
+    .crumbs { display: none; }
+    .availability { width: 100%; justify-content: space-between; gap: .6rem; font-size: .58rem; }
+    .availability strong { text-align: right; }
+    .service-masthead { display: flex; padding: 1.8rem var(--ae-gutter) 0; flex-direction: column; gap: 1.5rem; }
+    .masthead-copy h1 { margin-top: 1rem; font-size: 2.1rem; }
+    .field-line { margin-top: 1rem; font-size: .6rem; line-height: 1.7; }
+    .hero-intro { margin-top: 1rem; font-size: .93rem; }
+    .hero-actions { flex-direction: column; gap: .6rem; margin-top: 1.3rem; }
+    .call-guidance { font-size: .6rem; }
+    .masthead-aside { width: calc(100% + var(--ae-gutter) * 2); margin-left: calc(var(--ae-gutter) * -1); gap: 0; }
+    .masthead-aside :global(.masthead-media) { order: 2; aspect-ratio: 16 / 10; border-inline: 0; }
+    .masthead-facts { display: grid; padding: 0; border: 0; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--ae-line); }
+    .masthead-facts { order: 1; }
+    .masthead-facts div { display: block; min-width: 0; min-height: 5.2rem; padding: .85rem var(--ae-gutter); border: 0; background: var(--ae-deck); }
+    .masthead-facts dt { font-family: var(--ae-mono); font-size: .58rem; letter-spacing: .12em; text-transform: uppercase; }
+    .masthead-facts dd { margin-top: .3rem; font-size: .72rem; text-align: left; overflow-wrap: anywhere; }
+    .definition, .scope, .process, .why, .related, .faqs { padding-block: 2.6rem; }
+    .definition-grid, .why-grid { display: block; }
+    .definition h2, .scope h2, .process h2, .why h2, .dark-head h2 { margin-top: .8rem; font-size: 1.65rem; }
+    .definition-copy { margin-top: 1.3rem; }
+    .definition-copy > p { font-size: .91rem; }
+    .definition-notes { grid-template-columns: 1fr; gap: .9rem; }
+    .overview { margin-top: 2rem; }
+    .plate-label span:last-child { display: none; }
+    .overview-items, .response-table, .compact-items { grid-template-columns: 1fr; }
+    .overview-items article { padding: 1.1rem 1.15rem; }
+    .overview--directory .overview-items { margin-top: .6rem; }
+    .overview--directory article { display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: .8rem; padding: 1rem 0; }
+    .overview--directory article p { grid-column: 2; font-size: .68rem; line-height: 1.7; }
+    .response-table article { padding: 1.1rem; }
+    .response-table strong { font-size: 1.5rem; }
+    .access-note { line-height: 1.6; }
+    .section-head, .dark-head { display: block; }
+    .section-head > span, .dark-head > span { display: block; margin-top: .7rem; text-align: left; }
+    .scope-ledger div { grid-template-columns: 1rem minmax(0, 1fr); gap: .7rem; padding: .85rem 0; }
+    .scope-ledger small { display: none; }
+    .scope-ledger strong { font-size: .9rem; }
+    .scope-note { display: block; font-size: .78rem; }
+    .scope-note > span { display: block; margin-bottom: .5rem; }
+    .process-list article { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: .9rem; padding: 1.2rem 0; }
+    .step-number { font-size: 1.9rem; }
+    .process-list :global(.media) { grid-column: 2; grid-row: 1; aspect-ratio: 16 / 8; }
+    .process-list article > div { grid-column: 2; }
+    .process-list h3 { font-size: 1.08rem; }
+    .process-list p { font-size: .84rem; }
+    .why header > p { font-size: .88rem; }
+    .why-ledger { margin-top: 1.5rem; }
+    .why-ledger article { grid-template-columns: 5.5rem minmax(0, 1fr); gap: .8rem; }
+    .why-ledger article > span { font-size: .62rem; overflow-wrap: anywhere; }
+    .why-ledger h3 { font-size: .95rem; }
+    .why-ledger p { font-size: .81rem; }
+    .related-grid { grid-template-columns: 1fr; margin-top: 1rem; }
+    .related-grid > a { display: grid; grid-template-columns: 8rem minmax(0, 1fr); }
+    .related-grid :global(.media) { height: 100%; aspect-ratio: auto; }
+    .related-grid > a > div { padding: 1rem; }
+    .related-grid p { display: none; }
+    .also-available { display: block; }
+    .also-available p { margin-top: .6rem; font-size: .72rem; }
+    .faqs .section-head a { display: inline-block; margin-top: 1rem; }
+    .faq-rows article { display: block; padding: 1.1rem 0; }
+    .faq-rows h3 { font-size: 1rem; }
+    .faq-rows div { margin-top: .5rem; }
+    .faq-rows p { font-size: .85rem; }
+    .conversion { display: block; }
+    .conversion :global(.conversion-media) { min-height: 13rem; aspect-ratio: 16 / 9; }
+    .conversion-copy { padding: 2.5rem var(--ae-gutter); border-left: 0; }
+    .conversion-copy h2 { font-size: 1.8rem; }
+    .conversion-copy > p { font-size: .88rem; }
+    .conversion-actions { flex-direction: column; }
+    .conversion-copy nav { padding-top: 2rem; }
+  }
+</style>

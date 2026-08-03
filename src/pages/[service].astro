@@ -1,32 +1,8 @@
 ---
-/**
- * Recipe B — Service page. One per client/content/services/*.md.
- *
- * Hero → SplitSection(intro) → SplitSection(explainer?) → PackageCard×n →
- * StepsList(process) → AddOnCards → SplitSection(crossSell) →
- * SplitSection(whyItMatters?) → SocialStrip → FAQAccordion → CTABanner
- */
 import type { InferGetStaticPropsType } from 'astro';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
-import SplitSection from '../components/SplitSection.astro';
-import PackageCard from '../components/PackageCard.astro';
-import StepsList from '../components/StepsList.astro';
-import AddOnCards from '../components/AddOnCards.astro';
-import BeforeAfter from '../components/BeforeAfter.astro';
-import SocialStrip from '../components/SocialStrip.astro';
-import FAQAccordion from '../components/FAQAccordion.astro';
-import CTABanner from '../components/CTABanner.astro';
 import { getServices } from '../lib/content';
-import {
-  buildTitle,
-  buildH1,
-  faqPageJsonLd,
-  serviceJsonLd,
-  serviceBreadcrumbJsonLd,
-} from '../lib/seo';
-import { getAreas } from '../lib/content';
 import { siteConfig } from '../lib/site-config';
+import AviationEditorialService from '../templates/aviation-editorial/pages/ServicePage.astro';
 
 // Deliberately unannotated: adding `: GetStaticPaths` widens the return type and
 // collapses InferGetStaticPropsType to `never`.
@@ -41,125 +17,10 @@ export const getStaticPaths = async () => {
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { entry } = Astro.props as Props;
-const s = entry.data;
-const { serviceArea, defaults } = siteConfig;
 
-const city = serviceArea.baseCity;
-const state = serviceArea.baseState;
-
-// Authored strings win; the formula is the fallback (see [area].astro).
-const title = s.title ?? buildTitle(siteConfig, s.name, city, state);
-const h1 = s.h1 ?? buildH1(s.name, city, state);
-
-const areas = (await getAreas()).map((a) => ({ name: a.data.name, state: a.data.state }));
-
-const graph = [
-  serviceJsonLd(siteConfig, { name: s.name, description: s.metaDescription, slug: s.slug }, areas),
-  serviceBreadcrumbJsonLd(siteConfig, { name: s.name, slug: s.slug }),
-  faqPageJsonLd(s.faqs),
-];
-
-// Track SplitSection position so imageSide auto-alternates down the page.
-let splitIndex = 0;
+if (siteConfig.template !== 'aviation-editorial') {
+  throw new Error(`No service page registered for template "${siteConfig.template}".`);
+}
 ---
 
-<BaseLayout
-  title={title}
-  description={s.metaDescription}
-  path={`/${s.slug}`}
-  ogImage={s.heroImage.src}
-  jsonLd={graph}
->
-  <Hero heading={h1} body={s.heroIntro} />
-
-  {/* Pinned to centred: rail already carries enough of this page, and the centred
-      composition now widens for structured copy instead of needing the rail. */}
-  <SplitSection
-    index={splitIndex++}
-    layout="centred"
-    heading={s.intro.heading}
-    body={s.intro.body}
-  />
-
-  {
-    s.explainer && (
-      <SplitSection
-        index={splitIndex++}
-        tone="card"
-        heading={s.explainer.heading}
-        body={s.explainer.body}
-      />
-    )
-  }
-
-  {
-    s.packages && (
-      <section class="packages ds-section">
-        <div class="ds-container">
-          {s.packages.map((p, i) => (
-            <PackageCard {...p} index={i} />
-          ))}
-        </div>
-      </section>
-    )
-  }
-
-  {/*
-    Numerals rather than the preset's stepsStyle. The process is the one section on a
-    service page that is neither prose nor a grid of cards, and the oversized ghosted
-    index is what makes it read that way at a glance.
-
-    Paper, not card: with packages, beforeAfter and addons all optional and commonly
-    absent, this sits directly between the explainer and crossSell SplitSections,
-    which are both card-toned. At card it made three identical bands in a row.
-  */}
-  <StepsList
-    variant="numerals"
-    heading={s.processHeading}
-    steps={s.processSteps}
-    note={s.processNote}
-    tone="paper"
-  />
-
-  {
-    s.beforeAfter && (
-      <BeforeAfter
-        {...s.beforeAfter}
-        heading={`${s.name} Results`}
-        tone="paper"
-      />
-    )
-  }
-
-  {s.addons && <AddOnCards addons={s.addons} tone="paper" />}
-
-  <SplitSection
-    index={splitIndex++}
-    tone="card"
-    heading={s.crossSell.heading}
-    body={s.crossSell.body}
-    cta={{ label: 'Get A Quote', href: '/get-quote' }}
-  />
-
-  {
-    s.whyItMatters && (
-      <SplitSection
-        index={splitIndex++}
-        heading={s.whyItMatters.heading}
-        body={s.whyItMatters.body}
-      />
-    )
-  }
-
-  <SocialStrip image={defaults.socialImage} />
-
-  <FAQAccordion faqs={s.faqs} />
-
-  <CTABanner headline={s.ctaHeadline} />
-</BaseLayout>
-
-<style>
-  .packages {
-    background: var(--ds-paper);
-  }
-</style>
+<AviationEditorialService {entry} />

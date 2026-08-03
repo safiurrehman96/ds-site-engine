@@ -58,7 +58,7 @@ const hasTracking = !tracking.gtmId.includes('PLACEHOLDER');
       )
     }
     <a class="ae-skip-link" href="#main">Skip to content</a>
-    <SiteHeader chrome={home.data.chrome} {areas} />
+    <SiteHeader chrome={home.data.chrome} {services} {areas} />
     <main id="main" class="ae-page"><slot /></main>
     <SiteFooter {services} {areas} />
     <div class="ae-mobile-action" aria-label="Quick actions">

@@ -5,12 +5,14 @@ import { siteConfig } from '../../../lib/site-config';
 
 interface Props {
   chrome: AviationHome['chrome'];
+  services: CollectionEntry<'services'>[];
   areas: CollectionEntry<'areas'>[];
 }
 
-const { chrome, areas } = Astro.props;
+const { chrome, services, areas } = Astro.props;
 const { brand, contact } = siteConfig;
 const currentPath = Astro.url.pathname.replace(/^\//, '').replace(/\/$/, '');
+const isServicePage = services.some((service) => service.data.slug === currentPath);
 const isAirportPage = areas.some((area) => area.data.slug === currentPath);
 ---
 
@@ -23,10 +25,24 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
   <a class="brand" href="/" aria-label={`${brand.name} home`}><i aria-hidden="true"></i>{brand.name}</a>
 
   <nav class="desktop-nav" aria-label="Main navigation">
-    <a href="/#services">Services</a>
-    <details class:list={['airport-menu', isAirportPage && 'active']}>
+    <details class:list={['desktop-menu', 'service-menu', isServicePage && 'active']}>
+      <summary>Services <i aria-hidden="true"></i></summary>
+      <ul class="nav-dropdown service-dropdown">
+        {
+          services.map((service, index) => (
+            <li>
+              <a href={`/${service.data.slug}`} aria-current={service.data.slug === currentPath ? 'page' : undefined}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <span>{service.data.name}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </details>
+    <details class:list={['desktop-menu', 'airport-menu', isAirportPage && 'active']}>
       <summary>Airports <i aria-hidden="true"></i></summary>
-      <ul class="airport-dropdown">
+      <ul class="nav-dropdown airport-dropdown">
         {
           areas.map((area) => (
             <li>
@@ -55,8 +71,20 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
     <details class="mobile-menu">
       <summary><span class="sr-only">Open navigation</span><i></i><i></i></summary>
       <nav aria-label="Mobile navigation">
-        <a href="/#services">Services</a>
-        <details class="mobile-airports">
+        <details class="mobile-submenu mobile-services">
+          <summary>Services <i aria-hidden="true"></i></summary>
+          <div>
+            {
+              services.map((service, index) => (
+                <a href={`/${service.data.slug}`} aria-current={service.data.slug === currentPath ? 'page' : undefined}>
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <span>{service.data.name}</span>
+                </a>
+              ))
+            }
+          </div>
+        </details>
+        <details class="mobile-submenu mobile-airports">
           <summary>Airports <i aria-hidden="true"></i></summary>
           <div>
             {
@@ -79,7 +107,43 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
 </header>
 
 <script>
-  const disclosures = document.querySelectorAll<HTMLDetailsElement>('.airport-menu, .mobile-menu');
+  const desktopMenus = document.querySelectorAll<HTMLDetailsElement>('.desktop-menu');
+  const disclosures = document.querySelectorAll<HTMLDetailsElement>('.desktop-menu, .mobile-menu');
+  const desktopQuery = window.matchMedia('(min-width: 68.01rem)');
+
+  const closeDesktopSiblings = (active: HTMLDetailsElement) => {
+    desktopMenus.forEach((menu) => {
+      if (menu !== active) menu.open = false;
+    });
+  };
+
+  desktopMenus.forEach((menu) => {
+    menu.addEventListener('pointerenter', () => {
+      if (!desktopQuery.matches) return;
+      closeDesktopSiblings(menu);
+      menu.open = true;
+    });
+
+    menu.addEventListener('pointerleave', () => {
+      if (desktopQuery.matches && !menu.contains(document.activeElement)) menu.open = false;
+    });
+
+    menu.addEventListener('focusin', () => {
+      if (!desktopQuery.matches) return;
+      closeDesktopSiblings(menu);
+      menu.open = true;
+    });
+
+    menu.addEventListener('focusout', () => {
+      window.setTimeout(() => {
+        if (!menu.matches(':hover') && !menu.contains(document.activeElement)) menu.open = false;
+      });
+    });
+
+    menu.querySelector(':scope > summary')?.addEventListener('click', (event) => {
+      if (desktopQuery.matches) event.preventDefault();
+    });
+  });
 
   document.addEventListener('click', (event) => {
     disclosures.forEach((disclosure) => {
@@ -191,11 +255,20 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
     color: #fff;
   }
 
-  .airport-menu {
+  .desktop-menu {
     position: relative;
   }
 
-  .airport-menu > summary {
+  .desktop-menu[open]::after {
+    position: absolute;
+    top: 100%;
+    right: -1rem;
+    left: -1rem;
+    height: 1.5rem;
+    content: '';
+  }
+
+  .desktop-menu > summary {
     display: flex;
     cursor: pointer;
     list-style: none;
@@ -206,11 +279,11 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
     color: #b6b3ae;
   }
 
-  .airport-menu > summary::-webkit-details-marker {
+  .desktop-menu > summary::-webkit-details-marker {
     display: none;
   }
 
-  .airport-menu > summary i {
+  .desktop-menu > summary i {
     width: 0.42rem;
     height: 0.42rem;
     border-right: 1px solid currentColor;
@@ -219,17 +292,17 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
     transition: transform 160ms ease;
   }
 
-  .airport-menu[open] > summary,
-  .airport-menu.active > summary {
+  .desktop-menu[open] > summary,
+  .desktop-menu.active > summary {
     border-color: var(--ae-accent);
     color: #fff;
   }
 
-  .airport-menu[open] > summary i {
+  .desktop-menu[open] > summary i {
     transform: translateY(0.12rem) rotate(225deg);
   }
 
-  .airport-dropdown {
+  .nav-dropdown {
     position: absolute;
     z-index: 60;
     top: calc(100% + 1.4rem);
@@ -244,11 +317,11 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
     list-style: none;
   }
 
-  .airport-dropdown li {
+  .nav-dropdown li {
     display: block;
   }
 
-  .desktop-nav .airport-dropdown a {
+  .desktop-nav .nav-dropdown a {
     display: grid;
     min-height: 3.5rem;
     padding: 0.75rem 0.9rem;
@@ -260,24 +333,25 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
     text-transform: none;
   }
 
-  .desktop-nav .airport-dropdown a:last-child {
+  .desktop-nav .nav-dropdown li:last-child a {
     border-bottom: 0;
   }
 
-  .airport-dropdown a:hover,
-  .airport-dropdown a[aria-current='page'] {
+  .nav-dropdown a:hover,
+  .nav-dropdown a:focus-visible,
+  .nav-dropdown a[aria-current='page'] {
     border-color: var(--ae-line-soft);
     background: var(--ae-panel);
   }
 
-  .airport-dropdown a span:first-child {
+  .nav-dropdown a span:first-child {
     color: var(--ae-accent);
     font-family: var(--ae-mono);
     font-size: 0.7rem;
     letter-spacing: 0.12em;
   }
 
-  .airport-dropdown a span:last-child {
+  .nav-dropdown a span:last-child {
     color: var(--ae-copy);
     font-family: var(--ae-sans);
     font-size: 0.88rem;
@@ -330,7 +404,7 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
       display: none;
     }
 
-    .airport-menu {
+    .desktop-menu {
       display: none;
     }
 
@@ -400,6 +474,8 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
       border-bottom: 1px solid var(--ae-line);
       background: var(--ae-deck);
       box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.35);
+      max-height: calc(100dvh - 3.75rem);
+      overflow-y: auto;
     }
 
     .mobile-menu > nav > a {
@@ -412,11 +488,11 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
       text-transform: uppercase;
     }
 
-    .mobile-airports {
+    .mobile-submenu {
       border-bottom: 1px solid var(--ae-line-soft);
     }
 
-    .mobile-airports > summary {
+    .mobile-submenu > summary {
       display: flex;
       min-height: 3.25rem;
       cursor: pointer;
@@ -430,25 +506,25 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
       text-transform: uppercase;
     }
 
-    .mobile-airports > summary::-webkit-details-marker {
+    .mobile-submenu > summary::-webkit-details-marker {
       display: none;
     }
 
-    .mobile-airports > summary i::before {
+    .mobile-submenu > summary i::before {
       color: var(--ae-accent);
       content: '+';
       font-style: normal;
     }
 
-    .mobile-airports[open] > summary i::before {
+    .mobile-submenu[open] > summary i::before {
       content: '-';
     }
 
-    .mobile-airports > div {
+    .mobile-submenu > div {
       padding: 0 0 0.75rem 0.75rem;
     }
 
-    .mobile-airports a {
+    .mobile-submenu a {
       display: grid;
       min-height: 3.25rem;
       padding: 0.7rem 0;
@@ -458,14 +534,14 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
       gap: 0.7rem;
     }
 
-    .mobile-airports a span:first-child {
+    .mobile-submenu a span:first-child {
       color: var(--ae-accent);
       font-family: var(--ae-mono);
       font-size: 0.68rem;
       letter-spacing: 0.12em;
     }
 
-    .mobile-airports a span:last-child {
+    .mobile-submenu a span:last-child {
       color: var(--ae-copy);
       font-size: 0.88rem;
     }
