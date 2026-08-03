@@ -1,0 +1,210 @@
+---
+/**
+ * Plots the client's home fields at their true relative positions.
+ *
+ * Deliberately a schematic, not a map: no coastline, no state borders, no terrain. At
+ * the widths this renders (roughly 450px on home, 1150px on about, both ~230px tall) a
+ * literal map of a metro area is mostly empty water and unreadable labels — and any
+ * generated or traced coastline is geography we cannot verify. A chart that does not
+ * claim to be a map cannot be wrong about the shoreline, and the one thing it does
+ * claim — where these fields sit relative to each other — is computed from coordinates
+ * in the payload rather than drawn by hand.
+ *
+ * Equirectangular projection with a cos(lat) correction on longitude. Over a ~90 mile
+ * span that is visually indistinguishable from a proper projection, and it keeps the
+ * maths readable. Scale is uniform on both axes: stretching one to fill the box would
+ * misrepresent the distances, which is the only thing this graphic is for.
+ */
+interface Point {
+  code: string;
+  name: string;
+  lat: number;
+  lon: number;
+  place?: 'left' | 'right' | 'above' | 'below';
+}
+
+interface Props {
+  points: Point[];
+  reference?: { label: string; lat: number; lon: number };
+  class?: string;
+}
+
+const { points, reference, class: className } = Astro.props;
+
+const VIEW_W = 760;
+const VIEW_H = 260;
+const MARGIN = { top: 46, right: 120, bottom: 60, left: 120 };
+const MILES_PER_DEGREE = 69.17;
+
+const all = reference ? [...points, reference] : points;
+const lats = all.map((p) => p.lat);
+const lons = all.map((p) => p.lon);
+const latMax = Math.max(...lats);
+const lonMin = Math.min(...lons);
+const midLat = (latMax + Math.min(...lats)) / 2;
+const lonScale = Math.cos((midLat * Math.PI) / 180);
+
+/** Degrees → unprojected units, origin at the north-west corner of the data. */
+const rawX = (lon: number) => (lon - lonMin) * lonScale;
+const rawY = (lat: number) => latMax - lat;
+
+const spanX = Math.max(...all.map((p) => rawX(p.lon))) || 1;
+const spanY = Math.max(...all.map((p) => rawY(p.lat))) || 1;
+
+const availableW = VIEW_W - MARGIN.left - MARGIN.right;
+const availableH = VIEW_H - MARGIN.top - MARGIN.bottom;
+const scale = Math.min(availableW / spanX, availableH / spanY);
+
+const offsetX = (VIEW_W - spanX * scale) / 2;
+const offsetY = MARGIN.top;
+
+const project = (lat: number, lon: number) => ({
+  x: offsetX + rawX(lon) * scale,
+  y: offsetY + rawY(lat) * scale,
+});
+
+const plotted = points.map((point) => ({ ...point, ...project(point.lat, point.lon) }));
+const reference_ = reference ? { ...reference, ...project(reference.lat, reference.lon) } : null;
+
+/** West-to-east, so the connector reads as a corridor rather than a scribble. */
+const corridor = [...plotted].sort((a, b) => a.x - b.x);
+
+const pxPerMile = scale / MILES_PER_DEGREE;
+const barMiles = 20;
+const barWidth = barMiles * pxPerMile;
+
+const LABEL_OFFSET = 14;
+function labelFor(point: (typeof plotted)[number]) {
+  switch (point.place ?? 'right') {
+    case 'left':
+      return { x: point.x - LABEL_OFFSET, y: point.y + 4, anchor: 'end' as const };
+    case 'above':
+      return { x: point.x, y: point.y - LABEL_OFFSET - 6, anchor: 'middle' as const };
+    case 'below':
+      return { x: point.x, y: point.y + LABEL_OFFSET + 12, anchor: 'middle' as const };
+    default:
+      return { x: point.x + LABEL_OFFSET, y: point.y + 4, anchor: 'start' as const };
+  }
+}
+---
+
+<figure class:list={['chart', className]}>
+  <svg
+    viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
+    preserveAspectRatio="xMidYMid meet"
+    role="img"
+    aria-label={`Relative positions of ${points.map((p) => p.name).join(', ')}`}
+  >
+    <path
+      class="corridor"
+      d={corridor.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ')}
+    />
+
+    {
+      reference_ && (
+        <g class="reference">
+          <circle cx={reference_.x} cy={reference_.y} r="2.5" />
+          <text x={reference_.x + 10} y={reference_.y + 14}>
+            {reference_.label}
+          </text>
+        </g>
+      )
+    }
+
+    {
+      plotted.map((point) => {
+        const label = labelFor(point);
+        return (
+          <g class="field">
+            <circle class="halo" cx={point.x} cy={point.y} r="9" />
+            <circle class="dot" cx={point.x} cy={point.y} r="3.5" />
+            <text class="code" x={label.x} y={label.y} text-anchor={label.anchor}>
+              {point.code}
+            </text>
+            <text class="name" x={label.x} y={label.y + 13} text-anchor={label.anchor}>
+              {point.name}
+            </text>
+          </g>
+        );
+      })
+    }
+
+    {/* Bottom-right: the westernmost field owns the bottom-left corner, and its
+        two-line label runs straight through a bar placed at the plot origin. */}
+    <g class="scale" transform={`translate(${VIEW_W - MARGIN.right - barWidth} ${VIEW_H - 26})`}>
+      <path d={`M0 0 L0 6 M0 3 L${barWidth.toFixed(1)} 3 M${barWidth.toFixed(1)} 0 L${barWidth.toFixed(1)} 6`} />
+      <text x={barWidth / 2} y="-6" text-anchor="middle">{barMiles} MI</text>
+    </g>
+  </svg>
+</figure>
+
+<style>
+  .chart {
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--ae-line-soft);
+    background: var(--ae-deck);
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .corridor {
+    fill: none;
+    stroke: var(--ae-line);
+    stroke-dasharray: 3 5;
+    stroke-width: 1;
+  }
+
+  .halo {
+    fill: none;
+    stroke: var(--ae-accent);
+    stroke-width: 1;
+    opacity: 0.35;
+  }
+
+  .dot {
+    fill: var(--ae-accent);
+  }
+
+  text {
+    font-family: var(--ae-mono);
+  }
+
+  .code {
+    fill: var(--ae-bone);
+    font-size: 13px;
+    letter-spacing: 0.12em;
+  }
+
+  .name {
+    fill: var(--ae-muted);
+    font-size: 8.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .reference circle {
+    fill: var(--ae-muted);
+  }
+
+  .reference text {
+    fill: var(--ae-muted);
+    font-size: 8.5px;
+    letter-spacing: 0.14em;
+  }
+
+  .scale path {
+    stroke: var(--ae-muted);
+    stroke-width: 1;
+    opacity: 0.6;
+  }
+
+  .scale text {
+    fill: var(--ae-muted);
+    font-size: 8px;
+    letter-spacing: 0.16em;
+  }
+</style>

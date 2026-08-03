@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import type { AviationHome } from '../schema';
 import MediaSlot from './MediaSlot.astro';
+import CoverageChart from './CoverageChart.astro';
 import SectionLabel from './SectionLabel.astro';
 
 interface Props {
@@ -24,7 +25,13 @@ const airportRows = content.airports.map((item) => {
       <SectionLabel>{content.eyebrow}</SectionLabel>
       <h2>{content.heading}</h2>
       <p>{content.intro}</p>
-      <MediaSlot {...content.map} class="map" sizes="28rem" />
+      {
+        content.chart ? (
+          <CoverageChart {...content.chart} class="map" />
+        ) : (
+          <MediaSlot {...content.map} class="map" sizes="28rem" />
+        )
+      }
       <div class="legend">
         <span><i></i>Badged — no escort required</span>
         <span><i></i>Escorted / by arrangement</span>

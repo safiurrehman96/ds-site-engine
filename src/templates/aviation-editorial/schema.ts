@@ -21,6 +21,27 @@ const mediaSlot = z.object({
   image: image.optional(),
 });
 
+/**
+ * Coordinates for the coverage schematic. Optional: a client without them falls back to
+ * the photographic media slot, so this cannot break an existing payload.
+ */
+const coverageChart = z.object({
+  points: z
+    .array(
+      z.object({
+        code: prose,
+        name: prose,
+        lat: z.number().min(-90).max(90),
+        lon: z.number().min(-180).max(180),
+        place: z.enum(['left', 'right', 'above', 'below']).optional(),
+      }),
+    )
+    .min(2),
+  reference: z
+    .object({ label: prose, lat: z.number(), lon: z.number() })
+    .optional(),
+});
+
 const ctaSchema = z.object({
   eyebrow: prose,
   heading: prose,
@@ -136,6 +157,7 @@ export const aviationHomeSchema = z.object({
     heading: prose,
     intro: prose,
     map: mediaSlot,
+    chart: coverageChart.optional(),
     airports: z
       .array(
         z.object({
@@ -194,6 +216,7 @@ export const aviationAboutSchema = z.object({
       )
       .min(1),
     map: mediaSlot,
+    chart: coverageChart.optional(),
   }),
   liability: z.object({
     eyebrow: prose,

@@ -195,6 +195,32 @@ coverage:
   intro: "For AOG emergency work our team dispatches across the greater Northeast, including Pennsylvania, Connecticut, Maryland, Delaware, and Virginia."
   map:
     label: "Northeast coverage · four home fields plotted"
+  chart:
+    points:
+      - code: "KABE"
+        name: "Lehigh Valley"
+        lat: 40.6524
+        lon: -75.4404
+        place: "right"
+      - code: "KMMU"
+        name: "Morristown"
+        lat: 40.7994
+        lon: -74.4150
+        place: "below"
+      - code: "KTEB"
+        name: "Teterboro"
+        lat: 40.8501
+        lon: -74.0608
+        place: "above"
+      - code: "KHPN"
+        name: "White Plains"
+        lat: 41.0669
+        lon: -73.7075
+        place: "right"
+    reference:
+      label: "NYC"
+      lat: 40.7580
+      lon: -73.9855
   airports:
     - slug: "aircraft-detailing-teterboro"
       description: "Busiest general aviation airport in the region"
