@@ -114,7 +114,7 @@ const services = defineCollection({
     /** Must match the filename and the live URL: /{slug} */
     slug,
     order: z.number().int().nonnegative(),
-    /** One-liner reused by ServicesGrid on home, about, and every area page. */
+    /** One-liner reused by service directories and related-service links. */
     shortDescription: prose,
     metaDescription,
     ...headingOverrides,
@@ -220,14 +220,14 @@ const areas = defineCollection({
     ...headingOverrides,
 
     /**
-     * Optional tile image for AreasGrid's `tiles` variant. Most clients have no
+      * Optional area-card image. Most clients have no
      * per-city photography, so this falls back to the hero poster when unset —
      * but the variant only earns its place when the images actually differ.
      */
     image: image.optional(),
 
     heroIntro: prose,
-    /** Intro above the ServicesGrid on this page. Authored — the engine has no
+    /** Intro above the service directory on this page. Authored — the engine has no
      *  business asserting that services "come to you". */
     servicesIntro: prose,
 

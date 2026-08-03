@@ -24,7 +24,7 @@ export interface LegalDocument {
 /**
  * Closing contact block for an authored legal doc that omits one.
  *
- * The generator always produces this section, and LegalDoc.astro renders the phone /
+ * The generator always produces this section, and the legal page renders the phone /
  * email / website bullets under it either way, so an authored doc without one would
  * otherwise end abruptly on its last clause.
  */

@@ -55,7 +55,7 @@ export interface PresetTokens {
      * four distinct treatments read as four different design languages.
      */
     headStyle: 'rule' | 'bar' | 'line' | 'stamp';
-    /** Signature pattern laid over the dark bands (TopBar, footer, SocialStrip). */
+    /** Signature pattern laid over dark chrome and social bands. */
     texture: 'none' | 'glow' | 'grid' | 'sheen' | 'dots';
     /** Button personality. Buttons appear 5-10x per page, so this reads immediately. */
     buttonStyle: 'pill' | 'square' | 'hard' | 'sheen';
@@ -113,7 +113,7 @@ export interface PresetTokens {
   /** Hero scrim strength, as color-mix percentages over --ds-deep. */
   heroScrim: { top: number; bottom: number };
   /**
-   * How far the dark bands (TopBar, footer, SocialStrip, hero scrim) are tinted
+   * How far dark chrome, footer, social bands, and the hero scrim are tinted
    * toward the client's accent, 0–1. Gives per-client brand presence on every page
    * without adding a second raw colour for an agent to choose. Presets whose whole
    * identity is neutral (stealth) tint less.

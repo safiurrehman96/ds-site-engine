@@ -125,9 +125,9 @@ export const siteConfigSchema = z.object({
      * client whose hours or coverage story doesn't fit a one-liner turns it off here.
      */
     topBar: z.boolean().default(true),
-    /** Home "How It Works" StepsList. */
+    /** Home "How It Works" section. */
     howItWorks: z.boolean(),
-    /** Optional badge slot inside the About SplitSection (spec §11 decision 2). */
+    /** Optional credential badge on the About page (spec §11 decision 2). */
     credentialBadge: z
       .object({ image: z.string().min(1), alt: z.string().min(1), href: z.url().optional() })
       .optional(),

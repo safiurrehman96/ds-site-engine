@@ -229,7 +229,7 @@ export function blogBreadcrumbJsonLd(
   };
 }
 
-/** FAQPage, emitted wherever FAQAccordion renders. */
+/** FAQPage structured data, emitted on pages that render authored FAQs. */
 export function faqPageJsonLd(faqs: Array<{ q: string; a: string }>): Record<string, unknown> {
   return {
     '@type': 'FAQPage',

@@ -168,8 +168,7 @@ const bg = image ?? defaults.heroVideo.poster;
     object-fit: cover;
   }
 
-  /* Flat scrim: the copy is centred, so it needs even darkness rather than a
-     gradient — same reasoning as the AreasGrid tiles. */
+  /* Flat scrim: centred copy needs even darkness rather than a directional gradient. */
   .cta[data-variant='image'] .bg::after {
     content: '';
     position: absolute;
