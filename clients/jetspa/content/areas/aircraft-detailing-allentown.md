@@ -93,6 +93,9 @@ airport:
       image:
         src: "./assets/cond-access.webp"
         alt: "An access badge presented at an airfield gate reader"
+  geo:
+    lat: 40.6524
+    lon: -75.4404
   referenceImpacts:
     - "We coordinate directly with the appropriate ground staff for access, aircraft handling, and scheduling."
     - "Programs are tailored for piston, turboprop, and corporate jet utilization patterns."

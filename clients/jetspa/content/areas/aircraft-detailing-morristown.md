@@ -93,6 +93,9 @@ airport:
       image:
         src: "./assets/cond-standards.webp"
         alt: "A clean white cloth drawn across a mirror-polished panel in a wipe test"
+  geo:
+    lat: 40.7994
+    lon: -74.415
   referenceImpacts:
     - "We coordinate with the appropriate FBO for hangar access, ground handling, and scheduling."
     - "Service scope is matched to the airframe, from piston and turboprop aircraft through large corporate jets."

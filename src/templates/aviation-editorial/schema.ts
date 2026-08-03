@@ -318,6 +318,12 @@ export const aviationAirportSchema = z.object({
     .min(3)
     .max(5),
   referenceImpacts: z.array(prose).min(3).max(5),
+  /**
+   * Field coordinates, emitted as GeoCoordinates in the Airport JSON-LD node. This
+   * describes where the airport is — a checkable public fact — not where any photograph
+   * was taken. Optional: a payload without it simply omits `geo` from the graph.
+   */
+  geo: z.object({ lat: z.number().min(-90).max(90), lon: z.number().min(-180).max(180) }).optional(),
   /** Full-bleed image beside the closing CTA. Optional, like every other media slot. */
   conversionImage: image.optional(),
   teaser: prose,

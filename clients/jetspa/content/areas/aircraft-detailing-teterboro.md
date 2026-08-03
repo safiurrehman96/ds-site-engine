@@ -95,6 +95,9 @@ airport:
       image:
         src: "./assets/cond-visibility.webp"
         alt: "A business jet mirrored in the glass frontage of an FBO terminal"
+  geo:
+    lat: 40.8501
+    lon: -74.0608
   referenceImpacts:
     - "We coordinate hangar access and ground handling directly with the appropriate FBO desk."
     - "Scope is written per airframe; charter volume keeps between-leg and AOG demand elevated."

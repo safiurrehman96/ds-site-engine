@@ -93,6 +93,9 @@ airport:
       image:
         src: "./assets/cond-visibility.webp"
         alt: "A business jet mirrored in the glass frontage of an FBO terminal"
+  geo:
+    lat: 41.0669
+    lon: -73.7075
   referenceImpacts:
     - "Escorted access and FBO coordination are built into the confirmed service schedule."
     - "Scope is matched to large corporate airframes, charter utilization, and between-leg demand."

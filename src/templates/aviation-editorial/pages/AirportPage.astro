@@ -68,6 +68,15 @@ const airportJsonLd = {
   icaoCode: code,
   address: airport.locationLabel,
   url: currentUrl,
+  ...(airport.geo
+    ? {
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: airport.geo.lat,
+          longitude: airport.geo.lon,
+        },
+      }
+    : {}),
 };
 const breadcrumbJsonLd = {
   '@type': 'BreadcrumbList',
