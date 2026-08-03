@@ -47,32 +47,32 @@ processSteps:
     body: |
       Our team walks the aircraft to assess paint condition, existing damage, and contamination level, then confirms scope.
     image:
-      src: "./assets/service-aircraft-exterior-detailing.jpg"
-      alt: "Inspection — placeholder detailing photo"
+      src: "./assets/exterior-01-inspection.webp"
+      alt: "Two technicians walking the length of a parked business jet during inspection"
   - title: "Surface prep"
     body: |
       For dry wash: full aircraft dry wash using aviation-approved chemistry, panel by panel. For polish work: aircraft receives full chemical and iron decontamination first.
     image:
-      src: "./assets/service-aircraft-interior-detailing.jpg"
-      alt: "Surface prep — placeholder detailing photo"
+      src: "./assets/exterior-02-drywash.webp"
+      alt: "A microfiber mitt drawn across a fuselage panel during a waterless dry wash"
   - title: "Polish work (if applicable)"
     body: |
       Machine polish is applied panel by panel to bring back clarity and remove defects.
     image:
-      src: "./assets/service-aog-emergency-cleaning.jpg"
-      alt: "Polish work (if applicable) — placeholder detailing photo"
+      src: "./assets/exterior-03-polish.webp"
+      alt: "A polisher correcting a painted jet belly panel under raking work light"
   - title: "Protection"
     body: |
       If sealant or ceramic coating was ordered, it is applied after polish work is complete. If sealant only, curing takes minutes to hours.
     image:
-      src: "./assets/service-brightwork-polishing.jpg"
-      alt: "Protection — placeholder detailing photo"
+      src: "./assets/exterior-04-protection.webp"
+      alt: "A foam applicator laying sealant along the upper surface of a white wing"
   - title: "Inspection and documentation"
     body: |
       Post-service walk with your pilot or ground crew, plus written service record with any observations for future reference.
     image:
-      src: "./assets/service-corporate-jet-detailing.jpg"
-      alt: "Inspection and documentation — placeholder detailing photo"
+      src: "./assets/exterior-05-handback.webp"
+      alt: "Two people at the nose of a finished business jet during the post-service walk"
 
 crossSell:
   heading: "Add-On Services"

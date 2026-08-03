@@ -9,8 +9,8 @@ h1: "Corporate Jet Detailing"
 shortDescription: "Corporate jet detailing covers the full menu of appearance care for business jets: exterior wash, decontamination, polish and coating work, interior detail, bri"
 
 heroImage:
-  src: "./assets/service-corporate-jet-detailing.jpg"
-  alt: "A business jet nose-on in a hangar"
+  src: "./assets/jet-hero.webp"
+  alt: "A crew of six detailing a large-cabin business jet across ladders and wing"
 
 heroIntro: |
   A Cirrus Vision SF50 and a Gulfstream G650 are both corporate jets, but almost nothing about how they are detailed is the same. The chemistry, the labor, the team size, the ground time, and the pricing scale substantially between light jets and super-corporate airframes. JetSpa services every class of corporate jet in general aviation, from light through super-corporate and Boeing Business Jets, with the team, equipment, and OEM-approved products required for each class.
@@ -46,32 +46,32 @@ processSteps:
     body: |
       We confirm your aircraft make and model, the services you want, your home base, and your available window. Aircraft class drives the crew size and timeline.
     image:
-      src: "./assets/service-corporate-jet-detailing.jpg"
-      alt: "Scope call — placeholder detailing photo"
+      src: "./assets/jet-01-scope.webp"
+      alt: "A scope call taken in a flight department office overlooking a jet on the ramp"
   - title: "Written quote"
     body: |
       You receive a written scope, timeline, and price. Larger aircraft may require breaking the work across multiple days.
     image:
-      src: "./assets/service-de-ice-boot-refurbishment.jpg"
-      alt: "Written quote — placeholder detailing photo"
+      src: "./assets/jet-02-quote.webp"
+      alt: "A printed scope and timeline fanned across a dark meeting table"
   - title: "On-site arrival"
     body: |
       Our team arrives at the confirmed hangar with all products, equipment, and PPE ready. Super-corporate jets can require crews of six to eight people and multiple ladders.
     image:
-      src: "./assets/service-piston-aircraft-detailing.jpg"
-      alt: "On-site arrival — placeholder detailing photo"
+      src: "./assets/jet-03-arrival.webp"
+      alt: "Detailing equipment staged in a hangar beside a large-cabin jet at first light"
   - title: "Coordinated execution"
     body: |
       Work proceeds panel by panel and section by section. We coordinate with your pilot or flight department on any downtime windows, coating cure requirements, or ground time constraints.
     image:
-      src: "./assets/service-turboprop-aircraft-detailing.jpg"
-      alt: "Coordinated execution — placeholder detailing photo"
+      src: "./assets/jet-04-execution.webp"
+      alt: "Two technicians on ladders working adjacent panels on a jet tail"
   - title: "Post-service walkthrough and documentation"
     body: |
       You or your representative walks the aircraft with our lead technician. You receive a written service record documenting scope, product used, and any observations.
     image:
-      src: "./assets/service-aircraft-ceramic-coating.jpg"
-      alt: "Post-service walkthrough and documentation — placeholder detailing photo"
+      src: "./assets/jet-05-walkthrough.webp"
+      alt: "A lead technician and client inspecting the landing gear area of a finished jet"
 
 crossSell:
   heading: "Add-On Services"

@@ -17,7 +17,9 @@
       "id": "why-credentials",
       "out": "why-credentials.webp",
       "alt": "A certification card and airport access badge on a lanyard, laid on a dark desk",
-      "usedBy": ["content/home.md → differentiation.media"],
+      "usedBy": [
+        "content/home.md → differentiation.media"
+      ],
       "resizeWidth": 1000,
       "prompt": "Overhead flat-lay photograph on a dark charcoal desk surface, shot from directly above with a slight rotation. A laminated ID-sized credential card attached to a plain black woven lanyard coiled loosely beside it, next to a second airport access badge in a clear plastic holder. The printed content on both cards is deliberately soft and out of focus — abstract grey lines of type, a blurred portrait area, no readable words, numbers, seals, signatures, or organisation names anywhere. A brass-toned metal clip catches the light at the edge of the lanyard. Single soft directional light from the upper left, gentle shadow falloff to the right, shallow depth of field. Muted color grade with a warm brass-champagne cast."
     },
@@ -25,7 +27,9 @@
       "id": "brightwork-hero",
       "out": "brightwork-hero.webp",
       "alt": "A mirror-polished aluminium wing leading edge reflecting hangar lighting",
-      "usedBy": ["content/services/brightwork-polishing.md → heroImage"],
+      "usedBy": [
+        "content/services/brightwork-polishing.md → heroImage"
+      ],
       "resizeWidth": 1400,
       "prompt": "Wide shot of a mirror-polished bare aluminum wing leading edge on a business jet, running diagonally through the frame. The metal is flawless and reflective, throwing a clean inverted reflection of the hangar's overhead light bars and the dark hangar floor. Adjacent white painted surface visible above the polish line, showing the crisp boundary between paint and brightwork. Shot on a 50mm lens at f/4."
     },
@@ -33,42 +37,54 @@
       "id": "brightwork-01-assessment",
       "out": "brightwork-01-assessment.webp",
       "alt": "An inspection light raking across an oxidised aluminium leading edge",
-      "usedBy": ["content/services/brightwork-polishing.md → processSteps[0] Assessment"],
+      "usedBy": [
+        "content/services/brightwork-polishing.md → processSteps[0] Assessment"
+      ],
       "prompt": "Close view of a technician's gloved hand holding a small LED inspection light at a shallow angle against a dull, lightly oxidized aluminum leading edge, the raking beam revealing fine pitting and cloudiness in the metal. Half the frame is the hazy untreated surface. Shot on an 85mm lens at f/2.8."
     },
     {
       "id": "brightwork-02-masking",
       "out": "brightwork-02-masking.webp",
       "alt": "Masking tape laid along the boundary between painted fuselage and bare polished aluminium",
-      "usedBy": ["content/services/brightwork-polishing.md → processSteps[1] Masking"],
+      "usedBy": [
+        "content/services/brightwork-polishing.md → processSteps[1] Masking"
+      ],
       "prompt": "Gloved hands laying a crisp line of masking tape along the boundary where white painted fuselage meets bare polished aluminum, the tape edge perfectly straight and tight to the seam. Rivet line visible running parallel. Shot on a 100mm macro lens at f/4."
     },
     {
       "id": "brightwork-03-cutting",
       "out": "brightwork-03-cutting.webp",
       "alt": "A wool pad and cutting compound working an oxidised aluminium leading edge",
-      "usedBy": ["content/services/brightwork-polishing.md → processSteps[2] Cutting compound"],
+      "usedBy": [
+        "content/services/brightwork-polishing.md → processSteps[2] Cutting compound"
+      ],
       "prompt": "A rotary polisher with a heavily loaded wool pad working a dark, oxidized aluminum leading edge, thick grey-black compound residue smeared across the metal and flecked onto the wool. The most physical stage — the surface looks worked, not finished. Motion blur in the pad. Shot on a 50mm lens at f/3.5."
     },
     {
       "id": "brightwork-04-refining",
       "out": "brightwork-04-refining.webp",
       "alt": "A foam pad refining a brightwork panel, hazed half against duller unworked metal",
-      "usedBy": ["content/services/brightwork-polishing.md → processSteps[3] Refining polish"],
+      "usedBy": [
+        "content/services/brightwork-polishing.md → processSteps[3] Refining polish"
+      ],
       "prompt": "A foam polishing pad on an aluminum leading edge, the metal now uniformly bright but still faintly hazed, with a light film of white polish. A clear diagonal division across the panel between the hazy refined half and a duller section still to be worked. Shot on an 85mm lens at f/2.8."
     },
     {
       "id": "brightwork-05-finish",
       "out": "brightwork-05-finish.webp",
       "alt": "A microfibre cloth drawn across a mirror-finished aluminium leading edge",
-      "usedBy": ["content/services/brightwork-polishing.md → processSteps[4] Finishing polish and seal"],
+      "usedBy": [
+        "content/services/brightwork-polishing.md → processSteps[4] Finishing polish and seal"
+      ],
       "prompt": "Gloved hands drawing a clean microfiber cloth across a fully mirror-finished aluminum leading edge, the metal reflecting the hangar lights and the technician's dark sleeve like a mirror. Deep, liquid gloss. Shot on a 50mm lens at f/4."
     },
     {
       "id": "deice-hero",
       "out": "deice-hero.webp",
       "alt": "A freshly conditioned black de-ice boot on a twin turboprop wing leading edge",
-      "usedBy": ["content/services/de-ice-boot-refurbishment.md → heroImage"],
+      "usedBy": [
+        "content/services/de-ice-boot-refurbishment.md → heroImage"
+      ],
       "resizeWidth": 1400,
       "prompt": "Wide shot of the black rubber pneumatic de-ice boot bonded along the leading edge of a twin turboprop's wing, running diagonally through the frame from lower left to upper right, with the propeller and engine nacelle softly out of focus behind. No people, no hands, no cloths — the work is complete and the surface is untouched. The rubber is freshly conditioned: deep matte black, flawlessly uniform, with the characteristic ribbed inflation tube texture faintly visible and a soft sheen along its curve. Shot on a 50mm lens at f/3.5."
     },
@@ -76,36 +92,401 @@
       "id": "deice-01-assessment",
       "out": "deice-01-assessment.webp",
       "alt": "Close view of aged de-ice boot rubber showing surface cracking",
-      "usedBy": ["content/services/de-ice-boot-refurbishment.md → processSteps[0] Assessment"],
+      "usedBy": [
+        "content/services/de-ice-boot-refurbishment.md → processSteps[0] Assessment"
+      ],
       "prompt": "Extreme close-up of aged de-ice boot rubber, greyed and chalky from UV exposure, with a visible network of fine surface cracks. A gloved fingertip rests at the edge of the frame indicating one crack. The degradation is the subject. Shot on a 100mm macro lens at f/4."
     },
     {
       "id": "deice-02-cleaning",
       "out": "deice-02-cleaning.webp",
       "alt": "A cloth wiping a de-ice boot, leaving a clean dark stripe through chalky rubber",
-      "usedBy": ["content/services/de-ice-boot-refurbishment.md → processSteps[1] Surface cleaning"],
+      "usedBy": [
+        "content/services/de-ice-boot-refurbishment.md → processSteps[1] Surface cleaning"
+      ],
       "prompt": "Gloved hands wiping a de-ice boot with a saturated white cloth, a clean dark stripe emerging behind the wipe against the surrounding grey chalky rubber. Visible wet sheen on the cleaned portion. Shot on an 85mm lens at f/2.8."
     },
     {
       "id": "deice-03-first-coat",
       "out": "deice-03-first-coat.webp",
       "alt": "Boot conditioner applied with an applicator pad, treated rubber deep black beside untreated grey",
-      "usedBy": ["content/services/de-ice-boot-refurbishment.md → processSteps[2] First conditioning coat"],
+      "usedBy": [
+        "content/services/de-ice-boot-refurbishment.md → processSteps[2] First conditioning coat"
+      ],
       "prompt": "A gloved hand applying black rubber conditioner with a foam applicator pad to a pneumatic de-ice boot — the wide black rubber strip bonded along the leading edge of an aircraft wing, NOT footwear of any kind. The wing and its riveted aluminium skin fill the upper half of the frame. A single even stroke has transformed the treated area to deep uniform black while the untreated rubber ahead of the pad is still dull chalky grey. Plain unlabeled amber bottle out of focus in the background. Shot on a 50mm lens at f/2.8."
     },
     {
       "id": "deice-04-coats",
       "out": "deice-04-coats.webp",
       "alt": "A wing leading edge boot between conditioning coats, applicator and cloths resting alongside",
-      "usedBy": ["content/services/de-ice-boot-refurbishment.md → processSteps[3] Subsequent coats"],
+      "usedBy": [
+        "content/services/de-ice-boot-refurbishment.md → processSteps[3] Subsequent coats"
+      ],
       "prompt": "Overhead angled view along the full length of a wing leading edge boot mid-process, the rubber now evenly dark and satin, with an applicator pad and folded cloths resting on a clean shop towel on the wing surface beside it. Quiet, methodical, between-coats moment. Shot on a 35mm lens at f/4."
     },
     {
       "id": "deice-05-cure",
       "out": "deice-05-cure.webp",
       "alt": "A twin turboprop parked alone in a dim hangar during the post-service cure",
-      "usedBy": ["content/services/de-ice-boot-refurbishment.md → processSteps[4] Cure and documentation"],
+      "usedBy": [
+        "content/services/de-ice-boot-refurbishment.md → processSteps[4] Cure and documentation"
+      ],
       "prompt": "A twin turboprop aircraft parked completely alone in a closed, dimly lit hangar overnight. Absolutely no people anywhere in the frame, no hands, no figures, no tools or cloths in use — the hangar is empty and the work is finished. The black rubber de-ice boot along the wing leading edge runs through the foreground, deep matte black and freshly conditioned, with the aircraft receding into shadow behind it. Still, silent, grounded — the aircraft is waiting out its 24-hour cure. Shot on a 24mm lens at f/5.6, deep focus."
+    },
+    {
+      "id": "ceramic-01-inspection",
+      "out": "ceramic-01-inspection.webp",
+      "alt": "A paint-depth gauge held against a business jet fuselage under raking inspection light",
+      "usedBy": [
+        "content/services/aircraft-ceramic-coating.md → processSteps[0] Inspection"
+      ],
+      "prompt": "A gloved hand holding a small digital paint-depth gauge flat against the white painted fuselage of a large-cabin business jet, reading the panel before any work begins. A hand-held LED bar rakes across the paint from the side, revealing a dense web of fine swirl marks and a dulled patch of clear coat. Clipboard tucked under the technician's other arm at the edge of frame. Shot on an 85mm lens at f/2.8."
+    },
+    {
+      "id": "ceramic-02-decon",
+      "out": "ceramic-02-decon.webp",
+      "alt": "Iron decontamination chemistry bleeding purple down a white aircraft panel",
+      "usedBy": [
+        "content/services/aircraft-ceramic-coating.md → processSteps[1] Decontamination and prep"
+      ],
+      "prompt": "Close-up of iron decontamination chemistry reacting on a white painted aircraft panel: distinct deep purple-magenta streaks bleeding downward in rivulets from embedded ferrous particles, vivid against the white paint. The only strongly saturated colour in the frame. Wet surface, droplets running to the panel seam. Shot on a 100mm macro lens at f/4."
+    },
+    {
+      "id": "ceramic-03-application",
+      "out": "ceramic-03-application.webp",
+      "alt": "A suede applicator block laying a wet ceramic coating film across a wing surface",
+      "usedBy": [
+        "content/services/aircraft-ceramic-coating.md → processSteps[2] Coating application"
+      ],
+      "prompt": "A gloved hand drawing a suede-wrapped applicator block across a white painted wing surface in a single straight pass, laying a visibly wet, glass-like coating film. The freshly coated strip is darker and mirror-wet; the paint ahead of the block is matte by comparison. Clean, bright, enclosed hangar interior, no dust. Shot on a 50mm lens at f/2.8."
+    },
+    {
+      "id": "ceramic-04-cure",
+      "out": "ceramic-04-cure.webp",
+      "alt": "A freshly coated business jet alone in a closed hangar, light bars mirrored down the fuselage",
+      "usedBy": [
+        "content/services/aircraft-ceramic-coating.md → processSteps[3] Cure and inspection"
+      ],
+      "prompt": "A large-cabin business jet alone in a clean, closed hangar during cure, photographed from a low three-quarter angle near the nose looking back along the fuselage. Absolutely no people, no hands, no tools anywhere in frame. The freshly coated paint throws a long unbroken mirror reflection of the overhead light bars down the length of the aircraft. Cool, even, controlled light. Shot on a 35mm lens at f/5.6, deep focus."
+    },
+    {
+      "id": "ceramic-05-documentation",
+      "out": "ceramic-05-documentation.webp",
+      "alt": "A service record on a clipboard resting on a freshly coated wing surface",
+      "usedBy": [
+        "content/services/aircraft-ceramic-coating.md → processSteps[4] Documentation"
+      ],
+      "prompt": "A printed service record on a black clipboard resting flat on the mirror-polished upper wing surface of a business jet, with a plain unlabelled coating bottle and a folded microfiber cloth beside it. The wing's reflection is visible beneath the clipboard. All printed text is deliberately soft and illegible — abstract grey lines of type, no readable words, numbers, dates or signatures. Shot from a high angle on a 50mm lens at f/2.8."
+    },
+    {
+      "id": "interior-01-walkthrough",
+      "out": "interior-01-walkthrough.webp",
+      "alt": "A private jet cabin before detailing, seats disordered and seatbelts loose",
+      "usedBy": [
+        "content/services/aircraft-interior-detailing.md → processSteps[0] Walkthrough"
+      ],
+      "prompt": "Wide establishing view of a private jet cabin before work begins, shot from the forward bulkhead looking aft down the aisle. Cream leather club seats slightly disordered, a folded blanket left on one armrest, seatbelts loose across the cushions — lived in, not yet serviced. Daylight through the oval windows falls in a row of ovals along the floor. No people. Shot on a 24mm lens at f/4, deep focus."
+    },
+    {
+      "id": "interior-02-vacuum",
+      "out": "interior-02-vacuum.webp",
+      "alt": "A crevice vacuum tool drawn along the seam of a cream leather cabin seat",
+      "usedBy": [
+        "content/services/aircraft-interior-detailing.md → processSteps[1] Removal and vacuum"
+      ],
+      "prompt": "Tight close-up of a narrow crevice vacuum tool being drawn along the seam between a cream leather seat cushion and its backrest, the leather compressed slightly under the nozzle. The vacuum hose curves out of focus in the background. Warm cabin light, shallow depth of field. Shot on a 100mm macro lens at f/2.8."
+    },
+    {
+      "id": "interior-03-surfaces",
+      "out": "interior-03-surfaces.webp",
+      "alt": "Gloved hands conditioning a cream leather armrest beside polished wood veneer",
+      "usedBy": [
+        "content/services/aircraft-interior-detailing.md → processSteps[2] Surface work"
+      ],
+      "prompt": "Gloved hands working conditioner into a cream leather armrest with a folded microfiber cloth, the polished dark burl wood veneer of the side ledge directly behind catching a warm highlight. The conditioned leather is visibly richer than the untreated section further along the armrest. Shot on an 85mm lens at f/2.0."
+    },
+    {
+      "id": "interior-04-extraction",
+      "out": "interior-04-extraction.webp",
+      "alt": "A carpet extractor wand leaving a clean damp stripe along a cabin aisle",
+      "usedBy": [
+        "content/services/aircraft-interior-detailing.md → processSteps[3] Deep work"
+      ],
+      "prompt": "A carpet extraction wand pressed into the pale cabin aisle carpet, pulled toward the camera, leaving a clean damp stripe with a crisp edge against the duller soiled carpet on either side. Extractor hoses trail out of focus behind. Low camera angle at floor level. Shot on a 35mm lens at f/2.8."
+    },
+    {
+      "id": "interior-05-final",
+      "out": "interior-05-final.webp",
+      "alt": "A gloved hand wiping a veneer tray table in a finished cabin",
+      "usedBy": [
+        "content/services/aircraft-interior-detailing.md → processSteps[4] Final pass"
+      ],
+      "prompt": "A gloved hand wiping a deployed veneer tray table with a fresh microfiber cloth as a final pass, the finished cabin visible behind: seats squared up, belts laid flat and symmetrical, everything in order. Warm late light through the windows, deep shadow in the aisle. Shot on a 50mm lens at f/2.0."
+    },
+    {
+      "id": "exterior-01-inspection",
+      "out": "exterior-01-inspection.webp",
+      "alt": "Two technicians walking the length of a parked business jet during inspection",
+      "usedBy": [
+        "content/services/aircraft-exterior-detailing.md → processSteps[0] Inspection"
+      ],
+      "prompt": "Wide shot of two technicians walking the length of a parked business jet on an overcast ramp, seen from behind and to the side, small in the frame against the aircraft. One holds a hand-held light low against the fuselage, the other carries a clipboard. Flat grey daylight, wet tarmac, the whole aircraft in frame from nose to tail. No faces visible. Shot on a 35mm lens at f/5.6, deep focus."
+    },
+    {
+      "id": "exterior-02-drywash",
+      "out": "exterior-02-drywash.webp",
+      "alt": "A microfiber mitt drawn across a fuselage panel during a waterless dry wash",
+      "usedBy": [
+        "content/services/aircraft-exterior-detailing.md → processSteps[1] Surface prep"
+      ],
+      "prompt": "A gloved hand drawing a plush microfiber mitt across a white painted fuselage panel in a straight horizontal pass during a waterless dry wash — no buckets, no foam, no running water anywhere. A light mist of product sits on the panel ahead of the mitt, and the cleaned section behind is noticeably brighter, divided by a crisp panel seam and rivet line. Shot on a 50mm lens at f/2.8."
+    },
+    {
+      "id": "exterior-03-polish",
+      "out": "exterior-03-polish.webp",
+      "alt": "A polisher correcting a painted jet belly panel under raking work light",
+      "usedBy": [
+        "content/services/aircraft-exterior-detailing.md → processSteps[2] Polish work (if applicable)"
+      ],
+      "prompt": "Low angle looking up along the curved white painted belly of a business jet as a dual-action polisher works a panel overhead, a bright LED work light mounted low and raking across the paint to expose swirl marks in the untouched section beside the polished one. The corrected half throws a clean sharp reflection; the uncorrected half scatters the light into a haze. Shot on a 35mm lens at f/2.8."
+    },
+    {
+      "id": "exterior-04-protection",
+      "out": "exterior-04-protection.webp",
+      "alt": "A foam applicator laying sealant along the upper surface of a white wing",
+      "usedBy": [
+        "content/services/aircraft-exterior-detailing.md → processSteps[3] Protection"
+      ],
+      "prompt": "A gloved hand laying sealant onto the upper surface of a white painted wing with a foam applicator, working away from the camera toward the wingtip. The sealed surface behind the applicator is deep and wet-looking; the wing ahead is flat by comparison. Plain unlabelled bottle standing on the wing root at the edge of frame. Overcast daylight, no harsh reflections. Shot on a 50mm lens at f/3.5."
+    },
+    {
+      "id": "exterior-05-handback",
+      "out": "exterior-05-handback.webp",
+      "alt": "Two people at the nose of a finished business jet during the post-service walk",
+      "usedBy": [
+        "content/services/aircraft-exterior-detailing.md → processSteps[4] Inspection and documentation"
+      ],
+      "prompt": "Two figures standing together beside the nose of a finished business jet on the ramp at golden hour, shown from the shoulders down, one holding a tablet angled toward the other — the post-service walk. The aircraft's paint is deep and reflective, throwing warm light back. The pair are small in the frame; the aircraft dominates. No faces, no readable screen content. Shot on a 50mm lens at f/4."
+    },
+    {
+      "id": "aog-hero",
+      "out": "aog-hero.webp",
+      "alt": "A business jet nose-on in a hangar at night under portable floodlights",
+      "usedBy": [
+        "content/services/aog-emergency-cleaning.md → heroImage"
+      ],
+      "prompt": "A business jet nose-on in a hangar at night, lit hard from below by two portable floodlights on stands, throwing long shadows up the fuselage. A service van with its rear doors open sits at the edge of the frame, equipment cases on the hangar floor beside it. Everything else falls into deep black. Urgent, operational, after hours — not a beauty shot. Shot on a 35mm lens at f/2.8.",
+      "resizeWidth": 1400
+    },
+    {
+      "id": "aog-01-intake",
+      "out": "aog-01-intake.webp",
+      "alt": "A night dispatch call taken beside a window overlooking a floodlit ramp",
+      "usedBy": [
+        "content/services/aog-emergency-cleaning.md → processSteps[0] Emergency intake"
+      ],
+      "prompt": "A hand holding a phone to the ear in a darkened dispatch office at night, seen from the shoulders down, the other hand writing on a notepad. Through the window behind, a floodlit ramp and the dark silhouette of a parked jet. The only light is the desk lamp and the ramp glow. Shot on a 50mm lens at f/2.0."
+    },
+    {
+      "id": "aog-02-dispatch",
+      "out": "aog-02-dispatch.webp",
+      "alt": "Equipment cases loaded into a service van at night for an AOG dispatch",
+      "usedBy": [
+        "content/services/aog-emergency-cleaning.md → processSteps[1] Dispatch"
+      ],
+      "prompt": "A service van backed up with its rear doors open at night, gloved hands loading a hard equipment case in beside stacked containment supplies and a folded PPE kit. Headlights and wet asphalt behind. Motion in the moment, deliberately unposed. Shot on a 35mm lens at f/2.8."
+    },
+    {
+      "id": "aog-03-containment",
+      "out": "aog-03-containment.webp",
+      "alt": "A contained section of jet cabin sealed with sheeting under a work light",
+      "usedBy": [
+        "content/services/aog-emergency-cleaning.md → processSteps[2] On-site containment"
+      ],
+      "prompt": "Inside a jet cabin at night, a section of carpet and one seat base sealed off with plastic sheeting taped down at the edges, a work light throwing a hard pool of light onto the contained area. Blue nitrile gloves and a disposable coverall sleeve at the frame edge. Clinical and controlled. Shot on a 35mm lens at f/2.8."
+    },
+    {
+      "id": "aog-04-deepclean",
+      "out": "aog-04-deepclean.webp",
+      "alt": "Deep cleaning a cabin seat base under a work light during an AOG call",
+      "usedBy": [
+        "content/services/aog-emergency-cleaning.md → processSteps[3] Deep clean and treatment"
+      ],
+      "prompt": "A gloved hand in a disposable coverall working an extraction tool into a cabin seat base under a bright portable work light at night, the surrounding cabin dark. A visible clean, damp patch where the treatment has passed. Steam or fine mist catching the light. Shot on an 85mm lens at f/2.8."
+    },
+    {
+      "id": "aog-05-record",
+      "out": "aog-05-record.webp",
+      "alt": "A service record completed on a tablet in a cabin after an overnight AOG call",
+      "usedBy": [
+        "content/services/aog-emergency-cleaning.md → processSteps[4] Documentation"
+      ],
+      "prompt": "A tablet held in a gloved hand inside a dim cabin at night, screen glow lighting the glove from below, the finished and reset cabin visible behind. Screen content is an abstract soft glow with no readable text, no interface elements, no words or numbers. Shot on a 50mm lens at f/2.0."
+    },
+    {
+      "id": "jet-hero",
+      "out": "jet-hero.webp",
+      "alt": "A crew of six detailing a large-cabin business jet across ladders and wing",
+      "usedBy": [
+        "content/services/corporate-jet-detailing.md → heroImage"
+      ],
+      "prompt": "Wide view of a large-cabin business jet in a bright hangar with a crew of six working it simultaneously — two on rolling ladders at the tail, others along the fuselage and at the wing — all shown from the shoulders down or at a distance, no faces. Scale is the subject: the aircraft dwarfs the team. Shot on a 24mm lens at f/5.6, deep focus.",
+      "resizeWidth": 1400
+    },
+    {
+      "id": "jet-01-scope",
+      "out": "jet-01-scope.webp",
+      "alt": "A scope call taken in a flight department office overlooking a jet on the ramp",
+      "usedBy": [
+        "content/services/corporate-jet-detailing.md → processSteps[0] Scope call"
+      ],
+      "prompt": "A flight department office at dusk, seen over the shoulder of someone at a desk with a headset on, shown from the shoulders down. Through the large window behind the desk, a large-cabin jet sits on the floodlit ramp. Warm desk lamp, cool evening light outside. No readable screens, papers or signage. Shot on a 35mm lens at f/2.0."
+    },
+    {
+      "id": "jet-02-quote",
+      "out": "jet-02-quote.webp",
+      "alt": "A printed scope and timeline fanned across a dark meeting table",
+      "usedBy": [
+        "content/services/corporate-jet-detailing.md → processSteps[1] Written quote"
+      ],
+      "prompt": "A printed multi-page scope document fanned across a dark meeting table beside a closed laptop and a coffee cup, shot from a low three-quarter angle rather than overhead. The pages carry abstract soft grey lines of type — no readable words, numbers, prices, dates or signatures. Cool window light from the left. Shot on a 50mm lens at f/2.8."
+    },
+    {
+      "id": "jet-03-arrival",
+      "out": "jet-03-arrival.webp",
+      "alt": "Detailing equipment staged in a hangar beside a large-cabin jet at first light",
+      "usedBy": [
+        "content/services/corporate-jet-detailing.md → processSteps[2] On-site arrival"
+      ],
+      "prompt": "A detailing crew's equipment staged in a neat row on a hangar floor at first light — hard cases, stacked buckets, two rolling ladders, a polisher on a cart — with a large-cabin jet behind, hangar doors just opening. No people. The order of the staging is the subject. Shot on a 35mm lens at f/4."
+    },
+    {
+      "id": "jet-04-execution",
+      "out": "jet-04-execution.webp",
+      "alt": "Two technicians on ladders working adjacent panels on a jet tail",
+      "usedBy": [
+        "content/services/corporate-jet-detailing.md → processSteps[3] Coordinated execution"
+      ],
+      "prompt": "Two technicians on rolling ladders working adjacent panels high on the tail of a large-cabin business jet, shown from the shoulders down, one polishing and one wiping. Strict panel-by-panel division visible: the section behind them is finished and reflective, ahead of them is dull. Shot on a 50mm lens at f/4."
+    },
+    {
+      "id": "jet-05-walkthrough",
+      "out": "jet-05-walkthrough.webp",
+      "alt": "A lead technician and client inspecting the landing gear area of a finished jet",
+      "usedBy": [
+        "content/services/corporate-jet-detailing.md → processSteps[4] Post-service walkthrough and documentation"
+      ],
+      "prompt": "Two people crouched together at the main landing gear of a finished large-cabin jet inside a hangar, shown from the shoulders down, one pointing at a wheel well area while the other holds a clipboard. Close inspection, not a handshake. The polished fuselage curves away above them. Shot on a 35mm lens at f/2.8."
+    },
+    {
+      "id": "turboprop-hero",
+      "out": "turboprop-hero.webp",
+      "alt": "A twin turboprop in a hangar showing polished spinner, propeller and wing boots",
+      "usedBy": [
+        "content/services/turboprop-aircraft-detailing.md → heroImage"
+      ],
+      "prompt": "A King Air style twin-engine TURBOPROP business aircraft in a daylight hangar, photographed from a low front three-quarter angle. It must be unmistakably turbine-powered, not a piston twin: long slender turboprop nacelles extending well forward of the wing, a large polished conical spinner, and a four-blade propeller with wide paddle-shaped blades. Thick black rubber de-ice boots run along the wing leading edges and the horizontal stabiliser. The spinner and propeller fill the near foreground; the boots run away along the wing behind. No people. Shot on a 35mm lens at f/4.",
+      "resizeWidth": 1400
+    },
+    {
+      "id": "turboprop-01-scope",
+      "out": "turboprop-01-scope.webp",
+      "alt": "A scope call taken standing at the propeller hub of a turboprop",
+      "usedBy": [
+        "content/services/turboprop-aircraft-detailing.md → processSteps[0] Scope call"
+      ],
+      "prompt": "A gloved hand holding a phone while resting against the propeller hub of a parked turboprop in a hangar, the spinner and one blade sharp in the foreground, the fuselage soft behind — a scope call taken standing at the aircraft rather than at a desk. Shown from the shoulders down. Shot on an 85mm lens at f/2.0."
+    },
+    {
+      "id": "turboprop-02-quote",
+      "out": "turboprop-02-quote.webp",
+      "alt": "A tablet resting on a turboprop wing beside the leading edge boot",
+      "usedBy": [
+        "content/services/turboprop-aircraft-detailing.md → processSteps[1] Written quote"
+      ],
+      "prompt": "A tablet resting flat on the upper wing surface of a turboprop beside the black leading edge boot, displaying a document as an abstract soft grey block with no readable text, numbers or interface. A pen lies across the wing beside it. High angle, shallow depth of field, hangar light. Shot on a 50mm lens at f/2.8."
+    },
+    {
+      "id": "turboprop-03-arrival",
+      "out": "turboprop-03-arrival.webp",
+      "alt": "Equipment unloaded from a cart in a hangar beside a twin turboprop",
+      "usedBy": [
+        "content/services/turboprop-aircraft-detailing.md → processSteps[2] On-site arrival"
+      ],
+      "prompt": "Gloved hands unloading a polisher and a stack of pads from a rolling cart in a hangar, a twin turboprop directly behind with its engine nacelles and spinners catching the light. Daylight through the open hangar doors. Shot on a 35mm lens at f/3.5."
+    },
+    {
+      "id": "turboprop-04-sequence",
+      "out": "turboprop-04-sequence.webp",
+      "alt": "A technician hand-polishing a turboprop spinner beside the propeller blade",
+      "usedBy": [
+        "content/services/turboprop-aircraft-detailing.md → processSteps[3] Sequential execution"
+      ],
+      "prompt": "A technician polishing a turboprop's mirror-finished spinner by hand with a microfiber cloth, the propeller blade sweeping out of frame and the black wing boot visible beyond — the sequence of surfaces this class requires, in one shot. Shown from the shoulders down. Shot on an 85mm lens at f/2.8."
+    },
+    {
+      "id": "turboprop-05-walkthrough",
+      "out": "turboprop-05-walkthrough.webp",
+      "alt": "Two people inspecting the finished leading edge boot of a turboprop",
+      "usedBy": [
+        "content/services/turboprop-aircraft-detailing.md → processSteps[4] Walkthrough and documentation"
+      ],
+      "prompt": "Two people standing under the wing of a finished twin turboprop in a hangar, shown from the shoulders down, both looking up at the leading edge boot while one holds a folded service record. The finished boot is deep black, the polished spinner bright behind them. Shot on a 35mm lens at f/3.5."
+    },
+    {
+      "id": "piston-hero",
+      "out": "piston-hero.webp",
+      "alt": "A single-engine piston aircraft polished on an outdoor tie-down at golden hour",
+      "usedBy": [
+        "content/services/piston-aircraft-detailing.md → heroImage"
+      ],
+      "prompt": "A single-engine piston aircraft on an outdoor tie-down at golden hour, three-quarter front view, its polished paint and spinner throwing warm light. Grass and a row of similar light aircraft soften into the background. Smaller, simpler and warmer than a corporate hangar scene. No people. Shot on a 50mm lens at f/4.",
+      "resizeWidth": 1400
+    },
+    {
+      "id": "piston-01-scope",
+      "out": "piston-01-scope.webp",
+      "alt": "A scope call taken at the wing strut of a single-engine piston aircraft",
+      "usedBy": [
+        "content/services/piston-aircraft-detailing.md → processSteps[0] Scope call"
+      ],
+      "prompt": "A gloved hand holding a phone resting on the wing strut of a single-engine piston aircraft outdoors, the high wing and strut framing the shot, sunlit tarmac beyond. Shown from the shoulders down. Casual, owner-operator scale. Shot on a 50mm lens at f/2.0."
+    },
+    {
+      "id": "piston-02-quote",
+      "out": "piston-02-quote.webp",
+      "alt": "A printed quote on a clipboard resting on the sunlit wing of a light aircraft",
+      "usedBy": [
+        "content/services/piston-aircraft-detailing.md → processSteps[1] Written quote"
+      ],
+      "prompt": "A single printed page on a clipboard resting on the sunlit wing of a light aircraft, held down against the breeze by a set of keys. The print is abstract soft grey lines with no readable words, numbers or signatures. Hard midday sun, crisp shadow of the clipboard on the wing. Shot on a 50mm lens at f/3.5."
+    },
+    {
+      "id": "piston-03-arrival",
+      "out": "piston-03-arrival.webp",
+      "alt": "A compact detailing kit set down beside the wheel of a light aircraft",
+      "usedBy": [
+        "content/services/piston-aircraft-detailing.md → processSteps[2] On-site arrival"
+      ],
+      "prompt": "A compact detailing kit set down on the tarmac beside the main wheel of a single-engine piston aircraft — one bucket, a small polisher, a stack of pads, a folded towel. Morning light, long shadows across the apron. No people. Modest scale, deliberately smaller than a jet crew's staging. Shot on a 35mm lens at f/4."
+    },
+    {
+      "id": "piston-04-execution",
+      "out": "piston-04-execution.webp",
+      "alt": "A polisher correcting oxidation on the cowling of a single-engine aircraft",
+      "usedBy": [
+        "content/services/piston-aircraft-detailing.md → processSteps[3] Execution"
+      ],
+      "prompt": "A technician working a small dual-action polisher along the painted cowling of a single-engine piston aircraft outdoors, chalky oxidation visible on the untouched section ahead of the pad and clean gloss behind it. Bright overcast daylight. Shown from the shoulders down. Shot on a 50mm lens at f/2.8."
+    },
+    {
+      "id": "piston-05-walkthrough",
+      "out": "piston-05-walkthrough.webp",
+      "alt": "Two people at the tail of a finished light aircraft at the end of the day",
+      "usedBy": [
+        "content/services/piston-aircraft-detailing.md → processSteps[4] Walkthrough and documentation"
+      ],
+      "prompt": "Two people standing at the tail of a finished light aircraft outdoors at the end of the day, shown from the shoulders down, one running a hand along the polished horizontal stabiliser while the other holds a single sheet of paper. Long low sun, the aircraft's paint throwing warm reflections. Shot on a 50mm lens at f/4."
     }
   ]
 }

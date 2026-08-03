@@ -9,8 +9,8 @@ h1: "AOG Emergency Aircraft Cleaning"
 shortDescription: "AOG stands for Aircraft on Ground, aviation industry terminology for an aircraft that cannot be released for its next flight until a specific problem is resolved."
 
 heroImage:
-  src: "./assets/service-aog-emergency-cleaning.jpg"
-  alt: "A business jet nose-on in a hangar at night"
+  src: "./assets/aog-hero.webp"
+  alt: "A business jet nose-on in a hangar at night under portable floodlights"
 
 heroIntro: |
   When your aircraft lands with a cabin issue that must be resolved before the next departure, the difference between a two-hour response and an eight-hour response can cost you the flight. AOG cleaning is a specialized service line built around one metric: how fast can we be on the ramp. JetSpa dispatches AOG teams across the Northeast for turnaround-critical interior situations.
@@ -45,32 +45,32 @@ processSteps:
     body: |
       You call our AOG line with your aircraft location, aircraft type, issue description, and departure deadline. Intake takes minutes.
     image:
-      src: "./assets/service-aog-emergency-cleaning.jpg"
-      alt: "Emergency intake — placeholder detailing photo"
+      src: "./assets/aog-01-intake.webp"
+      alt: "A night dispatch call taken beside a window overlooking a floodlit ramp"
   - title: "Dispatch"
     body: |
       We confirm ETA and dispatch the closest available team with all containment and cleaning materials.
     image:
-      src: "./assets/service-brightwork-polishing.jpg"
-      alt: "Dispatch — placeholder detailing photo"
+      src: "./assets/aog-02-dispatch.webp"
+      alt: "Equipment cases loaded into a service van at night for an AOG dispatch"
   - title: "On-site containment"
     body: |
       First priority is safe containment of the affected area, especially for biohazard incidents. PPE and containment protocols are followed without exception.
     image:
-      src: "./assets/service-corporate-jet-detailing.jpg"
-      alt: "On-site containment — placeholder detailing photo"
+      src: "./assets/aog-03-containment.webp"
+      alt: "A contained section of jet cabin sealed with sheeting under a work light"
   - title: "Deep clean and treatment"
     body: |
       The affected area receives a full deep clean, odor treatment as required, and disinfection of surrounding surfaces.
     image:
-      src: "./assets/service-de-ice-boot-refurbishment.jpg"
-      alt: "Deep clean and treatment — placeholder detailing photo"
+      src: "./assets/aog-04-deepclean.webp"
+      alt: "Deep cleaning a cabin seat base under a work light during an AOG call"
   - title: "Documentation"
     body: |
       Written service record noting the incident, actions taken, materials used, and any recommended follow-up. This documentation supports insurance claims and operator maintenance logs.
     image:
-      src: "./assets/service-piston-aircraft-detailing.jpg"
-      alt: "Documentation — placeholder detailing photo"
+      src: "./assets/aog-05-record.webp"
+      alt: "A service record completed on a tablet in a cabin after an overnight AOG call"
 
 crossSell:
   heading: "Add-On Services"

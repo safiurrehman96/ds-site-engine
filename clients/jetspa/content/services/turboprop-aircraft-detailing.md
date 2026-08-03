@@ -9,8 +9,8 @@ h1: "Turboprop Aircraft Detailing"
 shortDescription: "Turboprop detailing covers the full appearance care menu adapted to the specific needs of propeller-driven business aircraft."
 
 heroImage:
-  src: "./assets/service-turboprop-aircraft-detailing.jpg"
-  alt: "A gloved hand applying coating to a fuselage panel"
+  src: "./assets/turboprop-hero.webp"
+  alt: "A twin turboprop in a hangar showing polished spinner, propeller and wing boots"
 
 heroIntro: |
   Turboprops are their own class. King Airs, TBMs, Pilatus PC-12s, and Cessna Caravans get flown harder than most jets, spend more time on outdoor ramps, and carry appearance considerations that jets do not: propeller spinner polish, exhaust stack care, and de-ice boot systems that need regular refurbishment. JetSpa details every major turboprop in general aviation with the specific chemistry and technique the class requires.
@@ -46,32 +46,32 @@ processSteps:
     body: |
       We confirm aircraft type, spinner and boot configuration, and the services you want.
     image:
-      src: "./assets/service-turboprop-aircraft-detailing.jpg"
-      alt: "Scope call — placeholder detailing photo"
+      src: "./assets/turboprop-01-scope.webp"
+      alt: "A scope call taken standing at the propeller hub of a turboprop"
   - title: "Written quote"
     body: |
       You receive a written scope and timeline. Boot refurbishment and coating work require 24 to 48 hour ground time; we build that into scheduling.
     image:
-      src: "./assets/service-aircraft-ceramic-coating.jpg"
-      alt: "Written quote — placeholder detailing photo"
+      src: "./assets/turboprop-02-quote.webp"
+      alt: "A tablet resting on a turboprop wing beside the leading edge boot"
   - title: "On-site arrival"
     body: |
       Team arrives at your hangar with all products and equipment. Twin engine turboprops with additional surfaces (spinners, boots on horizontal stabilizer) require additional crew.
     image:
-      src: "./assets/service-aircraft-exterior-detailing.jpg"
-      alt: "On-site arrival — placeholder detailing photo"
+      src: "./assets/turboprop-03-arrival.webp"
+      alt: "Equipment unloaded from a cart in a hangar beside a twin turboprop"
   - title: "Sequential execution"
     body: |
       Work proceeds in the order that respects cure times: exterior polish and coating first (with cure), then boots and brightwork, then interior. This maximizes efficient use of the ground time.
     image:
-      src: "./assets/service-aircraft-interior-detailing.jpg"
-      alt: "Sequential execution — placeholder detailing photo"
+      src: "./assets/turboprop-04-sequence.webp"
+      alt: "A technician hand-polishing a turboprop spinner beside the propeller blade"
   - title: "Walkthrough and documentation"
     body: |
       Post-service walk with your pilot or ground crew plus written service record.
     image:
-      src: "./assets/service-aog-emergency-cleaning.jpg"
-      alt: "Walkthrough and documentation — placeholder detailing photo"
+      src: "./assets/turboprop-05-walkthrough.webp"
+      alt: "Two people inspecting the finished leading edge boot of a turboprop"
 
 crossSell:
   heading: "Add-On Services"

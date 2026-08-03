@@ -9,8 +9,8 @@ h1: "Piston Aircraft Detailing"
 shortDescription: "Piston aircraft detailing covers appearance care for single engine and twin engine piston-powered general aviation aircraft."
 
 heroImage:
-  src: "./assets/service-piston-aircraft-detailing.jpg"
-  alt: "A technician machine-polishing a fuselage panel"
+  src: "./assets/piston-hero.webp"
+  alt: "A single-engine piston aircraft polished on an outdoor tie-down at golden hour"
 
 heroIntro: |
   Piston aircraft owners often DIY the wash and wipe-down themselves, and that works fine for a Cessna 172 kept in a clean hangar. What DIY does not work for is the ceramic coating that protects paint value over years of tie-down exposure, the machine polish that undoes a decade of oxidation, or the interior detail that removes cabin odors before you list the aircraft. JetSpa details piston aircraft with the same OEM-approved chemistry and technique we use on jets, scaled to the class.
@@ -50,32 +50,32 @@ processSteps:
     body: |
       We confirm aircraft make, model, condition, and the services you want. Piston owners often want just polish and coating; some want the full menu.
     image:
-      src: "./assets/service-piston-aircraft-detailing.jpg"
-      alt: "Scope call — placeholder detailing photo"
+      src: "./assets/piston-01-scope.webp"
+      alt: "A scope call taken at the wing strut of a single-engine piston aircraft"
   - title: "Written quote"
     body: |
       You receive a written scope, timeline, and price.
     image:
-      src: "./assets/service-turboprop-aircraft-detailing.jpg"
-      alt: "Written quote — placeholder detailing photo"
+      src: "./assets/piston-02-quote.webp"
+      alt: "A printed quote on a clipboard resting on the sunlit wing of a light aircraft"
   - title: "On-site arrival"
     body: |
       Team arrives at your hangar or tie-down with all products and equipment.
     image:
-      src: "./assets/service-aircraft-ceramic-coating.jpg"
-      alt: "On-site arrival — placeholder detailing photo"
+      src: "./assets/piston-03-arrival.webp"
+      alt: "A compact detailing kit set down beside the wheel of a light aircraft"
   - title: "Execution"
     body: |
       Work proceeds in the order that respects cure times and available daylight. Most piston services complete in a single day; ceramic coating adds 24 to 48 hours of cure time.
     image:
-      src: "./assets/service-aircraft-exterior-detailing.jpg"
-      alt: "Execution — placeholder detailing photo"
+      src: "./assets/piston-04-execution.webp"
+      alt: "A polisher correcting oxidation on the cowling of a single-engine aircraft"
   - title: "Walkthrough and documentation"
     body: |
       Post-service walk with you or your representative plus written service record.
     image:
-      src: "./assets/service-aircraft-interior-detailing.jpg"
-      alt: "Walkthrough and documentation — placeholder detailing photo"
+      src: "./assets/piston-05-walkthrough.webp"
+      alt: "Two people at the tail of a finished light aircraft at the end of the day"
 
 crossSell:
   heading: "Add-On Services"
