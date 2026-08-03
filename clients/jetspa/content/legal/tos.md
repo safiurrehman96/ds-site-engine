@@ -1,6 +1,6 @@
 ---
 title: "Terms of Service"
-metaDescription: "JetSpa Terms of Service governing use of our website and aircraft detailing services. Quotes, booking, insurance, and liability terms."
+metaDescription: "JetSpa Terms of Service governing use of our website and aircraft detailing services. Quotes, scheduling, insurance, and liability terms."
 intro:
   - |
     Welcome to https://jetspa.co. These Terms of Service ("Terms") govern your use of our website and the aircraft detailing and appearance care services provided by JetSpa ("we," "us," or "our"). By using our website or engaging our services, you agree to these Terms.
@@ -8,13 +8,13 @@ sections:
   - heading: "Use of Our Website"
     body:
       - |
-        Our website is provided for informational purposes and to allow prospective and current customers to review our services, request quotes, and book appointments. You agree to use the website only for lawful purposes and in a manner that does not infringe the rights of others or interfere with the website's operation.
-  - heading: "Services and Booking"
+        Our website is provided for informational purposes and to allow prospective and current customers to review our services and request quotes. You agree to use the website only for lawful purposes and in a manner that does not infringe the rights of others or interfere with the website's operation.
+  - heading: "Services and Scheduling"
     body:
       - |
         **Quotes.** Written quotes provided by JetSpa are valid for the period stated on the quote and reflect the scope, aircraft, and conditions described. Changes to aircraft condition or scope may result in quote adjustment.
       - |
-        **Booking.** Appointments booked through our website, by phone, or by written agreement are confirmed when you receive a written confirmation from us. Deposits may be required for certain services.
+        **Scheduling.** Appointments arranged after a quote request, by phone, or by written agreement are confirmed when you receive a written confirmation from us. Deposits may be required for certain services.
       - |
         **Cancellation and Rescheduling.** Cancellation and rescheduling policies are confirmed with your booking. Same-day cancellations or short-notice reschedules may be subject to fees, particularly for AOG and multi-day scheduled work.
       - |

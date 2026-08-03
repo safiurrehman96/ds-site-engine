@@ -62,7 +62,7 @@ const hasTracking = !tracking.gtmId.includes('PLACEHOLDER');
     <main id="main" class="ae-page"><slot /></main>
     <SiteFooter {services} {areas} />
     <div class="ae-mobile-action" aria-label="Quick actions">
-      <a href="/get-quote">Request a Quote</a>
+      <a href={path === '/get-quote' ? '#quote-form' : '/get-quote'}>{path === '/get-quote' ? 'Quote Form' : 'Request a Quote'}</a>
       <a href={`tel:${contact.phone}`}>{home.data.chrome.mobileCallLabel}</a>
     </div>
   </body>

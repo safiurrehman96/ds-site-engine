@@ -14,6 +14,10 @@ import GHLEmbed from '../components/GHLEmbed.astro';
 import { getBooking } from '../lib/content';
 import { siteConfig } from '../lib/site-config';
 
+if (siteConfig.ghl.bookingUrls.length === 0) {
+  return Astro.redirect('/get-quote', 301);
+}
+
 const page = (await getBooking()).data;
 const { contact, ghl } = siteConfig;
 

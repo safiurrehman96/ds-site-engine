@@ -1,0 +1,639 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Inline from '../../../components/Inline.astro';
+import { getAreas } from '../../../lib/content';
+import { siteConfig } from '../../../lib/site-config';
+import SectionLabel from '../components/SectionLabel.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+interface Props {
+  entry: CollectionEntry<'getQuote'>;
+}
+
+const { entry } = Astro.props;
+const page = entry.data;
+const areas = await getAreas();
+const { contact, serviceArea } = siteConfig;
+const heroIntro = page.heroIntro.split('For AOG emergency situations')[0].trim();
+const includeItems = [
+  'Make, model, and tail number or aircraft type',
+  'Home base airport and hangar or FBO',
+  'Services wanted, including coating tier',
+  'Preferred window and any hard deadlines',
+  'Known condition notes for paint, boots, or cabin',
+];
+const accessLabel = (area: (typeof areas)[number]) => {
+  if (area.data.shortName === 'KTEB') return 'Primary base';
+  return area.data.airport?.access === 'escorted' ? 'Escorted access' : 'Badge access';
+};
+---
+
+<SiteLayout title={page.title} description={page.metaDescription} path="/get-quote">
+  <section class="quote-masthead">
+    <aside class="aog-callout" aria-label="AOG emergency contact">
+      <span><i aria-hidden="true"></i>AOG situation</span>
+      <strong>Call directly for fastest response</strong>
+      <a href={`tel:${contact.phone}`}>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3h-2A1.5 1.5 0 0 0 3 4.6c.2 3.3 1.5 6.4 3.7 8.8 2.1 2.3 5 3.8 8.1 4.2h.1A1.5 1.5 0 0 0 16.5 16v-2a1.5 1.5 0 0 0-1.2-1.5l-2-.4a1.5 1.5 0 0 0-1.4.5l-.6.7a11 11 0 0 1-4-4l.7-.6a1.5 1.5 0 0 0 .4-1.4l-.4-2A1.5 1.5 0 0 0 6.5 3Z" /></svg>
+        {contact.phoneDisplay}
+      </a>
+      <small>Answered outside business hours</small>
+    </aside>
+
+    <div class="masthead-copy">
+      <SectionLabel>Quote request</SectionLabel>
+      <h1>{page.heroHeadline}</h1>
+      <p><Inline text={heroIntro} /></p>
+    </div>
+  </section>
+
+  <section class="quote-layout">
+    <div class="form-column" id="quote-form">
+      <header>
+        <h2>Aircraft and service details</h2>
+        <span>Response within your timeline</span>
+      </header>
+      <div class="embed-note"><span>Form embed slot</span><p>Secure quote request iframe</p></div>
+      <div class="embed-slot" role="region" aria-label="Quote request form placeholder">
+        <div>
+          <span>Quote request</span>
+          <strong>Form iframe reserved</strong>
+          <p>The secure aircraft and service details form will load in this space.</p>
+        </div>
+      </div>
+      <p class="confidentiality">Tail numbers and aircraft details are kept confidential.</p>
+    </div>
+
+    <aside class="quote-rail">
+      <section>
+        <h2>Get in touch</h2>
+        <dl class="contact-list">
+          <div><dt>Phone</dt><dd><a href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a></dd></div>
+          <div><dt>Email</dt><dd><a href={`mailto:${contact.email}`}>{contact.email}</a></dd></div>
+          <div><dt>Response</dt><dd>Within your timeline</dd></div>
+        </dl>
+      </section>
+
+      <section>
+        <h2>What to include</h2>
+        <p>The more we know up front, the tighter the quote.</p>
+        <ul class="include-list">
+          {includeItems.map((item) => <li><span aria-hidden="true">✓</span>{item}</li>)}
+        </ul>
+      </section>
+
+      <section class="return-card">
+        <h2>What you get back</h2>
+        <dl>
+          <div><dt>Written scope</dt><dd>Per tail</dd></div>
+          <div><dt>Timeline</dt><dd>Grounded hours stated</dd></div>
+          <div><dt>Price</dt><dd>Fixed to scope</dd></div>
+        </dl>
+      </section>
+    </aside>
+  </section>
+
+  <section class="coverage">
+    <div class="coverage-intro">
+      <SectionLabel tone="light">Service coverage</SectionLabel>
+      <h2>Where we operate</h2>
+      <p>JetSpa operates across {serviceArea.label}. Our primary catchment includes four Northeast airports with established access procedures.</p>
+    </div>
+
+    <div class="coverage-details">
+      <div class="airport-grid">
+        {
+          areas.map((area) => (
+            <a href={`/${area.data.slug}`}>
+              <strong>{area.data.shortName}</strong>
+              <span>{area.data.airport?.officialName ?? area.data.name}</span>
+              <small>{accessLabel(area)}</small>
+            </a>
+          ))
+        }
+      </div>
+      <div class="extended">
+        <strong>Extended coverage</strong>
+        <p>AOG and specialty services across greater New York, New Jersey, Pennsylvania, Connecticut, Maryland, Delaware, and Virginia.</p>
+      </div>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .quote-masthead {
+    display: grid;
+    padding: 5.5rem var(--ae-gutter) 3.75rem;
+    border-bottom: 1px solid var(--ae-line);
+    grid-template-columns: minmax(0, 1fr) 26.25rem;
+    gap: clamp(3rem, 6vw, 5rem);
+    align-items: center;
+  }
+
+  .masthead-copy {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  h1 {
+    max-width: 46rem;
+    margin-top: 1.65rem;
+    font-size: clamp(3rem, 5vw, 3.75rem);
+    font-weight: 500;
+    letter-spacing: -0.028em;
+    line-height: 1.02;
+  }
+
+  .masthead-copy > p {
+    max-width: 40rem;
+    margin-top: 1.75rem;
+    color: var(--ae-copy);
+    font-size: 1.18rem;
+    line-height: 1.55;
+  }
+
+  .aog-callout {
+    display: flex;
+    padding: 0.25rem 0 0.25rem 1.75rem;
+    border-left: 2px solid var(--ae-accent);
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .aog-callout > span {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--ae-accent);
+    font-family: var(--ae-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .aog-callout i {
+    width: 0.38rem;
+    height: 0.38rem;
+    border-radius: 50%;
+    background: var(--ae-accent);
+  }
+
+  .aog-callout strong {
+    font-size: 1.35rem;
+    font-weight: 500;
+    letter-spacing: -0.016em;
+    line-height: 1.25;
+  }
+
+  .aog-callout a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--ae-bone);
+    font-family: var(--ae-mono);
+    font-size: 1.55rem;
+  }
+
+  .aog-callout svg {
+    width: 1.25rem;
+    fill: none;
+    stroke: var(--ae-accent);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.6;
+  }
+
+  .aog-callout small {
+    color: var(--ae-muted);
+    font-family: var(--ae-mono);
+    font-size: 0.67rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .quote-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 28.75rem;
+    align-items: stretch;
+  }
+
+  .form-column {
+    padding: 4rem clamp(2.5rem, 4vw, 3.5rem) 4.5rem var(--ae-gutter);
+    scroll-margin-top: 1rem;
+  }
+
+  .form-column > header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-bottom: 1.1rem;
+    border-bottom: 1px solid var(--ae-line);
+  }
+
+  .form-column h2 {
+    font-size: 1.85rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  .form-column header span {
+    color: var(--ae-muted);
+    font-family: var(--ae-mono);
+    font-size: 0.67rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .embed-note {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.9rem;
+    color: var(--ae-faint);
+    font-family: var(--ae-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .embed-note span {
+    padding: 0.22rem 0.45rem;
+    border: 1px solid color-mix(in srgb, var(--ae-accent) 50%, transparent);
+    color: var(--ae-accent);
+  }
+
+  .embed-slot {
+    position: relative;
+    display: grid;
+    min-height: 42rem;
+    margin-top: 1.75rem;
+    overflow: hidden;
+    border: 1px solid var(--ae-line);
+    background:
+      linear-gradient(var(--ae-line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--ae-line-soft) 1px, transparent 1px),
+      var(--ae-deck);
+    background-size: 3rem 3rem;
+    place-items: center;
+  }
+
+  .embed-slot::before,
+  .embed-slot::after {
+    position: absolute;
+    background: var(--ae-line);
+    content: '';
+  }
+
+  .embed-slot::before { width: 1px; height: 100%; }
+  .embed-slot::after { width: 100%; height: 1px; }
+
+  .embed-slot > div {
+    z-index: 1;
+    width: min(26rem, calc(100% - 3rem));
+    padding: 2rem;
+    border: 1px solid var(--ae-line);
+    background: var(--ae-ink);
+    text-align: center;
+  }
+
+  .embed-slot span,
+  .embed-slot strong {
+    display: block;
+    font-family: var(--ae-mono);
+    text-transform: uppercase;
+  }
+
+  .embed-slot span {
+    color: var(--ae-accent);
+    font-size: 0.66rem;
+    letter-spacing: 0.2em;
+  }
+
+  .embed-slot strong {
+    margin-top: 0.9rem;
+    color: var(--ae-bone);
+    font-size: 0.82rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+  }
+
+  .embed-slot p {
+    max-width: 20rem;
+    margin: 1rem auto 0;
+    color: var(--ae-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .confidentiality {
+    margin-top: 1rem;
+    color: var(--ae-muted);
+    font-family: var(--ae-mono);
+    font-size: 0.67rem;
+    line-height: 1.7;
+  }
+
+  .quote-rail {
+    display: flex;
+    padding: 4rem var(--ae-gutter) 4.5rem 2.25rem;
+    border-left: 1px solid var(--ae-line);
+    background: var(--ae-deck);
+    flex-direction: column;
+    gap: 2.75rem;
+  }
+
+  .quote-rail h2 {
+    color: var(--ae-accent);
+    font-family: var(--ae-mono);
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .contact-list {
+    margin-top: 1rem;
+  }
+
+  .contact-list > div {
+    display: flex;
+    min-height: 3.25rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid var(--ae-line-soft);
+  }
+
+  .contact-list dt {
+    color: var(--ae-muted);
+    font-size: 0.9rem;
+  }
+
+  .contact-list dd {
+    color: var(--ae-bone);
+    font-family: var(--ae-mono);
+    font-size: 0.78rem;
+    text-align: right;
+  }
+
+  .quote-rail section > p {
+    margin-top: 0.85rem;
+    color: var(--ae-muted);
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+
+  .include-list {
+    display: flex;
+    margin-top: 1rem;
+    flex-direction: column;
+    gap: 0.75rem;
+    color: var(--ae-copy);
+    font-size: 0.9rem;
+  }
+
+  .include-list li {
+    display: flex;
+    gap: 0.75rem;
+    line-height: 1.55;
+  }
+
+  .include-list span { color: var(--ae-accent); }
+
+  .return-card {
+    padding: 1.25rem 1.35rem;
+    border: 1px solid var(--ae-line);
+  }
+
+  .return-card h2 { color: var(--ae-muted); }
+
+  .return-card dl {
+    display: flex;
+    margin-top: 0.85rem;
+    flex-direction: column;
+    gap: 0.55rem;
+    font-family: var(--ae-mono);
+    font-size: 0.76rem;
+  }
+
+  .return-card dl div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--ae-copy);
+  }
+
+  .return-card dd { color: var(--ae-bone); text-align: right; }
+
+  .coverage {
+    display: grid;
+    padding: 6rem var(--ae-gutter) 5.5rem;
+    background: var(--ae-bone);
+    color: var(--ae-ink);
+    grid-template-columns: minmax(16rem, 23.75rem) minmax(0, 1fr);
+    gap: clamp(3rem, 6vw, 5rem);
+  }
+
+  .coverage h2 {
+    margin-top: 1.35rem;
+    font-size: 2.4rem;
+    font-weight: 500;
+    letter-spacing: -0.024em;
+    line-height: 1.12;
+  }
+
+  .coverage-intro > p {
+    margin-top: 1.25rem;
+    color: #3e4145;
+    line-height: 1.7;
+  }
+
+  .airport-grid {
+    display: grid;
+    border: 1px solid rgba(21, 23, 26, 0.16);
+    background: rgba(21, 23, 26, 0.16);
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+  }
+
+  .airport-grid a {
+    display: flex;
+    min-height: 8.5rem;
+    padding: 1.35rem 1.5rem;
+    background: var(--ae-bone);
+    color: var(--ae-ink);
+    flex-direction: column;
+  }
+
+  .airport-grid a:hover,
+  .airport-grid a:focus-visible { background: #fff; }
+
+  .airport-grid strong {
+    font-family: var(--ae-mono);
+    font-size: 1.85rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  .airport-grid span {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .airport-grid small {
+    margin-top: auto;
+    color: #5f5d59;
+    font-family: var(--ae-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .extended {
+    display: grid;
+    margin-top: 2rem;
+    padding-top: 1.35rem;
+    border-top: 1px solid rgba(21, 23, 26, 0.2);
+    grid-template-columns: 11rem 1fr;
+    gap: 2rem;
+  }
+
+  .extended strong {
+    color: #765a30;
+    font-family: var(--ae-mono);
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .extended p { color: #3e4145; line-height: 1.7; }
+
+  @media (max-width: 62rem) {
+    .quote-masthead { grid-template-columns: minmax(0, 1fr) 21rem; gap: 2.5rem; }
+    .quote-layout { grid-template-columns: minmax(0, 1fr) 22rem; }
+    .quote-rail { padding-left: 1.75rem; }
+    .coverage { grid-template-columns: 18rem minmax(0, 1fr); gap: 2.5rem; }
+  }
+
+  @media (max-width: 47.99rem) {
+    .quote-masthead {
+      display: flex;
+      padding: 0;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .aog-callout {
+      display: grid;
+      width: 100%;
+      padding: 0.85rem var(--ae-gutter);
+      border-bottom: 1px solid var(--ae-line);
+      border-left-width: 2px;
+      background: var(--ae-panel);
+      grid-template-columns: 1fr auto;
+      gap: 0.25rem 1rem;
+    }
+
+    .aog-callout > span,
+    .aog-callout strong { grid-column: 1; }
+
+    .aog-callout strong { font-size: 0.9rem; }
+
+    .aog-callout a {
+      min-height: 2.75rem;
+      padding-inline: 0.9rem;
+      background: var(--ae-bone);
+      color: var(--ae-ink);
+      grid-column: 2;
+      grid-row: 1 / 3;
+      font-size: 0;
+    }
+
+    .aog-callout a::after {
+      font-family: var(--ae-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      content: 'Call';
+      text-transform: uppercase;
+    }
+
+    .aog-callout svg { width: 1rem; stroke: var(--ae-ink); }
+    .aog-callout small { display: none; }
+
+    .masthead-copy { padding: 1.65rem var(--ae-gutter) 1.4rem; }
+
+    h1 {
+      margin-top: 0.9rem;
+      font-size: 2rem;
+      line-height: 1.04;
+    }
+
+    .masthead-copy > p {
+      margin-top: 0.9rem;
+      font-size: 0.96rem;
+      line-height: 1.6;
+    }
+
+    .quote-layout { display: block; }
+
+    .form-column { padding: 0 var(--ae-gutter) 1.5rem; }
+
+    .form-column > header {
+      justify-content: flex-start;
+      padding-bottom: 0.75rem;
+    }
+
+    .form-column h2 {
+      font-family: var(--ae-mono);
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .form-column header span { display: none; }
+    .embed-note p { display: none; }
+
+    .embed-slot {
+      min-height: 31rem;
+      margin-top: 1.25rem;
+      background-size: 2rem 2rem;
+    }
+
+    .embed-slot > div { padding: 1.5rem 1rem; }
+
+    .quote-rail {
+      padding: 1.65rem var(--ae-gutter) 1.5rem;
+      border-top: 1px solid var(--ae-line);
+      border-left: 0;
+      gap: 1.4rem;
+    }
+
+    .coverage {
+      display: block;
+      padding: 1.75rem var(--ae-gutter) 1.65rem;
+    }
+
+    .coverage h2 { margin-top: 0.75rem; font-size: 1.5rem; }
+    .coverage-intro > p { display: none; }
+    .coverage-details { margin-top: 1.15rem; }
+
+    .airport-grid a { min-height: 6.6rem; padding: 0.9rem 1rem; }
+    .airport-grid strong { font-size: 1.25rem; }
+    .airport-grid span { font-size: 0.78rem; }
+    .airport-grid small { display: none; }
+
+    .extended {
+      display: block;
+      margin-top: 1rem;
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .extended strong { display: none; }
+    .extended p { font-size: 0.88rem; }
+  }
+</style>

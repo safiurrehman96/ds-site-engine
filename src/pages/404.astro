@@ -1,55 +1,10 @@
 ---
-/**
- * Recipe G — Not Found. Rendered by the host for any unknown URL.
- *
- * Engine-only by design: every word here derives from config or the collections,
- * so no payload authors a 404 and every client gets one for free. A dead link is
- * a navigation failure, so the page's whole job is re-routing — the full service
- * list (tiles, same as About) plus the standard CTA banner.
- *
- * noindex, and @astrojs/sitemap already excludes 404 output on its own, so the
- * two stay in step without a filter entry in astro.config.mjs.
- */
-import BaseLayout from '../layouts/BaseLayout.astro';
-import ServicesGrid from '../components/ServicesGrid.astro';
-import CTABanner from '../components/CTABanner.astro';
 import { siteConfig } from '../lib/site-config';
+import AviationEditorialNotFound from '../templates/aviation-editorial/pages/NotFoundPage.astro';
 
-const { brand, defaults } = siteConfig;
+if (siteConfig.template !== 'aviation-editorial') {
+  throw new Error(`No 404 page registered for template "${siteConfig.template}".`);
+}
 ---
 
-<BaseLayout
-  title={`Page Not Found | ${brand.name}`}
-  description={`That page doesn't exist. Explore ${brand.name}'s services or get in touch.`}
-  path="/404"
-  noindex={true}
->
-  <section class="notfound ds-section">
-    <div class="ds-container inner">
-      <p class="ds-kicker">404 — Page Not Found</p>
-      <h1>That page doesn't exist</h1>
-      <p class="ds-lede">
-        The link may be outdated, or the address mistyped. Everything {brand.name} offers is one
-        step away below — or head <a href="/">back to the homepage</a>.
-      </p>
-    </div>
-  </section>
-
-  <ServicesGrid variant="tiles" tone="card" heading={`What ${brand.name} Offers`} />
-
-  <CTABanner headline={defaults.ctaHeadline} />
-</BaseLayout>
-
-<style>
-  .inner {
-    max-width: 66ch;
-  }
-
-  .inner .ds-lede {
-    margin-top: 1rem;
-  }
-
-  .inner a {
-    color: var(--ds-accent);
-  }
-</style>
+<AviationEditorialNotFound />

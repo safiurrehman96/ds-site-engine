@@ -248,7 +248,7 @@ proof:
 
 cta:
   eyebrow: "Get started"
-  heading: "Book your aircraft's next detail"
+  heading: "Request your aircraft's next detail"
   body: "Call us directly or request a quote online. Include your aircraft type, home base, and preferred service window, and we will respond within your timeline."
   media:
     label: "Hangar at night · aircraft ready for release"
@@ -256,11 +256,11 @@ cta:
       src: "./assets/service-aog-emergency-cleaning.jpg"
       alt: "A business jet nose-on in a hangar at night"
   availability: "Next available window · this week · KTEB / KMMU"
-  secondaryAction: "booking"
-  secondaryLabel: "Book Service"
+  secondaryAction: "phone"
+  secondaryLabel: "Call JetSpa"
   details:
     - label: "AOG line"
       kind: "phone"
-    - label: "Bookings"
+    - label: "Email"
       kind: "email"
 ---

@@ -8,7 +8,7 @@ sections:
   - heading: "Information We Collect"
     body:
       - |
-        **Information you provide directly.** When you request a quote, book a service, subscribe to updates, or contact us, we may collect your name, email address, phone number, business affiliation, aircraft information (make, model, tail number), and any details you share about the services you need.
+        **Information you provide directly.** When you request a quote, arrange a service, subscribe to updates, or contact us, we may collect your name, email address, phone number, business affiliation, aircraft information (make, model, tail number), and any details you share about the services you need.
       - |
         **Information collected automatically.** When you visit our website, we may automatically collect certain technical information including IP address, browser type, device information, pages visited, and referring URL through standard web technologies including cookies and analytics tools.
       - |

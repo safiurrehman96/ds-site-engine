@@ -94,7 +94,7 @@ export const siteConfigSchema = z.object({
      */
     bookingUrls: z
       .array(z.object({ label: z.string().min(1), url: z.url() }))
-      .min(1),
+      .default([]),
     /** GHL form/funnel URL that `/get-quote` links out to. Never rebuilt in Astro. */
     quoteUrl: z.url(),
     /** Optional "leave us a review" destination. */

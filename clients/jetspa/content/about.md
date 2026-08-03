@@ -150,6 +150,6 @@ cta:
     - label: "Standard notice"
       kind: "text"
       value: "24 hours"
-    - label: "Bookings"
+    - label: "Email"
       kind: "email"
 ---

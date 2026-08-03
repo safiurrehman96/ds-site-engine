@@ -16,6 +16,11 @@ import Inline from '../components/Inline.astro';
 import SplitSection from '../components/SplitSection.astro';
 import CTABanner from '../components/CTABanner.astro';
 import { getBookingConfirmed } from '../lib/content';
+import { siteConfig } from '../lib/site-config';
+
+if (siteConfig.ghl.bookingUrls.length === 0) {
+  return Astro.redirect('/get-quote', 301);
+}
 
 const page = (await getBookingConfirmed()).data;
 ---

@@ -9,11 +9,14 @@ interface Props {
 }
 
 const { content } = Astro.props;
-const { contact } = siteConfig;
+const { contact, ghl } = siteConfig;
 const details = content.details ?? [];
-const secondaryHref = content.secondaryAction === 'phone' ? `tel:${contact.phone}` : '/booking';
-const secondaryLabel =
-  content.secondaryLabel ?? (content.secondaryAction === 'phone' ? contact.phoneDisplay : 'Book Service');
+const bookingAvailable = ghl.bookingUrls.length > 0;
+const secondaryIsPhone = content.secondaryAction === 'phone' || !bookingAvailable;
+const secondaryHref = secondaryIsPhone ? `tel:${contact.phone}` : '/booking';
+const secondaryLabel = !bookingAvailable && content.secondaryAction === 'booking'
+  ? contact.phoneDisplay
+  : content.secondaryLabel ?? (secondaryIsPhone ? contact.phoneDisplay : 'Book Service');
 const detailValue = (detail: (typeof details)[number]) => {
   if (detail.kind === 'phone') return contact.phoneDisplay;
   if (detail.kind === 'email') return contact.email;

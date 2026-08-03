@@ -63,20 +63,8 @@ export const siteConfig = {
   },
 
   ghl: {
-    // TODO(fact-needed): six calendars, one per aircraft class, still to be built in
-    // GHL. example.com is reserved by RFC 2606 and can never resolve to a real
-    // business — a plausible-looking links.detailersystems.com URL could.
-    bookingUrls: [
-      { label: 'Piston Aircraft', url: 'https://example.com/PLACEHOLDER-booking-piston' },
-      { label: 'Turboprop Aircraft', url: 'https://example.com/PLACEHOLDER-booking-turboprop' },
-      { label: 'Light Corporate Jet', url: 'https://example.com/PLACEHOLDER-booking-light-jet' },
-      { label: 'Midsize Corporate Jet', url: 'https://example.com/PLACEHOLDER-booking-midsize-jet' },
-      { label: 'Large Corporate Jet', url: 'https://example.com/PLACEHOLDER-booking-large-jet' },
-      {
-        label: 'Super Corporate Jet / Boeing Business Jet',
-        url: 'https://example.com/PLACEHOLDER-booking-super-jet',
-      },
-    ],
+    // Aircraft details are quoted before scheduling; JetSpa does not offer direct booking.
+    bookingUrls: [],
     // TODO(fact-needed): GHL quote form not published yet.
     quoteUrl: 'https://example.com/PLACEHOLDER-quote-form',
   },

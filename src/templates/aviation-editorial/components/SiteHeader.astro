@@ -10,7 +10,8 @@ interface Props {
 }
 
 const { chrome, services, areas } = Astro.props;
-const { brand, contact } = siteConfig;
+const { brand, contact, ghl } = siteConfig;
+const hasBooking = ghl.bookingUrls.length > 0;
 const currentPath = Astro.url.pathname.replace(/^\//, '').replace(/\/$/, '');
 const isServicePage = services.some((service) => service.data.slug === currentPath);
 const isAirportPage = areas.some((area) => area.data.slug === currentPath);
@@ -60,8 +61,8 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
   </nav>
 
   <div class="desktop-actions">
-    <a class="quote" href="/get-quote">Request Quote</a>
-    <a class="book" href="/booking">Book Service</a>
+    <a class:list={[hasBooking ? 'quote' : 'book']} href="/get-quote">Request Quote</a>
+    {hasBooking && <a class="book" href="/booking">Book Service</a>}
   </div>
 
   <div class="mobile-actions">
@@ -100,7 +101,7 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
         <a href="/about">About</a>
         <a href="/faqs">FAQs</a>
         <a href="/get-quote">Request Quote</a>
-        <a href="/booking">Book Service</a>
+        {hasBooking && <a href="/booking">Book Service</a>}
       </nav>
     </details>
   </div>

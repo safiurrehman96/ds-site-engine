@@ -1,0 +1,313 @@
+---
+import { getAreas, getServices } from '../../../lib/content';
+import { siteConfig } from '../../../lib/site-config';
+import SectionLabel from '../components/SectionLabel.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+const [services, areas] = await Promise.all([getServices(), getAreas()]);
+const { brand } = siteConfig;
+---
+
+<SiteLayout
+  title={`Page Not Found | ${brand.name}`}
+  description={`That page doesn't exist. Explore ${brand.name}'s aircraft detailing services or request a quote.`}
+  path="/404"
+  noindex={true}
+>
+  <section class="error-masthead">
+    <div class="error-code" aria-hidden="true">
+      <span>HTTP</span>
+      <strong>404</strong>
+      <small>Route unavailable</small>
+    </div>
+
+    <div class="error-copy">
+      <SectionLabel>Navigation error</SectionLabel>
+      <h1>This page is off the flight plan.</h1>
+      <p>The address may be outdated or mistyped. Return to the homepage, browse aircraft services, or send the JetSpa team your aircraft details.</p>
+      <div class="actions">
+        <a class="ae-button ae-button--primary" href="/">Return Home</a>
+        <a class="ae-button" href="/get-quote">Request a Quote</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="route-index">
+    <header>
+      <div>
+        <SectionLabel tone="light">Available routes</SectionLabel>
+        <h2>Continue from here</h2>
+      </div>
+      <span>Services · Airports</span>
+    </header>
+
+    <div class="route-groups">
+      <section>
+        <h3>Aircraft services</h3>
+        <nav aria-label="Aircraft services">
+          {
+            services.map((service, index) => (
+              <a href={`/${service.data.slug}`}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <strong>{service.data.name}</strong>
+                <i aria-hidden="true">→</i>
+              </a>
+            ))
+          }
+        </nav>
+      </section>
+
+      <section>
+        <h3>Airport coverage</h3>
+        <nav aria-label="Airport coverage">
+          {
+            areas.map((area) => (
+              <a href={`/${area.data.slug}`}>
+                <span>{area.data.shortName}</span>
+                <strong>{area.data.airport?.officialName ?? area.data.name}</strong>
+                <i aria-hidden="true">→</i>
+              </a>
+            ))
+          }
+        </nav>
+        <div class="quote-card">
+          <span>Not seeing your airport?</span>
+          <strong>Ask about extended Northeast coverage.</strong>
+          <a href="/get-quote">Coverage request →</a>
+        </div>
+      </section>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .error-masthead {
+    display: grid;
+    min-height: 35rem;
+    padding: 5rem var(--ae-gutter);
+    border-bottom: 1px solid var(--ae-line);
+    grid-template-columns: minmax(18rem, 28rem) minmax(0, 1fr);
+    gap: clamp(3rem, 7vw, 7.5rem);
+    align-items: center;
+  }
+
+  .error-code {
+    position: relative;
+    display: grid;
+    min-height: 22rem;
+    overflow: hidden;
+    border: 1px solid var(--ae-line);
+    background:
+      linear-gradient(var(--ae-line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--ae-line-soft) 1px, transparent 1px),
+      var(--ae-deck);
+    background-size: 3rem 3rem;
+    place-items: center;
+  }
+
+  .error-code::before,
+  .error-code::after {
+    position: absolute;
+    background: var(--ae-line);
+    content: '';
+  }
+
+  .error-code::before { width: 1px; height: 100%; }
+  .error-code::after { width: 100%; height: 1px; }
+
+  .error-code span,
+  .error-code small {
+    position: absolute;
+    z-index: 1;
+    color: var(--ae-muted);
+    font-family: var(--ae-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .error-code span { top: 1rem; left: 1rem; }
+  .error-code small { right: 1rem; bottom: 1rem; }
+
+  .error-code strong {
+    z-index: 1;
+    color: var(--ae-bone);
+    font-family: var(--ae-mono);
+    font-size: clamp(6rem, 11vw, 9rem);
+    font-weight: 400;
+    letter-spacing: -0.08em;
+    line-height: 1;
+  }
+
+  .error-copy h1 {
+    max-width: 48rem;
+    margin-top: 1.5rem;
+    font-size: clamp(3rem, 5vw, 4.6rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+  }
+
+  .error-copy > p {
+    max-width: 39rem;
+    margin-top: 1.6rem;
+    color: var(--ae-copy);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 2.25rem;
+  }
+
+  .route-index {
+    padding: 5.5rem var(--ae-gutter) 6rem;
+    background: var(--ae-bone);
+    color: var(--ae-paper-ink);
+  }
+
+  .route-index > header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-bottom: 1.4rem;
+    border-bottom: 1px solid rgba(21, 23, 26, 0.22);
+  }
+
+  .route-index h2 {
+    margin-top: 1.2rem;
+    font-size: clamp(2.2rem, 3.5vw, 3rem);
+    font-weight: 500;
+    letter-spacing: -0.028em;
+    line-height: 1.08;
+  }
+
+  .route-index > header > span,
+  h3 {
+    color: #5f5d59;
+    font-family: var(--ae-mono);
+    font-size: 0.67rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .route-groups {
+    display: grid;
+    margin-top: 2rem;
+    grid-template-columns: minmax(0, 1.35fr) minmax(20rem, 0.65fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+  }
+
+  .route-groups nav {
+    margin-top: 0.8rem;
+    border-top: 1px solid rgba(21, 23, 26, 0.18);
+  }
+
+  .route-groups nav a {
+    display: grid;
+    min-height: 3.75rem;
+    align-items: center;
+    border-bottom: 1px solid rgba(21, 23, 26, 0.14);
+    color: var(--ae-paper-ink);
+    grid-template-columns: 3rem minmax(0, 1fr) auto;
+    gap: 1rem;
+  }
+
+  .route-groups nav a:hover,
+  .route-groups nav a:focus-visible { padding-inline: 0.75rem; background: #fff; }
+
+  .route-groups nav span {
+    color: #765a30;
+    font-family: var(--ae-mono);
+    font-size: 0.67rem;
+    letter-spacing: 0.12em;
+  }
+
+  .route-groups nav strong {
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .route-groups nav i {
+    color: #765a30;
+    font-family: var(--ae-mono);
+    font-style: normal;
+  }
+
+  .quote-card {
+    display: flex;
+    margin-top: 1.75rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(21, 23, 26, 0.2);
+    flex-direction: column;
+  }
+
+  .quote-card span {
+    color: #5f5d59;
+    font-family: var(--ae-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .quote-card strong {
+    margin-top: 0.7rem;
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .quote-card a {
+    width: fit-content;
+    margin-top: 1.2rem;
+    padding-bottom: 0.2rem;
+    border-bottom: 1px solid #765a30;
+    font-family: var(--ae-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 55rem) {
+    .error-masthead { grid-template-columns: 18rem minmax(0, 1fr); gap: 2.5rem; }
+    .error-code { min-height: 18rem; }
+    .route-groups { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  }
+
+  @media (max-width: 47.99rem) {
+    .error-masthead {
+      display: flex;
+      min-height: 0;
+      padding: 1.75rem var(--ae-gutter) 2rem;
+      flex-direction: column;
+      gap: 1.75rem;
+      align-items: stretch;
+    }
+
+    .error-code { min-height: 12rem; background-size: 2rem 2rem; }
+    .error-code strong { font-size: 5rem; }
+
+    .error-copy h1 { margin-top: 0.9rem; font-size: 2.15rem; }
+    .error-copy > p { margin-top: 1rem; font-size: 0.95rem; }
+
+    .actions { flex-direction: column; margin-top: 1.5rem; }
+
+    .route-index { padding: 2.5rem var(--ae-gutter) 2.75rem; }
+    .route-index > header > span { display: none; }
+    .route-index h2 { margin-top: 0.8rem; font-size: 1.75rem; }
+
+    .route-groups {
+      display: flex;
+      margin-top: 1.5rem;
+      flex-direction: column;
+      gap: 2.25rem;
+    }
+
+    .route-groups nav a { min-height: 3.5rem; grid-template-columns: 2.5rem minmax(0, 1fr) auto; }
+    .route-groups nav strong { font-size: 0.86rem; }
+  }
+</style>

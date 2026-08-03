@@ -37,32 +37,7 @@
     "reviewUrl": null
   },
   "ghl": {
-    "bookingUrls": [
-      {
-        "label": "Piston Aircraft",
-        "url": null
-      },
-      {
-        "label": "Turboprop Aircraft",
-        "url": null
-      },
-      {
-        "label": "Light Corporate Jet",
-        "url": null
-      },
-      {
-        "label": "Midsize Corporate Jet",
-        "url": null
-      },
-      {
-        "label": "Large Corporate Jet",
-        "url": null
-      },
-      {
-        "label": "Super Corporate Jet / Boeing Business Jet",
-        "url": null
-      }
-    ],
+    "bookingUrls": [],
     "quoteUrl": null,
     "embed": false
   },
@@ -226,8 +201,8 @@
     "areas are airports, not cities, so `state` is deliberately null on all four — this drives both the '{name}, {ST}' label suppression and Place (not City) in LocalBusiness JSON-LD.",
     "isHeadquarters is false on all four airports: the export never states which field the business is based out of. Set one if KTEB (or another) is the home base.",
     "9 service pages, of which 3 are aircraft-class segment pages (corporate jet / turboprop / piston) that sell a customer segment rather than a distinct service. They share the services collection and route.",
-    "Booking is organised by aircraft class, not vehicle type — 6 calendars, all still to be built in GHL.",
-    "Pricing rule from the client: no dollar amounts, tiers, or starting prices on any live page. Pricing is disclosed by phone, quote form, or the booking calendar.",
+    "No direct booking page or calendar by client decision. Aircraft details are quoted before JetSpa schedules service; /booking and /booking-confirmed redirect to /get-quote.",
+    "Pricing rule from the client: no dollar amounts, tiers, or starting prices on any live page. Pricing is disclosed by phone or quote form.",
     "8 service pages carry a [BEFORE/AFTER IMAGE SECTION] placeholder in the export; assets.beforeAfter is empty until real photography exists. Generated aircraft imagery is a poor fit for this audience — wrong airframes and garbled registrations are obvious to owners and flight departments.",
     "Trust signals repeated site-wide and treated as facts: ADA (Aircraft Detailing Association) certification, OEM-approved chemistry, $200K general liability + $1.5M hangar liability insurance, badge access at all four airports. Verify each before publishing; none is verifiable from the export.",
     "Morristown's ICAO is KMMU (the onboarding call said 'MMA', which is wrong).",

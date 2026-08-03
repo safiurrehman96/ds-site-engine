@@ -39,7 +39,7 @@ export const GET: APIRoute = async () => {
     '',
     link('About', '/about'),
     link('FAQs', '/faqs'),
-    link('Book an appointment', '/booking'),
+    ...(siteConfig.ghl.bookingUrls.length ? [link('Book an appointment', '/booking')] : []),
     link('Get a quote', '/get-quote'),
     '',
     // Section only when the client publishes natively — an empty heading is noise.

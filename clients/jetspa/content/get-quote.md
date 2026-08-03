@@ -7,5 +7,5 @@ heroIntro: |
 
 servicesHeading: "What We Detail"
 panelHeading: "Talk to the JetSpa Team"
-ctaHeadline: "Book Your Aircraft's Next Detail"
+ctaHeadline: "Request Your Aircraft Detail Quote"
 ---
