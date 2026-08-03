@@ -59,12 +59,12 @@ introduction:
 mediaBand:
   - label: "Crew on the ramp at first light · hangar doors open"
     image:
-      src: "./assets/service-corporate-jet-detailing.jpg"
-      alt: "A business jet nose-on in a hangar"
+      src: "./assets/band-crew-ramp.webp"
+      alt: "Two technicians beside a business jet on the ramp at sunrise, seen through open hangar doors"
   - label: "Polishing pad on painted surface"
     image:
-      src: "./assets/service-piston-aircraft-detailing.jpg"
-      alt: "A technician machine-polishing a fuselage panel"
+      src: "./assets/band-polishing.webp"
+      alt: "Macro view of a polisher's foam pad against a glossy white aircraft panel"
 
 services:
   eyebrow: "Services"

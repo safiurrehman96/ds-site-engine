@@ -32,7 +32,11 @@ const {
       />
     ) : null
   }
-  {showCaption && <figcaption>{image ? label : `[ image ] ${label}`}</figcaption>}
+  {/* Captions are scaffolding: they name what a slot is waiting for while the payload
+      still lacks the shot. Once a real image lands, the picture speaks for itself and
+      the label would only sit on top of it — so it is dropped. `label` stays required
+      because every slot needs that name until it is filled. */}
+  {showCaption && !image && <figcaption>[ image ] {label}</figcaption>}
 </figure>
 
 <style>
@@ -55,35 +59,23 @@ const {
     filter: saturate(0.85) contrast(1.05);
   }
 
-  .media::after {
-    position: absolute;
-    inset: 45% 0 0;
-    background: linear-gradient(transparent, rgba(8, 9, 10, 0.72));
-    content: '';
-    pointer-events: none;
-  }
+  /* The bottom scrim existed only to keep the caption legible over the photo. With no
+     caption over an image there is nothing left to make legible, and it was darkening
+     the lower half of every shot for free. */
 
-  .media[data-placeholder='true']::after {
-    display: none;
-  }
-
+  /* Only ever rendered on an unfilled slot, so it sits top-left on the hatched
+     background rather than bottom-left over a photo. */
   figcaption {
     position: absolute;
     z-index: 1;
+    top: 0.9rem;
     right: 1rem;
-    bottom: 0.85rem;
     left: 1rem;
-    color: var(--ae-bone);
+    color: var(--ae-faint);
     font-family: var(--ae-mono);
     font-size: 0.62rem;
     letter-spacing: 0.14em;
     line-height: 1.5;
     text-transform: uppercase;
-  }
-
-  [data-placeholder='true'] figcaption {
-    top: 0.9rem;
-    bottom: auto;
-    color: var(--ae-faint);
   }
 </style>
