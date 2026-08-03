@@ -1,0 +1,52 @@
+<script>
+  document.querySelectorAll<HTMLElement>('[data-contents-spy]').forEach((contents) => {
+    if (contents.dataset.contentsSpyReady) return;
+    contents.dataset.contentsSpyReady = 'true';
+
+    const links = [...contents.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')];
+    const sections = links
+      .map((link) => document.getElementById(link.hash.slice(1)))
+      .filter((section): section is HTMLElement => section !== null);
+
+    const setActive = (id: string) => {
+      links.forEach((link) => {
+        const active = link.hash === `#${id}`;
+        link.classList.toggle('is-active', active);
+        if (active) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+    };
+
+    const updateFromViewport = () => {
+      const bandTop = window.innerHeight * 0.2;
+      const bandBottom = window.innerHeight * 0.4;
+      const visible = sections.filter((section) => {
+        const rect = section.getBoundingClientRect();
+        return rect.bottom > bandTop && rect.top < bandBottom;
+      });
+
+      if (visible.length) {
+        const current = visible.reduce((closest, section) =>
+          Math.abs(section.getBoundingClientRect().top - bandTop) <
+          Math.abs(closest.getBoundingClientRect().top - bandTop)
+            ? section
+            : closest,
+        );
+        setActive(current.id);
+      }
+    };
+
+    const observer = new IntersectionObserver(updateFromViewport, {
+      rootMargin: '-20% 0px -60% 0px',
+    });
+    sections.forEach((section) => observer.observe(section));
+
+    links.forEach((link) => {
+      link.addEventListener('click', () => setActive(link.hash.slice(1)));
+    });
+
+    const hashSection = document.getElementById(window.location.hash.slice(1));
+    if (hashSection && sections.includes(hashSection)) setActive(hashSection.id);
+    else updateFromViewport();
+  });
+</script>

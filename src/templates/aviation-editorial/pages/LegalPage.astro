@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import Inline from '../../../components/Inline.astro';
 import { getLegalDoc, proseBlocks } from '../../../lib/content';
 import { siteConfig } from '../../../lib/site-config';
+import ContentsSpy from '../components/ContentsSpy.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import SiteLayout from '../layouts/SiteLayout.astro';
 
@@ -50,7 +51,7 @@ const sectionBlocks = (section: (typeof doc.sections)[number]) =>
   </header>
 
   <div class="legal-layout">
-    <aside class="contents">
+    <aside class="contents" data-contents-spy>
       <p>Contents</p>
       <nav aria-label={`${doc.title} sections`}>
         {
@@ -113,6 +114,7 @@ const sectionBlocks = (section: (typeof doc.sections)[number]) =>
       </section>
     </article>
   </div>
+  <ContentsSpy />
 </SiteLayout>
 
 <style>
@@ -249,6 +251,25 @@ const sectionBlocks = (section: (typeof doc.sections)[number]) =>
 
   .contents nav a:hover {
     color: #fff;
+  }
+
+  .contents nav a {
+    position: relative;
+    padding-inline: 0.75rem;
+    border-left: 2px solid transparent;
+    transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+  }
+
+  .contents nav a.is-active,
+  .contents nav a[aria-current='location'] {
+    border-left-color: var(--ae-accent);
+    background: var(--ae-panel);
+    color: #fff;
+  }
+
+  .contents nav a.is-active span:last-child,
+  .contents nav a[aria-current='location'] span:last-child {
+    color: var(--ae-accent);
   }
 
   .contents nav a span:last-child {

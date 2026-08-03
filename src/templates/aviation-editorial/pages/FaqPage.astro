@@ -2,6 +2,7 @@
 import { getFaqs } from '../../../lib/content';
 import { faqPageJsonLd } from '../../../lib/seo';
 import { siteConfig } from '../../../lib/site-config';
+import ContentsSpy from '../components/ContentsSpy.astro';
 import ConversionPanel from '../components/ConversionPanel.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import SiteLayout from '../layouts/SiteLayout.astro';
@@ -44,7 +45,7 @@ const questionCount = (count: number) => `${count} ${count === 1 ? 'question' : 
   </section>
 
   <div class="faq-layout">
-    <aside class="contents">
+    <aside class="contents" data-contents-spy>
       <p>Contents</p>
       <nav aria-label="FAQ sections">
         {
@@ -144,6 +145,7 @@ const questionCount = (count: number) => `${count} ${count === 1 ? 'question' : 
   </div>
 
   <ConversionPanel content={faq.cta} />
+  <ContentsSpy />
 </SiteLayout>
 
 <script>
@@ -304,6 +306,25 @@ const questionCount = (count: number) => `${count} ${count === 1 ? 'question' : 
 
   .contents nav a:hover {
     color: #fff;
+  }
+
+  .contents nav a {
+    position: relative;
+    padding-inline: 0.75rem;
+    border-left: 2px solid transparent;
+    transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+  }
+
+  .contents nav a.is-active,
+  .contents nav a[aria-current='location'] {
+    border-left-color: var(--ae-accent);
+    background: var(--ae-panel);
+    color: #fff;
+  }
+
+  .contents nav a.is-active span:last-child,
+  .contents nav a[aria-current='location'] span:last-child {
+    color: var(--ae-accent);
   }
 
   .contents nav a span:last-child {
