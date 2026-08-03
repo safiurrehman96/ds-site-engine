@@ -21,6 +21,26 @@ const mediaSlot = z.object({
   image: image.optional(),
 });
 
+const ctaSchema = z.object({
+  eyebrow: prose,
+  heading: prose,
+  body: prose,
+  media: mediaSlot,
+  availability: prose.optional(),
+  secondaryAction: z.enum(['booking', 'phone']).default('booking'),
+  secondaryLabel: prose.optional(),
+  details: z
+    .array(
+      z.object({
+        label: prose,
+        kind: z.enum(['phone', 'email', 'text']),
+        value: prose.optional(),
+      }),
+    )
+    .max(3)
+    .default([]),
+});
+
 export const aviationHomeSchema = z.object({
   metaDescription: prose.max(160),
   chrome: z.object({
@@ -136,13 +156,72 @@ export const aviationHomeSchema = z.object({
     attribution: prose,
     audiences: z.array(z.object({ label: prose, code: prose })).min(1),
   }),
-  cta: z.object({
-    eyebrow: prose,
-    heading: prose,
-    body: prose,
-    media: mediaSlot,
-    availability: prose,
-  }),
+  cta: ctaSchema,
 });
 
 export type AviationHome = z.infer<typeof aviationHomeSchema>;
+
+export const aviationAboutSchema = z.object({
+  metaDescription: prose.max(160),
+  masthead: z.object({
+    eyebrow: prose,
+    headline: prose,
+    lead: prose,
+    body: prose,
+    stats: z.array(z.object({ label: prose, value: prose })).min(3).max(6),
+    media: mediaSlot,
+  }),
+  story: z.object({
+    eyebrow: prose,
+    metadata: z.array(prose).min(1),
+    heading: prose,
+    body: z.array(prose).min(1).max(3),
+    services: z.array(z.object({ label: prose, value: prose })).min(1),
+    media: z.array(mediaSlot).min(1).max(3),
+  }),
+  coverage: z.object({
+    eyebrow: prose,
+    heading: prose,
+    intro: prose,
+    emergencyLabel: prose,
+    emergencyBody: prose,
+    airports: z
+      .array(
+        z.object({
+          slug: z.string().min(1),
+          description: prose,
+          status: z.enum(['badged', 'escorted']),
+        }),
+      )
+      .min(1),
+    map: mediaSlot,
+  }),
+  liability: z.object({
+    eyebrow: prose,
+    heading: prose,
+    lead: prose,
+    body: z.array(prose).min(1).max(3),
+    principles: z.array(z.object({ label: prose, body: prose })).min(1),
+    stats: z.array(z.object({ value: prose, label: prose })).min(2).max(4),
+  }),
+  founder: z.object({
+    eyebrow: prose,
+    heading: prose,
+    body: z.array(prose).min(1).max(3),
+    media: mediaSlot,
+    stats: z.array(z.object({ value: prose, label: prose })).min(2).max(4),
+  }),
+  expectations: z.object({
+    eyebrow: prose,
+    heading: prose,
+    items: z
+      .array(z.object({ label: prose, title: prose, body: prose }))
+      .min(2)
+      .max(5),
+    quote: prose,
+    links: z.array(z.object({ label: prose, href: z.string().min(1) })).min(1).max(5),
+  }),
+  cta: ctaSchema,
+});
+
+export type AviationAbout = z.infer<typeof aviationAboutSchema>;

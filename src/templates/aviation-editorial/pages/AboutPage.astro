@@ -1,0 +1,31 @@
+---
+import { getAbout, getAreas } from '../../../lib/content';
+import { siteConfig } from '../../../lib/site-config';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import AboutMasthead from '../components/AboutMasthead.astro';
+import AboutStory from '../components/AboutStory.astro';
+import AboutCoverage from '../components/AboutCoverage.astro';
+import LiabilitySection from '../components/LiabilitySection.astro';
+import FounderSection from '../components/FounderSection.astro';
+import ExpectationsSection from '../components/ExpectationsSection.astro';
+import ConversionPanel from '../components/ConversionPanel.astro';
+
+const [aboutEntry, areas] = await Promise.all([getAbout(), getAreas()]);
+const about = aboutEntry.data;
+const title = `About | ${siteConfig.brand.name}`;
+---
+
+<SiteLayout
+  {title}
+  description={about.metaDescription}
+  path="/about"
+  ogImage={about.masthead.media.image?.src ?? siteConfig.defaults.heroVideo.poster.src}
+>
+  <AboutMasthead content={about.masthead} />
+  <AboutStory content={about.story} />
+  <AboutCoverage content={about.coverage} {areas} />
+  <LiabilitySection content={about.liability} />
+  <FounderSection content={about.founder} />
+  <ExpectationsSection content={about.expectations} />
+  <ConversionPanel content={about.cta} />
+</SiteLayout>

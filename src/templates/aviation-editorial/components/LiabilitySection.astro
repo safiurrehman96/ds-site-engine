@@ -1,0 +1,200 @@
+---
+import type { AviationAbout } from '../schema';
+import SectionLabel from './SectionLabel.astro';
+
+interface Props {
+  content: AviationAbout['liability'];
+}
+
+const { content } = Astro.props;
+---
+
+<section id="credentials" class="liability ae-section">
+  <div class="grid ae-container">
+    <div class="copy">
+      <SectionLabel>{content.eyebrow}</SectionLabel>
+      <h2>{content.heading}</h2>
+      <p class="lead">{content.lead}</p>
+      {content.body.map((paragraph) => <p>{paragraph}</p>)}
+      <div class="principles">
+        {content.principles.map((principle) => <div><strong>{principle.label}</strong><span>{principle.body}</span></div>)}
+      </div>
+    </div>
+
+    <div class="stats">
+      {content.stats.map((stat) => <div><strong>{stat.value}</strong><span>{stat.label}</span></div>)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .liability {
+    border-top: 1px solid var(--ae-line);
+    background: var(--ae-deck);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 28.75rem;
+    gap: clamp(3rem, 5.5vw, 5rem);
+    align-items: start;
+  }
+
+  h2 {
+    max-width: 43rem;
+    margin-top: 1.35rem;
+    font-size: clamp(2.15rem, 3vw, 2.5rem);
+    font-weight: 500;
+    letter-spacing: -0.024em;
+    line-height: 1.12;
+  }
+
+  .copy > p {
+    max-width: 42rem;
+    margin-top: 1.2rem;
+    color: var(--ae-muted);
+    line-height: 1.7;
+  }
+
+  .copy .lead {
+    color: var(--ae-copy);
+    font-size: 1.18rem;
+    line-height: 1.5;
+  }
+
+  .principles {
+    margin-top: 2.5rem;
+    border-top: 1px solid var(--ae-line);
+  }
+
+  .principles div {
+    display: grid;
+    grid-template-columns: 12.5rem 1fr;
+    gap: 2rem;
+    padding: 1.3rem 0;
+    border-bottom: 1px solid var(--ae-line-soft);
+  }
+
+  .principles strong {
+    color: var(--ae-accent);
+    font-family: var(--ae-mono);
+    font-size: 0.66rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .principles span {
+    color: var(--ae-copy);
+  }
+
+  .stats {
+    display: flex;
+    gap: 1px;
+    border: 1px solid var(--ae-line);
+    background: var(--ae-line);
+    flex-direction: column;
+  }
+
+  .stats div {
+    padding: 1.65rem 1.75rem;
+    background: var(--ae-ink);
+  }
+
+  .stats strong,
+  .stats span {
+    display: block;
+    font-family: var(--ae-mono);
+  }
+
+  .stats strong {
+    font-size: 2.5rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .stats span {
+    margin-top: 0.55rem;
+    color: var(--ae-muted);
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 60rem) {
+    .grid {
+      grid-template-columns: 1fr 20rem;
+      gap: 2.5rem;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .liability {
+      padding-block: 1.75rem;
+    }
+
+    .grid {
+      display: block;
+    }
+
+    h2 {
+      margin-top: 0.75rem;
+      font-size: 1.5rem;
+    }
+
+    .copy .lead {
+      font-size: 1rem;
+    }
+
+    .copy > p:not(.lead) {
+      display: none;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin-top: 1.15rem;
+    }
+
+    .stats div {
+      padding: 1rem;
+    }
+
+    .stats div:nth-child(3) {
+      display: none;
+    }
+
+    .stats strong {
+      font-size: 1.5rem;
+    }
+
+    .stats span {
+      font-size: 0.58rem;
+    }
+
+    .principles {
+      margin-top: 1rem;
+      padding: 0.9rem 1rem;
+      border: 0;
+      border-left: 2px solid var(--ae-accent);
+      background: var(--ae-panel);
+    }
+
+    .principles div {
+      display: block;
+      padding: 0;
+      border: 0;
+    }
+
+    .principles div + div {
+      display: none;
+    }
+
+    .principles span {
+      display: block;
+      margin-top: 0.45rem;
+      font-size: 0.86rem;
+    }
+  }
+</style>

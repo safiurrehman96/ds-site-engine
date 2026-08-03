@@ -256,4 +256,11 @@ cta:
       src: "./assets/service-aog-emergency-cleaning.jpg"
       alt: "A business jet nose-on in a hangar at night"
   availability: "Next available window · this week · KTEB / KMMU"
+  secondaryAction: "booking"
+  secondaryLabel: "Book Service"
+  details:
+    - label: "AOG line"
+      kind: "phone"
+    - label: "Bookings"
+      kind: "email"
 ---

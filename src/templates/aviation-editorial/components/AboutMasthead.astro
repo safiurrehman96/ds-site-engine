@@ -1,0 +1,191 @@
+---
+import type { AviationAbout } from '../schema';
+import MediaSlot from './MediaSlot.astro';
+import SectionLabel from './SectionLabel.astro';
+
+interface Props {
+  content: AviationAbout['masthead'];
+}
+
+const { content } = Astro.props;
+---
+
+<section class="masthead">
+  <div class="masthead-grid ae-container">
+    <div class="copy">
+      <SectionLabel>{content.eyebrow}</SectionLabel>
+      <h1>{content.headline}</h1>
+      <p class="lead">{content.lead}</p>
+      <p class="body">{content.body}</p>
+    </div>
+    <aside>
+      <h2>At a glance</h2>
+      <dl>{content.stats.map((stat) => <div><dt>{stat.label}</dt><dd>{stat.value}</dd></div>)}</dl>
+    </aside>
+  </div>
+  <MediaSlot {...content.media} class="masthead-media" eager={true} sizes="100vw" />
+</section>
+
+<style>
+  .masthead {
+    border-bottom: 1px solid var(--ae-line);
+    background: var(--ae-ink);
+  }
+
+  .masthead-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 25rem;
+    gap: 5rem;
+    padding-block: clamp(4.5rem, 6.7vw, 6rem);
+  }
+
+  h1 {
+    max-width: 51rem;
+    margin-top: 1.6rem;
+    font-size: clamp(3.6rem, 5vw, 4.25rem);
+    font-weight: 500;
+    letter-spacing: -0.028em;
+    line-height: 1;
+    text-wrap: balance;
+  }
+
+  .lead {
+    max-width: 44rem;
+    margin-top: 1.85rem;
+    color: var(--ae-copy);
+    font-size: 1.22rem;
+    line-height: 1.5;
+  }
+
+  .body {
+    margin-top: 1rem;
+    color: var(--ae-muted);
+  }
+
+  aside {
+    padding-left: 2rem;
+    border-left: 1px solid var(--ae-line);
+  }
+
+  aside h2 {
+    color: var(--ae-muted);
+    font-family: var(--ae-mono);
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  dl {
+    margin: 1rem 0 0;
+  }
+
+  dl div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 0.72rem 0;
+    border-bottom: 1px solid var(--ae-line-soft);
+    font-size: 0.9rem;
+  }
+
+  dl div:last-child {
+    border-bottom: 0;
+  }
+
+  dt {
+    color: var(--ae-copy);
+  }
+
+  dd {
+    margin: 0;
+    color: var(--ae-bone);
+    font-family: var(--ae-mono);
+    font-size: 0.76rem;
+    text-align: right;
+  }
+
+  .masthead :global(.masthead-media) {
+    height: 26.25rem;
+    border: 0;
+    border-top: 1px solid var(--ae-line);
+  }
+
+  @media (max-width: 60rem) {
+    .masthead-grid {
+      grid-template-columns: 1fr 19rem;
+      gap: 2.5rem;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .masthead-grid {
+      display: block;
+      padding-block: 1.65rem 1.4rem;
+    }
+
+    h1 {
+      margin-top: 0.9rem;
+      font-size: 2rem;
+      line-height: 1.04;
+    }
+
+    .lead {
+      margin-top: 0.9rem;
+      font-size: 0.96rem;
+      line-height: 1.6;
+    }
+
+    .body {
+      margin-top: 0.6rem;
+      font-size: 0.88rem;
+    }
+
+    aside {
+      margin: 1.4rem calc(var(--ae-gutter) * -1) -1.4rem;
+      padding: 0;
+      border: 0;
+    }
+
+    aside h2 {
+      display: none;
+    }
+
+    dl {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin: 0;
+      gap: 1px;
+      background: var(--ae-line);
+    }
+
+    dl div {
+      display: block;
+      padding: 0.85rem var(--ae-gutter);
+      border: 0;
+      background: var(--ae-deck);
+    }
+
+    dl div:nth-child(5) {
+      display: none;
+    }
+
+    dt {
+      color: var(--ae-muted);
+      font-family: var(--ae-mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    dd {
+      margin-top: 0.35rem;
+      font-size: 0.82rem;
+      text-align: left;
+    }
+
+    .masthead :global(.masthead-media) {
+      height: 14.4rem;
+    }
+  }
+</style>

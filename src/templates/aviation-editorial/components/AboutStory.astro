@@ -1,0 +1,193 @@
+---
+import type { AviationAbout } from '../schema';
+import MediaSlot from './MediaSlot.astro';
+
+interface Props {
+  content: AviationAbout['story'];
+}
+
+const { content } = Astro.props;
+---
+
+<section class="story ae-section">
+  <div class="grid ae-container">
+    <aside>
+      <p>{content.eyebrow}</p>
+      <i></i>
+      <div>{content.metadata.map((item) => <span>{item}</span>)}</div>
+    </aside>
+
+    <div class="copy">
+      <h2>{content.heading}</h2>
+      <div class="body">{content.body.map((paragraph) => <p>{paragraph}</p>)}</div>
+      <dl>{content.services.map((service) => <div><dt>{service.label}</dt><dd>{service.value}</dd></div>)}</dl>
+    </div>
+
+    <div class="media">
+      {content.media.map((item, index) => (
+        <MediaSlot {...item} class:list={['story-media', index === 0 ? 'story-media--primary' : 'story-media--secondary']} sizes="30vw" />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .story {
+    background: var(--ae-bone);
+    color: var(--ae-paper-ink);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 12.5rem minmax(0, 1fr) minmax(19rem, 26.25rem);
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: start;
+  }
+
+  aside {
+    padding-top: 0.55rem;
+    color: #5d5b57;
+    font-family: var(--ae-mono);
+    font-size: 0.67rem;
+    letter-spacing: 0.12em;
+    line-height: 1.8;
+    text-transform: uppercase;
+  }
+
+  aside p {
+    color: #6b4f28;
+    letter-spacing: 0.2em;
+  }
+
+  aside i {
+    display: block;
+    height: 1px;
+    margin: 1.75rem 0 1rem;
+    background: rgba(21, 23, 26, 0.18);
+  }
+
+  aside span {
+    display: block;
+  }
+
+  h2 {
+    max-width: 41rem;
+    font-size: clamp(2.15rem, 3vw, 2.5rem);
+    font-weight: 500;
+    letter-spacing: -0.024em;
+    line-height: 1.14;
+  }
+
+  .body {
+    display: grid;
+    max-width: 43rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .body p {
+    color: var(--ae-paper-copy);
+    line-height: 1.72;
+  }
+
+  dl {
+    margin: 3rem 0 0;
+    border-top: 1px solid rgba(21, 23, 26, 0.2);
+  }
+
+  dl div {
+    display: flex;
+    min-height: 3.2rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    border-bottom: 1px solid rgba(21, 23, 26, 0.12);
+  }
+
+  dt {
+    font-size: 1.02rem;
+  }
+
+  dd {
+    margin: 0;
+    color: #5d5b57;
+    font-family: var(--ae-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  .media {
+    display: grid;
+    gap: 1.6rem;
+  }
+
+  .media :global(.story-media--primary) {
+    height: 25rem;
+  }
+
+  .media :global(.story-media--secondary) {
+    height: 12.5rem;
+  }
+
+  @media (max-width: 68rem) {
+    .grid {
+      grid-template-columns: 9rem 1fr;
+    }
+
+    .media {
+      display: none;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .story {
+      padding-block: 1.75rem;
+    }
+
+    .grid {
+      display: block;
+    }
+
+    aside i,
+    aside div {
+      display: none;
+    }
+
+    h2 {
+      margin-top: 0.75rem;
+      font-size: 1.5rem;
+    }
+
+    .body {
+      display: block;
+      margin-top: 0.75rem;
+    }
+
+    .body p {
+      font-size: 0.9rem;
+    }
+
+    .body p + p {
+      margin-top: 0.6rem;
+    }
+
+    dl {
+      margin-top: 1.25rem;
+    }
+
+    dl div {
+      min-height: 2.9rem;
+    }
+
+    dt {
+      font-size: 0.94rem;
+    }
+
+    dd {
+      font-size: 0.61rem;
+    }
+  }
+</style>

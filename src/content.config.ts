@@ -9,7 +9,7 @@ import { glob } from 'astro/loaders';
 // Astro 7 deprecates the `z` re-export from `astro:content`; `astro/zod` is the
 // supported path and keeps the engine on a single zod instance (see config-schema.ts).
 import { z } from 'astro/zod';
-import { aviationHomeSchema } from './templates/aviation-editorial/schema';
+import { aviationAboutSchema, aviationHomeSchema } from './templates/aviation-editorial/schema';
 
 const BASE = './client/content';
 
@@ -250,25 +250,7 @@ const home = defineCollection({
 
 const about = defineCollection({
   loader: glob({ base: BASE, pattern: 'about.md' }),
-  schema: z.object({
-    metaDescription,
-    heroImage: image,
-    heroHeadline: prose,
-    /**
-     * Optional hero lede (same slot as home's heroIntro). One or two sentences of
-     * positioning, so About can open with a statement instead of a bare headline —
-     * an alternative to spending the first block on a "Who We Are" text section.
-     */
-    heroIntro: prose.optional(),
-    /**
-     * Ordered content blocks. About is the one page with a variable block count,
-     * which is why each block carries its own optional photo and CTA — a recipe that
-     * does not know whether it will be handed two blocks or nine cannot hand-compose
-     * the page, so the variety has to come from what each block brings with it.
-     */
-    blocks: z.array(pageBlock).min(1),
-    ctaHeadline: prose,
-  }),
+  schema: aviationAboutSchema,
 });
 
 const faqs = defineCollection({

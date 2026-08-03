@@ -1,21 +1,35 @@
 ---
-import type { AviationHome } from '../schema';
+import type { AviationAbout, AviationHome } from '../schema';
 import { siteConfig } from '../../../lib/site-config';
 import MediaSlot from './MediaSlot.astro';
 import SectionLabel from './SectionLabel.astro';
 
 interface Props {
-  content: AviationHome['cta'];
+  content: AviationHome['cta'] | AviationAbout['cta'];
 }
 
 const { content } = Astro.props;
 const { contact } = siteConfig;
+const details = content.details ?? [];
+const secondaryHref = content.secondaryAction === 'phone' ? `tel:${contact.phone}` : '/booking';
+const secondaryLabel =
+  content.secondaryLabel ?? (content.secondaryAction === 'phone' ? contact.phoneDisplay : 'Book Service');
+const detailValue = (detail: (typeof details)[number]) => {
+  if (detail.kind === 'phone') return contact.phoneDisplay;
+  if (detail.kind === 'email') return contact.email;
+  return detail.value;
+};
+const detailHref = (detail: (typeof details)[number]) => {
+  if (detail.kind === 'phone') return `tel:${contact.phone}`;
+  if (detail.kind === 'email') return `mailto:${contact.email}`;
+  return undefined;
+};
 ---
 
 <section class="conversion">
   <div class="media-wrap">
     <MediaSlot {...content.media} class="conversion-media" sizes="55vw" />
-    <span>{content.availability}</span>
+    {content.availability && <span>{content.availability}</span>}
   </div>
   <div class="copy">
     <SectionLabel>{content.eyebrow}</SectionLabel>
@@ -23,11 +37,17 @@ const { contact } = siteConfig;
     <p>{content.body}</p>
     <div class="actions">
       <a class="ae-button ae-button--primary" href="/get-quote">Request a Quote</a>
-      <a class="ae-button" href="/booking">Book Service</a>
+      <a class="ae-button" href={secondaryHref}>{secondaryLabel}</a>
     </div>
     <div class="contact">
-      <span>AOG line<br /><a href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a></span>
-      <span>Bookings<br /><a href={`mailto:${contact.email}`}>{contact.email}</a></span>
+      {
+        details.map((detail) => (
+          <span>
+            {detail.label}<br />
+            {detailHref(detail) ? <a href={detailHref(detail)}>{detailValue(detail)}</a> : detailValue(detail)}
+          </span>
+        ))
+      }
     </div>
   </div>
 </section>
