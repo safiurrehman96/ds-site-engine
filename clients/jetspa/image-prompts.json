@@ -738,6 +738,86 @@
       ],
       "resizeWidth": 2000,
       "prompt": "Extreme wide panoramic photograph of a polished business jet parked on an FBO ramp at sunset, composed for a very wide letterbox crop with all subject matter in the central horizontal band and generous empty sky above and apron below. The aircraft sits three-quarter on across the centre of the frame, its paint mirror-deep and throwing the orange and blue of the sky back off the fuselage. A second jet sits further down the line, smaller and softer. Air stairs down, cabin lights just visible, nobody in frame. Long shadows across clean concrete. No tail numbers, no logos, no signage, no text. Shot on a 50mm lens at f/5.6, deep focus, very high detail across the full width of the frame."
+    },
+    {
+      "id": "about-crew",
+      "out": "about-crew.webp",
+      "alt": "An aircraft detailing crew working a business jet on the ramp, seen from above",
+      "resizeWidth": 1800,
+      "usedBy": [
+        "content/about.md → masthead.media"
+      ],
+      "prompt": "Extreme wide panoramic photograph taken from an elevated position looking down onto an FBO ramp, composed for a letterbox crop with all subject matter in the central horizontal band. A crew of five technicians works a single business jet below — two at the wing, one at the nose with a wash mitt, two moving equipment carts — each figure small in the frame and seen from above so no faces are visible. The horizon is flat New Jersey terrain — a low treeline and distant hangar roofs only. Absolutely no mountains, no hills, no elevated landforms of any kind on the skyline. Wet concrete throwing back the overcast sky, equipment laid out in orderly rows beside the aircraft. The scale of the operation is the subject. No tail numbers, no logos, no signage. Shot on a 35mm lens at f/8, deep focus."
+    },
+    {
+      "id": "about-wing",
+      "out": "about-wing.webp",
+      "alt": "A technician kneeling on a wing mat polishing the upper wing surface",
+      "resizeWidth": 1200,
+      "usedBy": [
+        "content/about.md → story.media[0]"
+      ],
+      "prompt": "A technician kneeling on a protective mat laid across the upper surface of a business jet wing, working a rotary polisher across the panel in front of him, shown from the shoulders down. The wing stretches away toward the tip on the right, the polished section behind him throwing a hard reflection of the hangar roof structure while the section ahead is flat. Shot slightly from behind and above on a 35mm lens at f/4."
+    },
+    {
+      "id": "about-cabinet",
+      "out": "about-cabinet.webp",
+      "alt": "Shelves of aviation detailing chemistry stood in ordered rows in a workshop cabinet",
+      "resizeWidth": 1200,
+      "usedBy": [
+        "content/about.md → story.media[1]"
+      ],
+      "prompt": "Wide horizontal view of an open workshop cabinet of aviation detailing chemistry, composed for a letterbox crop. Three shelves of matched plain bottles and jugs stood in neat rows — amber, white and clear containers of varying sizes — with folded microfiber towels stacked at one end and boxed pads at the other. Every label is blank or reduced to abstract soft grey marks: no readable words, numbers, brand names, hazard symbols or logos anywhere. Even, clean workshop light. The order and discipline of the stock is the subject. Shot on a 50mm lens at f/5.6."
+    },
+    {
+      "id": "about-night-hangar",
+      "out": "about-night-hangar.webp",
+      "alt": "A finished business jet in a lit hangar at night with the doors open to the ramp",
+      "resizeWidth": 1400,
+      "usedBy": [
+        "content/about.md → cta.media"
+      ],
+      "prompt": "A finished business jet inside a hangar at night with the main doors rolled fully open to a dark ramp beyond, the aircraft lit warmly from within the hangar and its paint throwing long clean reflections across the floor. Nothing in progress — no tools, no carts, no people, no cloths. Air stairs down and cabin lights on, as though the aircraft is about to be released back to its crew. Deep blacks, a warm pool of light around the aircraft, the open doorway a rectangle of darker blue night. Shot on a 35mm lens at f/4."
+    },
+    {
+      "id": "proof-exhaust",
+      "out": "proof-exhaust.webp",
+      "alt": "A mirror-polished stainless exhaust stack with heat tint still visible under the finish",
+      "resizeWidth": 1000,
+      "usedBy": [
+        "content/home.md → proof.gallery[1]"
+      ],
+      "prompt": "Close view of a mirror-polished stainless steel exhaust stack on an aircraft engine nacelle, the metal throwing a sharp distorted reflection of the hangar structure around its curve. The heat-tinted straw and blue colouring near the outlet is still visible under the polish rather than scrubbed away. Surrounding painted cowling is clean and matte by contrast. Shot on an 85mm lens at f/2.8."
+    },
+    {
+      "id": "proof-extraction",
+      "out": "proof-extraction.webp",
+      "alt": "An overhead view of cabin carpet mid-extraction with a clean damp band through the centre",
+      "resizeWidth": 1000,
+      "usedBy": [
+        "content/home.md → proof.gallery[2]"
+      ],
+      "prompt": "Overhead view straight down onto pale cabin carpet mid-extraction, a broad clean damp band running through the centre of the frame with visibly duller soiled carpet either side of it, and the stainless extraction wand entering from the top of the frame. Almost abstract — carpet texture, the wet edge, and the tool. Shot on a 50mm lens at f/4."
+    },
+    {
+      "id": "proof-veneer",
+      "out": "proof-veneer.webp",
+      "alt": "A polished burl veneer cabin table reflecting a cream leather seat and window",
+      "resizeWidth": 1000,
+      "usedBy": [
+        "content/home.md → proof.gallery[3]"
+      ],
+      "prompt": "Close view along a polished dark burl wood veneer cabin table, shot at a low angle so the surface throws a long clean reflection of the cream leather seat and oval window behind it. A gloved hand at the far edge of frame lifts a folded microfiber cloth away from the finished surface. The depth of the veneer polish is the subject. Shot on a 50mm lens at f/2.0."
+    },
+    {
+      "id": "proof-boot",
+      "out": "proof-boot.webp",
+      "alt": "A de-ice boot split between chalky untreated rubber and deep black refurbished rubber",
+      "resizeWidth": 1000,
+      "usedBy": [
+        "content/home.md → proof.gallery[4]"
+      ],
+      "prompt": "A single de-ice boot on an aircraft wing leading edge photographed straight on, divided down the middle by a hard vertical line: the left half chalky, grey and finely cracked from UV exposure, the right half deep uniform black and supple after refurbishment. One boot, one frame, the transformation visible in a single glance. No text, no labels, no arrows or markers of any kind. Shot on a 100mm macro lens at f/5.6."
     }
   ]
 }

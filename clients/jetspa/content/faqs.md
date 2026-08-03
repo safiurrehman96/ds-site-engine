@@ -134,5 +134,8 @@ cta:
   body: "Call JetSpa or request a quote with your aircraft details and we will get back to you."
   media:
     label: "Ramp 3 / KTEB"
+    image:
+      src: "./assets/social-band.webp"
+      alt: "A polished business jet on the ramp at sunset with a second aircraft beyond"
   availability: "Ramp 3 / KTEB"
 ---

@@ -252,20 +252,20 @@ proof:
         alt: "A polished business jet on the ramp at sunset with a second aircraft beyond"
     - label: "Brightwork · exhaust stack"
       image:
-        src: "./assets/service-brightwork-polishing.jpg"
-        alt: "A high-gloss aircraft surface reflecting hangar lighting"
+        src: "./assets/proof-exhaust.webp"
+        alt: "A mirror-polished stainless exhaust stack with heat tint still visible under the finish"
     - label: "Carpet extraction · cabin"
       image:
-        src: "./assets/service-aircraft-interior-detailing.jpg"
-        alt: "A private jet cabin with cream leather seating and a polished table"
+        src: "./assets/proof-extraction.webp"
+        alt: "An overhead view of cabin carpet mid-extraction with a clean damp band through the centre"
     - label: "Cabin · seat & veneer care"
       image:
-        src: "./assets/service-aircraft-interior-detailing.jpg"
-        alt: "A private jet cabin with cream leather seating and a polished table"
+        src: "./assets/proof-veneer.webp"
+        alt: "A polished burl veneer cabin table reflecting a cream leather seat and window"
     - label: "De-ice boot · before and after"
       image:
-        src: "./assets/service-de-ice-boot-refurbishment.jpg"
-        alt: "A high-gloss aircraft leading-edge surface reflecting hangar lighting"
+        src: "./assets/proof-boot.webp"
+        alt: "A de-ice boot split between chalky untreated rubber and deep black refurbished rubber"
   quote: "They arrive when they say they will, they hand back paperwork we can file, and the aircraft looks like it did on delivery. That is the entire job, and almost nobody does all three."
   attribution: "Director of Aviation · Part 91 flight department · KTEB"
   audiences:
@@ -285,8 +285,8 @@ cta:
   media:
     label: "Hangar at night · aircraft ready for release"
     image:
-      src: "./assets/service-aog-emergency-cleaning.jpg"
-      alt: "A business jet nose-on in a hangar at night"
+      src: "./assets/about-night-hangar.webp"
+      alt: "A finished business jet in a lit hangar at night with the doors open to the ramp"
   availability: "Next available window · this week · KTEB / KMMU"
   secondaryLabel: "Call JetSpa"
   details:

@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import Img from '../../../components/Img.astro';
 import { siteConfig } from '../../../lib/site-config';
 
 interface Props {
@@ -23,7 +24,9 @@ const footerServices = services.filter((service) => footerServiceSlugs.has(servi
 <footer>
   <div class="footer-grid">
     <div class="brand-column">
-      <a class="brand" href="/"><i aria-hidden="true"></i>{brand.name}</a>
+      <a class="brand" href="/" aria-label={`${brand.name} home`}>
+        <Img src={brand.logoPath} alt={brand.name} widths={[160, 320]} sizes="160px" />
+      </a>
       <p>{brand.tagline} Aircraft is what we do, and it is all we do.</p>
       {brand.footerNote && <strong>{brand.footerNote}</strong>}
     </div>
@@ -88,18 +91,13 @@ const footerServices = services.filter((service) => footerServiceSlugs.has(servi
   .brand {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    font-size: 1.25rem;
-    font-weight: 600;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
+    line-height: 0;
   }
 
-  .brand i {
-    width: 0.55rem;
-    height: 0.55rem;
-    background: var(--ae-accent);
-    transform: rotate(45deg);
+  /* Matches the header's resting logo height exactly. */
+  .brand :global(img) {
+    width: auto;
+    height: 3.75rem;
   }
 
   .brand-column p {

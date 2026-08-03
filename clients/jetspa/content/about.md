@@ -20,8 +20,8 @@ masthead:
   media:
     label: "Crew on the ramp · KTEB"
     image:
-      src: "./assets/social.jpg"
-      alt: "A polished business jet on the ramp at sunset"
+      src: "./assets/about-crew.webp"
+      alt: "An aircraft detailing crew working a business jet on the ramp, seen from above"
 
 story:
   eyebrow: "Who we are"
@@ -52,9 +52,12 @@ story:
   media:
     - label: "Technician working a wing surface"
       image:
-        src: "./assets/intro.jpg"
-        alt: "A technician machine-polishing an aircraft fuselage panel"
+        src: "./assets/about-wing.webp"
+        alt: "A technician kneeling on a wing mat polishing the upper wing surface"
     - label: "Product cabinet · labelled OEM stock"
+      image:
+        src: "./assets/about-cabinet.webp"
+        alt: "Shelves of aviation detailing chemistry stood in ordered rows in a workshop cabinet"
 
 coverage:
   eyebrow: "Coverage"
@@ -132,6 +135,9 @@ founder:
     - "When he identified the same service gap in private aviation, he committed to the training, the certifications, the insurance, and the full equipment stack before taking a single paid booking. That standard now sets the tone for how the entire JetSpa team operates."
   media:
     label: "Founder · JetSpa"
+    image:
+      src: "./assets/founder.webp"
+      alt: "Karan Gogna, founder of JetSpa, beside a business jet in a hangar"
   stats:
     - value: "10+"
       label: "Years serving high-value clients"
@@ -169,8 +175,8 @@ cta:
   media:
     label: "Hangar at night · aircraft ready for release"
     image:
-      src: "./assets/service-aog-emergency-cleaning.jpg"
-      alt: "A business jet nose-on in a hangar at night"
+      src: "./assets/about-night-hangar.webp"
+      alt: "A finished business jet in a lit hangar at night with the doors open to the ramp"
   details:
     - label: "Standard notice"
       kind: "text"
