@@ -35,7 +35,7 @@ const prose = z
     'unresolved merge field — every {{custom_values.*}} token must be resolved at import time',
   );
 
-/** A heading + body pair. Most SplitSections in most recipes are one of these. */
+/** A reusable authored heading and body pair. */
 const proseBlock = z.object({
   heading: prose,
   body: prose,
@@ -72,19 +72,8 @@ const headingOverrides = {
 };
 
 /**
- * A block that lib/compose.ts can compose — heading and body, plus the two facts
- * that let a recipe give it a composition of its own.
- *
- * Recipes used to receive bare proseBlocks and could therefore only render bare
- * text: every block came out as the same centred column, no matter what
- * SplitSection was capable of. The engine's compositions were reachable from the
- * component and unreachable from the payload, which is why About shipped as four
- * identical columns and area pages as two.
- *
- * What is added here is *content*, not design: whether a block has a photo, and
- * whether it closes on an action. composeBlocks() still decides the composition from
- * those facts (spec §13 — variants are earned, not fiddled with per page), so a
- * payload cannot art-direct its own page.
+ * A page block extends authored prose with optional media and an action. These remain
+ * content facts; each template decides how to compose them.
  */
 const pageBlock = proseBlock.extend({
   image: image.optional(),
@@ -189,7 +178,7 @@ const services = defineCollection({
 
     faqs: z.array(z.object({ q: prose, a: prose })).min(1),
 
-    /** Closing CTABanner headline. Service-specific. */
+    /** Service-specific closing call-to-action headline. */
     ctaHeadline: prose,
   }),
 });
@@ -265,25 +254,7 @@ const faqs = defineCollection({
   schema: aviationFaqSchema,
 });
 
-/**
- * Recipe D — /booking. The calendar list itself comes from ghl.bookingUrls; only the
- * words around it live here. Choosers vary by payload, so none of this copy can sit
- * in the route.
- */
-const booking = defineCollection({
-  loader: glob({ base: BASE, pattern: 'booking.md' }),
-  schema: z.object({
-    metaDescription,
-    title: prose,
-    heroHeadline: prose,
-    heroIntro: prose,
-    /** "Need Help Choosing a Service?" block above the closing CTA. */
-    helpBlock: proseBlock,
-    ctaHeadline: prose,
-  }),
-});
-
-/** Recipe D — /get-quote. Links out (or embeds) the GHL form; copy is authored. */
+/** /get-quote copy. The active template owns the form integration and composition. */
 const getQuote = defineCollection({
   loader: glob({ base: BASE, pattern: 'get-quote.md' }),
   schema: z.object({
@@ -295,24 +266,6 @@ const getQuote = defineCollection({
     servicesHeading: prose,
     /** Heading on the contact/hours sidebar panel. */
     panelHeading: prose,
-    ctaHeadline: prose,
-  }),
-});
-
-/**
- * Recipe F — /booking-confirmed. Post-booking confirmation and preparation steps.
- * Noindexed and excluded from the sitemap: it is a conversion endpoint, not a
- * landing page, and indexing it both wastes crawl budget and pollutes goal tracking.
- */
-const bookingConfirmed = defineCollection({
-  loader: glob({ base: BASE, pattern: 'booking-confirmed.md' }),
-  schema: z.object({
-    metaDescription,
-    title: prose,
-    heroHeadline: prose,
-    heroIntro: prose,
-    /** Ordered SplitSections — same variable-count shape as About. */
-    blocks: z.array(proseBlock).min(1),
     ctaHeadline: prose,
   }),
 });
@@ -350,42 +303,12 @@ const legal = defineCollection({
   }),
 });
 
-/**
- * Blog posts — the one collection whose prose lives in the markdown *body*, not
- * frontmatter. Posts are free-form articles (a how-to, a listicle, three paragraphs
- * of news) with no repeating shape for the composition system to compose, so the
- * structured-frontmatter rule buys nothing here. Frontmatter still carries the
- * validated facts; the body's merge-field check happens in getPosts() (lib/content.ts)
- * because zod never sees the body.
- *
- * Optional per client: an empty client/content/blog/ builds no /blog routes at all —
- * no index, no nav link (see Header.astro) — rather than an empty archive page.
- */
-const blog = defineCollection({
-  loader: glob({ base: `${BASE}/blog`, pattern: '**/*.md' }),
-  schema: z.object({
-    title: prose,
-    /** Must match the filename and the live URL: /blog/{slug} */
-    slug,
-    metaDescription,
-    publishDate: z.coerce.date(),
-    updatedDate: z.coerce.date().optional(),
-    /** Card image on the index and og:image; falls back to defaults.socialImage. */
-    heroImage: image.optional(),
-    /** Drafts build in dev for preview and are excluded from production builds. */
-    draft: z.boolean().default(false),
-  }),
-});
-
 export const collections = {
-  blog,
   services,
   areas,
   home,
   about,
   faqs,
-  booking,
   getQuote,
-  bookingConfirmed,
   legal,
 };

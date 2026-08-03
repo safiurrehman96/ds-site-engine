@@ -3,10 +3,8 @@
  * absolute origin — a static public/robots.txt would hardcode one domain into the
  * engine.
  *
- * Deliberately no Disallow rules for the noindex routes (/styleguide,
- * /booking-confirmed): a disallowed page cannot be crawled, so its noindex is
- * never seen and the URL can still be indexed from external links. The meta tag
- * is the mechanism; robots.txt stays out of its way.
+ * Deliberately no Disallow rule for noindex routes: a disallowed page cannot be
+ * crawled, so its noindex is never seen. The meta tag is the mechanism.
  */
 import type { APIRoute } from 'astro';
 import { siteConfig } from '../lib/site-config';

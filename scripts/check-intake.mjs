@@ -51,7 +51,7 @@ async function check(slug) {
 
   console.log(
     `  ✓ schema valid — ${data.pages.services.length} services, ${data.pages.areas.length} areas, ` +
-      `${data.ghl.bookingUrls?.length ?? 0} booking calendars`,
+      `${data.socials.instagram ? 'Instagram connected' : 'no Instagram URL'}`,
   );
 
   if (blocking.length) {

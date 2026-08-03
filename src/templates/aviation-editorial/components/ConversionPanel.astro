@@ -9,14 +9,9 @@ interface Props {
 }
 
 const { content } = Astro.props;
-const { contact, ghl } = siteConfig;
+const { contact } = siteConfig;
 const details = content.details ?? [];
-const bookingAvailable = ghl.bookingUrls.length > 0;
-const secondaryIsPhone = content.secondaryAction === 'phone' || !bookingAvailable;
-const secondaryHref = secondaryIsPhone ? `tel:${contact.phone}` : '/booking';
-const secondaryLabel = !bookingAvailable && content.secondaryAction === 'booking'
-  ? contact.phoneDisplay
-  : content.secondaryLabel ?? (secondaryIsPhone ? contact.phoneDisplay : 'Book Service');
+const secondaryLabel = content.secondaryLabel ?? contact.phoneDisplay;
 const detailValue = (detail: (typeof details)[number]) => {
   if (detail.kind === 'phone') return contact.phoneDisplay;
   if (detail.kind === 'email') return contact.email;
@@ -40,7 +35,7 @@ const detailHref = (detail: (typeof details)[number]) => {
     <p>{content.body}</p>
     <div class="actions">
       <a class="ae-button ae-button--primary" href="/get-quote">Request a Quote</a>
-      <a class="ae-button" href={secondaryHref}>{secondaryLabel}</a>
+      <a class="ae-button" href={`tel:${contact.phone}`}>{secondaryLabel}</a>
     </div>
     <div class="contact">
       {

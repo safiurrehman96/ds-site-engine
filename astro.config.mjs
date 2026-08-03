@@ -20,14 +20,8 @@ export default defineConfig({
   integrations: [
     assetBudget(),
     sitemap({
-      // Both of these are noindexed, and a noindexed page in the sitemap is a
-      // contradiction Search Console reports as an error. /styleguide is internal
-      // (spec §10); /booking-confirmed is a post-conversion endpoint that should only
-      // ever be reached by redirect from a GHL calendar.
-      filter: (page) =>
-        !page.includes('/styleguide') &&
-        !page.includes('/booking-confirmed') &&
-        !(siteConfig.ghl.bookingUrls.length === 0 && page.includes('/booking')),
+      // A noindexed page in the sitemap is a contradiction Search Console reports.
+      filter: (page) => !page.includes('/styleguide'),
     }),
     // After sitemap() — both hook astro:build:done, and the alias copies its output.
     sitemapAlias(),

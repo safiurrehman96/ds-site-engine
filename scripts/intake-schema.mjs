@@ -113,16 +113,8 @@ export const intakeSchema = z.object({
   }),
 
   ghl: z.object({
-    /**
-     * One calendar per bookable class. The chooser on /booking renders these in
-     * order, so the labels are customer-facing copy, not internal names.
-     *
-     * The url is pending per entry, not for the list as a whole: the classes are
-     * settled during onboarding, while the calendars are built in GHL afterwards.
-     */
-    bookingUrls: pending(z.array(z.object({ label: z.string().min(1), url: pending(url) })).min(1)),
     quoteUrl: pending(url),
-    /** Embed the form inline on /booking and /get-quote rather than linking out. */
+    /** Embed the form inline on /get-quote rather than linking out. */
     embed: z.boolean().default(false),
   }),
 
@@ -149,8 +141,6 @@ export const intakeSchema = z.object({
     credentialBadge: z
       .object({ image: z.string().min(1), alt: z.string().min(1), href: z.url().nullish() })
       .nullish(),
-    /** Set to show a nav link out to a blog still hosted elsewhere. */
-    blogUrl: z.url().nullish(),
   }),
 
   legal: z.object({
@@ -282,8 +272,6 @@ export const REQUIRED_BEFORE_BUILD = [
   'serviceArea.radiusMiles',
   'serviceArea.label',
   'hours',
-  'ghl.bookingUrls',
-  'ghl.bookingUrls.*.url',
   'ghl.quoteUrl',
   // The engine requires a GTM container; there is no "no analytics" path today.
   'tracking.gtmId',

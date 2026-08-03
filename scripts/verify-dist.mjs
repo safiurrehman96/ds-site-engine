@@ -10,7 +10,7 @@
  *                       allowed — that is the correct markup for decorative images;
  *                       *missing* alt is never correct)
  *   4. merge fields     no "{{" survives into rendered text — backstop to the
- *                       source-level checks in content.config.ts / getPosts()
+ *                       source-level checks in content.config.ts
  *   5. sitemap          indexable pages and sitemap entries agree, both directions
  *
  * Every finding is reported by page and name, engine-style. Any finding fails the
@@ -35,7 +35,7 @@ async function htmlFiles(dir) {
   return out;
 }
 
-/** dist/blog/index.html → /blog/ ; dist/404.html → /404.html */
+/** dist/about/index.html → /about/ ; dist/404.html → /404.html */
 function urlPath(file) {
   const rel = path.relative(DIST, file).split(path.sep).join('/');
   if (rel === 'index.html') return '/';

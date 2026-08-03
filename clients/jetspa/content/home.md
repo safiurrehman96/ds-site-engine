@@ -256,7 +256,6 @@ cta:
       src: "./assets/service-aog-emergency-cleaning.jpg"
       alt: "A business jet nose-on in a hangar at night"
   availability: "Next available window · this week · KTEB / KMMU"
-  secondaryAction: "phone"
   secondaryLabel: "Call JetSpa"
   details:
     - label: "AOG line"

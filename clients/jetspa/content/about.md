@@ -145,7 +145,6 @@ cta:
     image:
       src: "./assets/service-aog-emergency-cleaning.jpg"
       alt: "A business jet nose-on in a hangar at night"
-  secondaryAction: "phone"
   details:
     - label: "Standard notice"
       kind: "text"

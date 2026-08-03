@@ -63,8 +63,6 @@ export const siteConfig = {
   },
 
   ghl: {
-    // Aircraft details are quoted before scheduling; JetSpa does not offer direct booking.
-    bookingUrls: [],
     // TODO(fact-needed): GHL quote form not published yet.
     quoteUrl: 'https://example.com/PLACEHOLDER-quote-form',
   },

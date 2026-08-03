@@ -10,8 +10,7 @@ interface Props {
 }
 
 const { chrome, services, areas } = Astro.props;
-const { brand, contact, ghl } = siteConfig;
-const hasBooking = ghl.bookingUrls.length > 0;
+const { brand, contact } = siteConfig;
 const currentPath = Astro.url.pathname.replace(/^\//, '').replace(/\/$/, '');
 const isServicePage = services.some((service) => service.data.slug === currentPath);
 const isAirportPage = areas.some((area) => area.data.slug === currentPath);
@@ -61,8 +60,7 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
   </nav>
 
   <div class="desktop-actions">
-    <a class:list={[hasBooking ? 'quote' : 'book']} href="/get-quote">Request Quote</a>
-    {hasBooking && <a class="book" href="/booking">Book Service</a>}
+    <a class="header-cta" href="/get-quote">Request Quote</a>
   </div>
 
   <div class="mobile-actions">
@@ -101,7 +99,6 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
         <a href="/about">About</a>
         <a href="/faqs">FAQs</a>
         <a href="/get-quote">Request Quote</a>
-        {hasBooking && <a href="/booking">Book Service</a>}
       </nav>
     </details>
   </div>
@@ -367,12 +364,7 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
     text-transform: uppercase;
   }
 
-  .quote {
-    padding-bottom: 0.2rem;
-    border-bottom: 1px solid color-mix(in srgb, var(--ae-accent) 60%, transparent);
-  }
-
-  .book {
+  .header-cta {
     display: inline-flex;
     min-height: 2.625rem;
     align-items: center;

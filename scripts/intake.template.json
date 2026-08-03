@@ -45,7 +45,6 @@
   },
 
   "ghl": {
-    "bookingUrls": null,
     "quoteUrl": null,
     "embed": false
   },
@@ -56,8 +55,7 @@
 
   "modules": {
     "howItWorks": true,
-    "credentialBadge": null,
-    "blogUrl": null
+    "credentialBadge": null
   },
 
   "legal": {

@@ -135,5 +135,4 @@ cta:
   media:
     label: "Ramp 3 / KTEB"
   availability: "Ramp 3 / KTEB"
-  secondaryAction: "phone"
 ---

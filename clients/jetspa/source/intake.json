@@ -37,7 +37,6 @@
     "reviewUrl": null
   },
   "ghl": {
-    "bookingUrls": [],
     "quoteUrl": null,
     "embed": false
   },
@@ -50,8 +49,7 @@
   },
   "modules": {
     "howItWorks": true,
-    "credentialBadge": null,
-    "blogUrl": null
+    "credentialBadge": null
   },
   "legal": {
     "effectiveDate": null,
@@ -201,12 +199,12 @@
     "areas are airports, not cities, so `state` is deliberately null on all four — this drives both the '{name}, {ST}' label suppression and Place (not City) in LocalBusiness JSON-LD.",
     "isHeadquarters is false on all four airports: the export never states which field the business is based out of. Set one if KTEB (or another) is the home base.",
     "9 service pages, of which 3 are aircraft-class segment pages (corporate jet / turboprop / piston) that sell a customer segment rather than a distinct service. They share the services collection and route.",
-    "No direct booking page or calendar by client decision. Aircraft details are quoted before JetSpa schedules service; /booking and /booking-confirmed redirect to /get-quote.",
+    "No direct booking page or calendar by client decision. Aircraft details are quoted before JetSpa schedules service.",
     "Pricing rule from the client: no dollar amounts, tiers, or starting prices on any live page. Pricing is disclosed by phone or quote form.",
     "8 service pages carry a [BEFORE/AFTER IMAGE SECTION] placeholder in the export; assets.beforeAfter is empty until real photography exists. Generated aircraft imagery is a poor fit for this audience — wrong airframes and garbled registrations are obvious to owners and flight departments.",
     "Trust signals repeated site-wide and treated as facts: ADA (Aircraft Detailing Association) certification, OEM-approved chemistry, $200K general liability + $1.5M hangar liability insurance, badge access at all four airports. Verify each before publishing; none is verifiable from the export.",
     "Morristown's ICAO is KMMU (the onboarding call said 'MMA', which is wrong).",
     "PLACEHOLDERS ARE IN USE, by decision: site.config.ts carries stand-in values for the facts still null here, so the site can be built and reviewed before onboarding completes. This file stays the honest record — a field that is null here has not been supplied, whatever site.config.ts says. Every placeholder contains the string 'PLACEHOLDER', is listed on every build by src/lib/site-config.ts, and fails the build under DS_STRICT=1. Assets are no longer stand-ins: logo, hero video, poster and every page image now come from the client's own site (see the asset note above). What remains placeholder is text and URLs, not imagery.",
-    "Instagram is the only social account; Facebook, TikTok, YouTube and the Google review link are deliberately skipped. SocialLinks and the FAQs CTA are config-driven and handle their absence on their own, but the EXPORT COPY does not: Request a Quote and Booking Confirmed name all four platforms inline, and FAQs links a review button. Those sentences must be rewritten to Instagram-only while authoring the payload — leaving the tokens in place fails the build."
+    "Instagram is the only social account; Facebook, TikTok, YouTube and the Google review link are deliberately skipped. The authored FAQ and quote surfaces must remain Instagram-only."
   ]
 }

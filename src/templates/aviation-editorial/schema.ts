@@ -27,7 +27,6 @@ const ctaSchema = z.object({
   body: prose,
   media: mediaSlot,
   availability: prose.optional(),
-  secondaryAction: z.enum(['booking', 'phone']).default('booking'),
   secondaryLabel: prose.optional(),
   details: z
     .array(

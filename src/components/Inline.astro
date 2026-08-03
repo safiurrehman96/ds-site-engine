@@ -6,7 +6,7 @@
  * two constructs client copy actually contains. Bold lead-ins ("**Insured.** We carry
  * …") open most trust paragraphs, and inline links are how pages link to each other,
  * which the SEO spec requires. Rendered as plain text, both leaked their syntax onto
- * the page: literal asterisks, and "[Book Today](/booking)" as visible characters.
+ * the page: literal asterisks, and "[Request a Quote](/get-quote)" as visible characters.
  *
  * Text is interpolated, never set as HTML, so payload copy cannot inject markup.
  */
@@ -23,7 +23,7 @@ type Token =
 
 /**
  * One pass, alternating between the two patterns. A link's label may itself be bold
- * (`[**Book**](/booking)`) — rare enough that the label is emitted as plain text
+ * (`[**Quote**](/get-quote)`) — rare enough that the label is emitted as plain text
  * rather than recursing.
  */
 function tokenize(input: string): Token[] {

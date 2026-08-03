@@ -64,15 +64,14 @@ clients/<slug>/
   _redirects            # optional 301s, staged into public/ by pnpm use
   assets/               # logo, hero video + poster, social image, page images
   content/
-    home.md  about.md  faqs.md  booking.md  get-quote.md  booking-confirmed.md
+    home.md  about.md  faqs.md  get-quote.md
     services/*.md  areas/*.md
-    blog/               # optional posts; zero posts = no /blog routes at all
     legal/              # optional authored Privacy/ToS; empty = generated template
 ```
 
 **1. Fill the intake.** Copy `scripts/intake.template.json` to
 `clients/<slug>/source/intake.json`. It covers business facts, contact and NAP, service
-area, hours, socials, GHL calendars and forms, tracking, theme, legal, the full page
+area, hours, socials, GHL forms, tracking, theme, legal, the full page
 inventory, and the site-level assets — everything `site.config.ts` and the merge-field
 resolver need. Field docs live in `scripts/intake-schema.mjs`.
 
@@ -105,12 +104,9 @@ inferred, because a wrong guess there builds cleanly and reads like nonsense.
 hero video, 600KB per image), then `pnpm use <slug> && pnpm build`. Every missing or
 malformed field fails the build by name.
 
-Blog posts are the one collection whose prose lives in the markdown *body* (they are
-free-form articles; every other collection is frontmatter-only, and a body written
-there is silently ignored — `pnpm lint` catches it). Mind the two image conventions:
-frontmatter paths are client-relative (`./assets/x.jpg`, like every collection), body
-paths are file-relative (`../../assets/x.jpg`), and body images need their alt text
-written in the `![alt](…)` brackets — no schema enforces it there.
+Engine collections are frontmatter-only; a markdown body is silently ignored by Astro,
+so `pnpm lint` rejects one. Optional booking and blog features belong to the selected
+template rather than the shared engine collection layer.
 
 **5. Lint it.**
 
@@ -119,11 +115,10 @@ pnpm lint <slug>            # or --all
 ```
 
 Source-level checks the schema cannot make: fact drift between intake.json and
-site.config.ts, duplicate or thin metaDescriptions, dead or altless blog body images,
-future-dated non-drafts, prose in a body that will not render. Errors fail; judgement
-calls warn. (The built site gets its own pass — scripts/verify-dist.mjs runs on every
-build: dead internal links, duplicate titles, missing alt, merge fields, sitemap
-agreement.)
+site.config.ts, duplicate or thin metaDescriptions, dead asset paths, and prose in a
+body that will not render. Errors fail; judgement calls warn. (The built site gets its
+own pass — scripts/verify-dist.mjs runs on every build: dead internal links, duplicate
+titles, missing alt, merge fields, sitemap agreement.)
 
 ### Building before the facts arrive
 
@@ -134,7 +129,7 @@ pnpm run placeholders <slug>   # generate stand-in logo, hero video, poster, ima
 ```
 
 and stand-in values in `site.config.ts` containing the string `PLACEHOLDER`. Both are
-deliberately, visibly fake — flat grey images, `example.com` booking URLs, a footer
+deliberately, visibly fake — flat grey images, an `example.com` quote URL, a footer
 that reads `PLACEHOLDER, NJ 00000`. A plausible stand-in survives review and reaches
 production; an ugly one cannot.
 

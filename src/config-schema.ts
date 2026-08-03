@@ -88,20 +88,12 @@ export const siteConfigSchema = z.object({
   }),
 
   ghl: z.object({
-    /**
-     * Booking may require multiple calendars for different vehicle or aircraft
-     * classes. `/booking` renders these as a selector.
-     */
-    bookingUrls: z
-      .array(z.object({ label: z.string().min(1), url: z.url() }))
-      .default([]),
-    /** GHL form/funnel URL that `/get-quote` links out to. Never rebuilt in Astro. */
+    /** GHL form/funnel URL used by the active template's quote page. */
     quoteUrl: z.url(),
     /** Optional "leave us a review" destination. */
     reviewUrl: z.url().optional(),
     /**
-     * Embed the GHL form/calendar inline on /booking and /get-quote instead of
-     * linking out. Off by default, and deliberately limited to those two routes:
+     * Embed the GHL form inline on /get-quote instead of linking out. Off by default:
      * a GHL iframe is unstyleable and shifts layout as it loads, so it is worth the
      * cost only where the form IS the page. Everywhere else keeps a link.
      */
@@ -131,12 +123,6 @@ export const siteConfigSchema = z.object({
     credentialBadge: z
       .object({ image: z.string().min(1), alt: z.string().min(1), href: z.url().optional() })
       .optional(),
-    /**
-     * Blog stays on GHL for now — the engine renders a nav link out rather than
-     * owning posts. Set to a URL to show the link, omit to hide it entirely.
-     * TODO(decision): bring /blog into the engine as a third collection, or keep external.
-     */
-    blogUrl: z.url().optional(),
   }),
 
   seo: z.object({
@@ -165,8 +151,8 @@ export const siteConfigSchema = z.object({
   /** Site-wide assets used by every page rather than authored per page. */
   defaults: z.object({
     /**
-     * CTABanner headline for pages with no authored one of their own — the legal
-     * pages. Lives here so no client's words sit in an engine file.
+     * Fallback call-to-action headline for pages with no authored one of their own.
+     * Lives here so no client's words sit in an engine file.
      */
     ctaHeadline: z.string().min(1),
     socialImage: imageRef,

@@ -9,8 +9,6 @@ import {
   serviceJsonLd,
   serviceBreadcrumbJsonLd,
   localBusinessJsonLd,
-  blogPostingJsonLd,
-  blogBreadcrumbJsonLd,
   faqPageJsonLd,
 } from '../src/lib/seo';
 import { testConfig } from './fixtures/site-config';
@@ -83,27 +81,6 @@ describe('JSON-LD graph nodes', () => {
       { '@type': 'City', name: 'Ashburn, VA' },
       { '@type': 'Place', name: 'Dulles Airport' },
     ]);
-  });
-
-  it('BlogPosting ties author and publisher to the business and dates to ISO', () => {
-    const node = blogPostingJsonLd(testConfig, {
-      title: 'T',
-      description: 'D',
-      slug: 'post',
-      publishDate: new Date('2026-07-15T00:00:00Z'),
-    });
-    expect(node.author).toEqual({ '@id': 'https://acme.example/#business' });
-    expect(node.datePublished).toBe('2026-07-15T00:00:00.000Z');
-    expect(node.dateModified).toBeUndefined();
-    expect(node.url).toBe('https://acme.example/blog/post/');
-  });
-
-  it('blog breadcrumb middle crumb is the real /blog index', () => {
-    const node = blogBreadcrumbJsonLd(testConfig, { title: 'T', slug: 'post' });
-    const crumbs = node.itemListElement as Array<Record<string, unknown>>;
-    expect(crumbs[1].item).toBe('https://acme.example/blog/');
-    // The last crumb is the current page: schema.org says it carries no item.
-    expect(crumbs[2].item).toBeUndefined();
   });
 
   it('service breadcrumb points its middle crumb at home (no /services index)', () => {

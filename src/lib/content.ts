@@ -11,9 +11,6 @@ import { getCollection, getEntry } from 'astro:content';
  */
 const RESERVED_SLUGS = new Set([
   'about',
-  'blog',
-  'booking',
-  'booking-confirmed',
   'faqs',
   'get-quote',
   'privacy-policy',
@@ -83,41 +80,6 @@ export async function getAreas() {
 }
 
 /**
- * Published posts, newest first. Drafts render in dev (for preview) and are dropped
- * from production builds. Zero posts is a normal state — every /blog surface (index,
- * nav link, RSS, llms.txt section) checks this list and disappears when it is empty.
- *
- * Posts are the one collection whose prose is the markdown body, which zod never
- * sees — so the unresolved-merge-field check that `prose` applies to every
- * frontmatter string (see content.config.ts) is re-applied to the body here. Post
- * slugs share the /blog/ namespace with no other collection, so unlike services and
- * areas they only need to be unique among themselves.
- */
-export async function getPosts() {
-  const posts = await getCollection('blog', ({ data }) => import.meta.env.DEV || !data.draft);
-
-  const seen = new Map<string, string>();
-  for (const post of posts) {
-    if (post.body?.includes('{{')) {
-      throw new Error(
-        `Unresolved merge field in blog post body: client/content/blog/${post.id} — ` +
-          `every {{custom_values.*}} token must be resolved at import time.`,
-      );
-    }
-    const owner = seen.get(post.data.slug);
-    if (owner) {
-      throw new Error(
-        `Blog slug collision: "${post.data.slug}" is used by both ${owner} and ${post.id} — ` +
-          `both would render at /blog/${post.data.slug}.`,
-      );
-    }
-    seen.set(post.data.slug, post.id);
-  }
-
-  return posts.sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
-}
-
-/**
  * The one place an area turns into a display string.
  *
  * "{name}, {ST}" for US cities, bare `name` for everything else. Five call sites used
@@ -128,16 +90,8 @@ export function areaLabel(area: { name: string; state?: string }): string {
   return area.state ? `${area.name}, ${area.state}` : area.name;
 }
 
-/**
- * Compact label — no state, for surfaces that are already spatially constrained
- * (grid tiles). Distinct from areaLabel: a tile has never shown the state.
- */
-export function areaShortLabel(area: { name: string; shortName?: string }): string {
-  return area.shortName ?? area.name;
-}
-
 /** Singleton pages. Throw loudly rather than rendering an empty page. */
-async function getSingleton<C extends 'home' | 'about' | 'faqs' | 'booking' | 'getQuote' | 'bookingConfirmed'>(
+async function getSingleton<C extends 'home' | 'about' | 'faqs' | 'getQuote'>(
   collection: C,
   file: string,
 ) {
@@ -161,9 +115,7 @@ async function getSingleton<C extends 'home' | 'about' | 'faqs' | 'booking' | 'g
 export const getHome = () => getSingleton('home', 'home');
 export const getAbout = () => getSingleton('about', 'about');
 export const getFaqs = () => getSingleton('faqs', 'faqs');
-export const getBooking = () => getSingleton('booking', 'booking');
 export const getGetQuote = () => getSingleton('getQuote', 'get-quote');
-export const getBookingConfirmed = () => getSingleton('bookingConfirmed', 'booking-confirmed');
 
 /**
  * Authored legal override. Returns undefined when the payload does not carry one,
@@ -194,8 +146,8 @@ export function paragraphs(body: string): string[] {
  *   points — a *run* of paragraphs opening "**Label.** explanation", which is a
  *            labelled list the author happened to type as prose
  *
- * Classifying here rather than in Prose.astro lets SplitSection ask the same
- * question the renderer will answer, so layout and content agree on what the body is.
+ * Classifying here lets templates inspect the same structure their renderers use, so
+ * layout and content agree on what the body is.
  * ------------------------------------------------------------------------ */
 
 export type ProseBlock =
@@ -213,8 +165,6 @@ export interface ProsePoint {
  * reading as an inventory, which is what earns it the two-column grid treatment.
  * Below the threshold a list stays inline under its introducing paragraph.
  */
-export const LIST_GRID_MIN = 4;
-
 /** A label longer than this is a bolded sentence, not a lead-in. */
 const MAX_LABEL_LENGTH = 60;
 
@@ -284,17 +234,4 @@ export function proseBlocks(body: string): ProseBlock[] {
 
   flushRun();
   return blocks;
-}
-
-/**
- * Does this body carry scannable structure?
- *
- * Drives SplitSection's copy-only composition (spec §08): structured copy earns the
- * wide rail layout, where a points grid or checklist has room to be two columns.
- * Flowing prose keeps the centred measure, which is still the right shape for it.
- */
-export function isStructuredProse(body: string): boolean {
-  return proseBlocks(body).some(
-    (b) => b.kind === 'points' || (b.kind === 'list' && b.items.length >= LIST_GRID_MIN),
-  );
 }

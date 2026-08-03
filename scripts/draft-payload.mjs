@@ -20,7 +20,7 @@
  * one-line shortDescription fields in particular are compressed from the client's own
  * copy and need a human to read them back.
  *
- * Singletons (home, about, faqs, booking, get-quote, booking-confirmed, legal) are
+ * Singletons (home, about, faqs, get-quote, legal) are
  * mapped too, each by its own explicit rule rather than a shared template.
  *
  * Deliberately dropped, not lost: the bulleted service and airport lists on the home
@@ -274,7 +274,7 @@ const withoutLists = (body) =>
     .join('\n\n')
     .trim();
 
-function singletons(pages, intake) {
+function singletons(pages) {
   const files = [];
   const get = (slug) => pages.get(slug);
   const at = (page, re) => find(page, re);
@@ -348,21 +348,6 @@ function singletons(pages, intake) {
     files.push({ file: path.join(OUT, 'faqs.md'), out });
   }
 
-  /* ---- booking: the class list itself comes from ghl.bookingUrls */
-  const booking = get('/booking');
-  if (booking) {
-    const leadSection = lead(booking);
-    const help = at(booking, /Need Help|Prefer to Talk/i);
-    let out = '---\n';
-    out += `title: ${quote(booking.seo.title)}\n`;
-    out += `metaDescription: ${quote(booking.seo.metaDescription)}\n`;
-    out += `heroHeadline: ${quote(leadSection.heading)}\n`;
-    out += block('heroIntro', withoutLists(leadSection.body));
-    out += '\n' + proseBlock('helpBlock', help);
-    out += `ctaHeadline: ${quote(intake.business.name ? "Book Your Aircraft's Next Detail" : 'Book Today')}\n---\n`;
-    files.push({ file: path.join(OUT, 'booking.md'), out });
-  }
-
   /* ---- get-quote */
   const quoteP = get('/get-quote');
   if (quoteP) {
@@ -376,26 +361,6 @@ function singletons(pages, intake) {
     out += `panelHeading: "Talk to the JetSpa Team"\n`;
     out += `ctaHeadline: "Book Your Aircraft's Next Detail"\n---\n`;
     files.push({ file: path.join(OUT, 'get-quote.md'), out });
-  }
-
-  /* ---- booking-confirmed */
-  const confirmed = get('/booking-confirmed');
-  if (confirmed) {
-    const leadSection = lead(confirmed);
-    const blocks = confirmed.sections.filter((s) => s.heading && s !== leadSection).slice(0, -1);
-    const cta = confirmed.sections[confirmed.sections.length - 1];
-    let out = '---\n';
-    out += `title: ${quote(confirmed.seo.title)}\n`;
-    out += `metaDescription: ${quote(confirmed.seo.metaDescription)}\n`;
-    out += `heroHeadline: ${quote(leadSection.heading)}\n`;
-    out += block('heroIntro', leadSection.body);
-    out += '\nblocks:\n';
-    for (const b of blocks) {
-      out += `  - heading: ${quote(b.heading)}\n`;
-      out += block('body', b.body, '    ');
-    }
-    out += `\nctaHeadline: ${quote(cta.heading)}\n---\n`;
-    files.push({ file: path.join(OUT, 'booking-confirmed.md'), out });
   }
 
   /* ---- legal: authored by the client, so it overrides the generated template */
@@ -473,7 +438,7 @@ async function main() {
     if (missing.length) problems.push(`area ${meta.slug}: missing ${missing.join(', ')}`);
   }
 
-  written.push(...singletons(pages, intake));
+  written.push(...singletons(pages));
 
   for (const w of written) console.log(`  ${WRITE ? '▸' : '·'} ${w.file}`);
   if (problems.length) {

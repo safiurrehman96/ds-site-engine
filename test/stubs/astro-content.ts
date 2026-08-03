@@ -1,9 +1,8 @@
 /**
  * Stand-in for the 'astro:content' virtual module (aliased in vitest.config.ts).
  *
- * Tests seed collections with __setCollection(); getCollection honours the same
- * (name, filter) signature the real module has, so code under test (e.g. getPosts's
- * draft filter) runs unmodified.
+ * Tests seed collections with __setCollection(); getCollection mirrors the virtual
+ * module closely enough for pure content-helper tests.
  */
 type Entry = { id: string; body?: string; data: Record<string, unknown> };
 

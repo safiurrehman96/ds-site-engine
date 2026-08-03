@@ -80,12 +80,10 @@ const DRIFT_MAP = [
   ['serviceArea.radiusMiles', 'serviceArea.radiusMiles'],
   ['serviceArea.label', 'serviceArea.label'],
   ['hours', 'hours'],
-  ['ghl.bookingUrls', 'ghl.bookingUrls'],
   ['ghl.quoteUrl', 'ghl.quoteUrl'],
   ['tracking.gtmId', 'tracking.gtmId'],
   ['theme.preset', 'theme.preset'],
   ['theme.accentColor', 'theme.accentColor'],
-  ['modules.blogUrl', 'modules.blogUrl'],
   ['legal.effectiveDate', 'legal.effectiveDate'],
   ['legal.source', 'legal.source'],
 ];
@@ -94,9 +92,8 @@ const get = (obj, dotted) => dotted.split('.').reduce((o, k) => o?.[k], obj);
 
 /**
  * Does config agree with intake everywhere intake actually states a fact?
- * null/undefined in intake means *pending* at any depth — a placeholder bookingUrl
- * whose intake url is null is the sanctioned pattern (DS_STRICT owns placeholders),
- * but its label, and every sibling fact, must still match.
+ * null/undefined in intake means *pending* at any depth; DS_STRICT owns placeholder
+ * enforcement, while every supplied fact must still match.
  */
 function agrees(truth, shown) {
   if (truth === null || truth === undefined) return true;
@@ -176,26 +173,6 @@ function checkAlts(file, data, brandName) {
   walk(data, '');
 }
 
-function checkBlogPost(file, data, body, clientDir) {
-  // Body images: path resolves on disk, alt text present.
-  for (const m of body.matchAll(/!\[([^\]]*)\]\(([^)\s]+)[^)]*\)/g)) {
-    const [, alt, src] = m;
-    if (!alt.trim()) err(file, `body image ${src} has no alt text`);
-    if (!/^(https?:)?\/\//.test(src)) {
-      const resolved = path.resolve(path.dirname(file), src);
-      if (!existsSync(resolved)) {
-        err(file, `body image ${src} does not resolve (expected ${path.relative(clientDir, resolved)} in the payload)`);
-      }
-    }
-  }
-  // A future-dated post that is not a draft silently ships early.
-  const date = new Date(data.publishDate);
-  if (!Number.isNaN(date.getTime()) && date > new Date() && !data.draft) {
-    err(file, `publishDate ${data.publishDate} is in the future but the post is not draft: true`);
-  }
-  if (body.includes('{{')) err(file, 'unresolved merge field in post body');
-}
-
 /* ------------------------------------------------------------------- runner */
 
 async function lintClient(slug) {
@@ -234,10 +211,8 @@ async function lintClient(slug) {
       }
     }
 
-    if (file.includes(`${path.sep}blog${path.sep}`)) {
-      checkBlogPost(file, data, body, clientDir);
-    } else if (body.trim()) {
-      // Every non-blog collection keeps prose in frontmatter; a non-empty body is
+    if (body.trim()) {
+      // Engine collections keep prose in frontmatter; a non-empty body is
       // authored content the build will silently ignore.
       err(file, 'non-empty markdown body — this collection reads frontmatter only, the body will not render');
     }
