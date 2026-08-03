@@ -3,12 +3,12 @@ name: "White Plains Airport (KHPN)"
 slug: "aircraft-detailing-white-plains"
 order: 4
 shortName: "KHPN"
-metaDescription: "Certified aircraft detailing at Westchester County / White Plains Airport (KHPN). Badge access, OEM-approved chemistry, and insured for the corporate corridor."
+metaDescription: "Certified aircraft detailing at Westchester County / White Plains Airport (KHPN). Coordinated access, OEM-approved chemistry, and fully insured."
 title: "Aircraft Detailing at White Plains Airport (KHPN) | JetSpa"
 h1: "Aircraft Detailing at White Plains Airport (KHPN)"
 
 heroIntro: |
-  Westchester County Airport, known operationally as White Plains and coded KHPN, is one of the busiest corporate aviation gateways in the Northeast and a primary alternative to Teterboro for aircraft serving the greater New York region. With more than 400 aircraft movements per day, KHPN is home to serious corporate operators, charter fleets, and high-value private aircraft. JetSpa holds badge access at KHPN and services aircraft on the ramp with certified technicians and OEM-approved chemistry.
+  Westchester County Airport, known operationally as White Plains and coded KHPN, is one of the busiest corporate aviation gateways in the Northeast and a primary alternative to Teterboro for aircraft serving the greater New York region. With more than 400 aircraft movements per day, KHPN is home to serious corporate operators, charter fleets, and high-value private aircraft. JetSpa arranges escorted access at KHPN and services aircraft on the ramp with certified technicians and OEM-approved chemistry.
 
 servicesIntro: "Every service we offer is available at White Plains — ceramic coating, interior and exterior detailing, brightwork polishing, de-ice boot refurbishment, and AOG emergency cleaning."
 
@@ -19,7 +19,7 @@ localCopy:
 
     An aircraft that lives at HPN needs a detailer who can move quickly, coordinate with the FBO of record, and deliver work that reflects the standard of a corridor that hosts some of the highest-value aircraft in North America.
 
-    JetSpa holds current badge access at KHPN and coordinates work directly with the ramp operators on the field, without third-party escort delay or scheduling bottleneck.
+    JetSpa coordinates escorted access directly with the ramp operators on the field and builds that coordination into the confirmed service schedule.
   image:
     src: "./assets/service-aircraft-interior-detailing.jpg"
     alt: "A private jet cabin with cream leather seating and a polished table"

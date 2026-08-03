@@ -1,80 +1,10 @@
 ---
-/**
- * Recipe A — Home.
- *
- * Hero → SplitSection(intro) → SplitSection(trust) → ServicesGrid →
- * SplitSection(about, optional) → StepsList(howItWorks, flag-gated) →
- * SocialStrip → AreasGrid → CTABanner
- *
- * Contains zero content. Every string below comes from client/content/home.md
- * or client/site.config.ts.
- */
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
-import SplitSection from '../components/SplitSection.astro';
-import ServicesGrid from '../components/ServicesGrid.astro';
-import StepsList from '../components/StepsList.astro';
-import SocialStrip from '../components/SocialStrip.astro';
-import AreasGrid from '../components/AreasGrid.astro';
-import CTABanner from '../components/CTABanner.astro';
-import { getHome } from '../lib/content';
-import { buildHomeTitle } from '../lib/seo';
+import AviationEditorialHome from '../templates/aviation-editorial/pages/HomePage.astro';
 import { siteConfig } from '../lib/site-config';
 
-const home = (await getHome()).data;
-const { seo, defaults, modules } = siteConfig;
-
-const title = buildHomeTitle(siteConfig);
+if (siteConfig.template !== 'aviation-editorial') {
+  throw new Error(`No homepage registered for template "${siteConfig.template}".`);
+}
 ---
 
-<BaseLayout
-  title={title}
-  description={home.metaDescription}
-  path="/"
-  ogImage={siteConfig.defaults.heroVideo.poster.src}
->
-  {/* The homepage opens fullbleed — copy on the footage itself — while interior
-      pages keep the preset's quieter composition. */}
-  <Hero layout="fullbleed" proof={false} heading={home.heroHeadline} body={home.heroIntro} />
-
-  <SplitSection
-    index={0}
-    heading={home.intro.heading}
-    body={home.intro.body}
-    image={home.introImage}
-    cta={{ label: 'Get A Quote', href: '/get-quote' }}
-  />
-
-  <SplitSection index={1} tone="card" heading={home.trust.heading} body={home.trust.body} />
-
-  <ServicesGrid variant="tiles" heading={`Our ${seo.category} Services`} intro={home.servicesIntro} />
-
-  {
-    home.about && (
-      <SplitSection
-        index={2}
-        tone="card"
-        heading={home.about.heading}
-        body={home.about.body}
-        badge={modules.credentialBadge}
-        cta={{ label: 'About Us', href: '/about' }}
-      />
-    )
-  }
-
-  {
-    modules.howItWorks && home.howItWorks && (
-      <StepsList
-        heading={home.howItWorks.heading}
-        intro={home.howItWorks.intro}
-        steps={home.howItWorks.steps}
-      />
-    )
-  }
-
-  <SocialStrip image={defaults.socialImage} />
-
-  <AreasGrid variant="tiles" intro={home.areasIntro} />
-
-  <CTABanner headline={home.ctaHeadline} />
-</BaseLayout>
+<AviationEditorialHome />

@@ -1,0 +1,197 @@
+---
+import type { AviationHome } from '../schema';
+import SectionLabel from './SectionLabel.astro';
+
+interface Props {
+  content: AviationHome['process'];
+}
+
+const { content } = Astro.props;
+---
+
+<section id="process" class="process ae-section">
+  <div class="ae-container">
+    <SectionLabel tone="light">{content.eyebrow}</SectionLabel>
+    <h2>{content.heading}</h2>
+    <p class="intro">{content.intro}</p>
+
+    <ol>
+      {content.steps.map((step, index) => (
+        <li>
+          <span class="number">{String(index + 1).padStart(2, '0')}</span>
+          <div class="copy"><h3>{step.title}</h3><p>{step.body}</p></div>
+          <dl>{step.facts.map((fact) => <div><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .process {
+    background: var(--ae-bone);
+    color: var(--ae-paper-ink);
+  }
+
+  h2 {
+    max-width: 40rem;
+    margin-top: 1.35rem;
+    font-size: clamp(2.35rem, 3.2vw, 2.75rem);
+    font-weight: 500;
+    letter-spacing: -0.026em;
+    line-height: 1.1;
+  }
+
+  .intro {
+    max-width: 33rem;
+    margin-top: 1.1rem;
+    color: var(--ae-paper-copy);
+    line-height: 1.7;
+  }
+
+  ol {
+    position: relative;
+    margin: 4rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  ol::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 1.7rem;
+    width: 1px;
+    background: rgba(21, 23, 26, 0.18);
+    content: '';
+  }
+
+  li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 7.5rem 1fr 18.75rem;
+    gap: 2.5rem;
+    padding: 2.5rem 0;
+    border-top: 1px solid rgba(21, 23, 26, 0.2);
+  }
+
+  li:last-child {
+    border-bottom: 1px solid rgba(21, 23, 26, 0.2);
+  }
+
+  .number {
+    z-index: 1;
+    width: fit-content;
+    padding: 0.1rem 0 0.65rem;
+    background: var(--ae-bone);
+    font-family: var(--ae-mono);
+    font-size: 2.85rem;
+    letter-spacing: -0.03em;
+    line-height: 0.85;
+  }
+
+  li:last-child .number {
+    color: color-mix(in srgb, var(--ae-accent) 75%, #513815);
+  }
+
+  h3 {
+    font-size: 1.6rem;
+    font-weight: 500;
+    letter-spacing: -0.018em;
+    line-height: 1.25;
+  }
+
+  .copy p {
+    max-width: 38rem;
+    margin-top: 0.75rem;
+    color: var(--ae-paper-copy);
+    line-height: 1.7;
+  }
+
+  dl {
+    margin: 0;
+    padding: 0.35rem 0 0 1.25rem;
+    border-left: 1px solid rgba(21, 23, 26, 0.18);
+    font-family: var(--ae-mono);
+    font-size: 0.72rem;
+    line-height: 1.65;
+  }
+
+  dl div + div {
+    margin-top: 1rem;
+  }
+
+  dt {
+    color: #5d5b57;
+  }
+
+  dd {
+    margin: 0.15rem 0 0;
+    color: var(--ae-paper-ink);
+  }
+
+  @media (max-width: 60rem) {
+    li {
+      grid-template-columns: 6rem 1fr 13rem;
+      gap: 1.5rem;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .process {
+      padding-block: 2rem;
+    }
+
+    h2 {
+      margin-top: 0.85rem;
+      font-size: 1.65rem;
+    }
+
+    .intro {
+      font-size: 0.88rem;
+    }
+
+    ol {
+      margin-top: 1.35rem;
+    }
+
+    ol::before {
+      display: none;
+    }
+
+    li {
+      grid-template-columns: 3.25rem 1fr;
+      gap: 0.75rem;
+      padding: 1rem 0 1.15rem;
+    }
+
+    .number {
+      padding: 0;
+      font-size: 1.9rem;
+    }
+
+    h3 {
+      font-size: 1.05rem;
+      line-height: 1.3;
+    }
+
+    .copy p {
+      margin-top: 0.45rem;
+      font-size: 0.86rem;
+    }
+
+    dl {
+      grid-column: 2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.25rem;
+      padding: 0;
+      border: 0;
+      font-size: 0.62rem;
+    }
+
+    dl div + div {
+      margin: 0;
+    }
+  }
+</style>

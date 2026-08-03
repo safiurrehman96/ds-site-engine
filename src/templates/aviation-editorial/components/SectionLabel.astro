@@ -1,0 +1,42 @@
+---
+interface Props {
+  children: string;
+  tone?: 'dark' | 'light';
+}
+
+const { children, tone = 'dark' } = Astro.props;
+---
+
+<div class="label" data-tone={tone}>
+  <span aria-hidden="true"></span>
+  <p>{children}</p>
+</div>
+
+<style>
+  .label {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    color: var(--ae-muted);
+    font-family: var(--ae-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .label span {
+    width: 2.125rem;
+    height: 1px;
+    flex: 0 0 auto;
+    background: var(--ae-accent-dark);
+  }
+
+  .label[data-tone='light'] {
+    color: #6c6a66;
+  }
+
+  .label[data-tone='light'] span {
+    background: color-mix(in srgb, var(--ae-accent) 70%, #fff);
+  }
+</style>

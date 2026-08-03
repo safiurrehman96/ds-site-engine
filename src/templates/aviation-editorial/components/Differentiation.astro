@@ -1,0 +1,191 @@
+---
+import type { AviationHome } from '../schema';
+import MediaSlot from './MediaSlot.astro';
+import SectionLabel from './SectionLabel.astro';
+
+interface Props {
+  content: AviationHome['differentiation'];
+}
+
+const { content } = Astro.props;
+---
+
+<section id="credentials" class="differentiation ae-section">
+  <div class="grid ae-container">
+    <div class="intro">
+      <SectionLabel>{content.eyebrow}</SectionLabel>
+      <h2>{content.heading}</h2>
+      <p>{content.intro}</p>
+      <MediaSlot {...content.media} class="credential-media" sizes="30rem" />
+      <div class="issued">
+        <h3>{content.issuedLabel}</h3>
+        <ul>{content.issuedItems.map((item) => <li><span>✓</span>{item}</li>)}</ul>
+      </div>
+    </div>
+
+    <div class="items">
+      {content.items.map((item) => (
+        <article>
+          <span>{item.label}</span>
+          <div><h3>{item.title}</h3><p>{item.body}</p></div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .differentiation {
+    border-top: 1px solid var(--ae-line);
+    background: var(--ae-deck);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(19rem, 27.5rem) 1fr;
+    gap: clamp(3rem, 5.5vw, 5rem);
+    align-items: start;
+  }
+
+  h2 {
+    margin-top: 1.35rem;
+    font-size: clamp(2.15rem, 3vw, 2.5rem);
+    font-weight: 500;
+    letter-spacing: -0.024em;
+    line-height: 1.12;
+  }
+
+  .intro > p {
+    margin-top: 1.35rem;
+    color: var(--ae-muted);
+    line-height: 1.7;
+  }
+
+  .intro :global(.credential-media) {
+    height: 13.75rem;
+    margin-top: 2rem;
+  }
+
+  .issued {
+    margin-top: 1.5rem;
+    padding: 1.4rem 1.5rem;
+    border: 1px solid var(--ae-line);
+  }
+
+  .issued h3 {
+    color: var(--ae-muted);
+    font-family: var(--ae-mono);
+    font-size: 0.66rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  ul {
+    display: grid;
+    gap: 0.7rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: flex;
+    gap: 0.75rem;
+    color: var(--ae-copy);
+    font-family: var(--ae-mono);
+    font-size: 0.75rem;
+    line-height: 1.55;
+  }
+
+  li span {
+    color: var(--ae-accent);
+  }
+
+  .items {
+    border-top: 1px solid var(--ae-line);
+  }
+
+  article {
+    display: grid;
+    grid-template-columns: 9.4rem 1fr;
+    gap: 2rem;
+    padding: 1.85rem 0;
+    border-bottom: 1px solid var(--ae-line-soft);
+  }
+
+  article > span {
+    color: var(--ae-accent);
+    font-family: var(--ae-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  article h3 {
+    font-size: 1.3rem;
+    font-weight: 500;
+    letter-spacing: -0.014em;
+    line-height: 1.3;
+  }
+
+  article p {
+    max-width: 40rem;
+    margin-top: 0.6rem;
+    color: var(--ae-muted);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 60rem) {
+    .grid {
+      grid-template-columns: 19rem 1fr;
+      gap: 2.5rem;
+    }
+
+    article {
+      grid-template-columns: 7rem 1fr;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .differentiation {
+      padding-block: 2rem;
+    }
+
+    .grid {
+      display: block;
+    }
+
+    h2 {
+      margin-top: 0.85rem;
+      font-size: 1.65rem;
+    }
+
+    .intro > p {
+      font-size: 0.92rem;
+    }
+
+    .intro :global(.credential-media) {
+      height: 11rem;
+      margin-top: 1.25rem;
+    }
+
+    .issued {
+      margin-bottom: 1.75rem;
+    }
+
+    article {
+      display: block;
+      padding: 1.25rem 0;
+    }
+
+    article h3 {
+      margin-top: 0.55rem;
+      font-size: 1.05rem;
+    }
+
+    article p {
+      font-size: 0.88rem;
+    }
+  }
+</style>

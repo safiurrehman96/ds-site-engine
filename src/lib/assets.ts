@@ -50,6 +50,17 @@ export async function ogImageUrl(
   };
 }
 
+/** Built URL for places that need an image URL rather than an `<Image>` element. */
+export async function imageUrl(src: string, width = 1600): Promise<string> {
+  const key = `../../client/${src.replace(/^\.\//, '')}`;
+  const entry = images[key];
+  if (!entry) {
+    throw new Error(`Missing payload image "${src}".`);
+  }
+
+  return (await getImage({ src: entry.default, width, format: 'webp' })).src;
+}
+
 export function videoUrl(src: string): string {
   const key = `../../client/${src.replace(/^\.\//, '')}`;
   const url = videos[key];

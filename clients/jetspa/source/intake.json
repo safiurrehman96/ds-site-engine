@@ -2,23 +2,28 @@
   "slug": "jetspa",
   "business": {
     "name": "JetSpa",
-    "legalName": null,
+    "legalName": "JetSpa LLC",
     "owner": "Karan Gogna",
-    "tagline": null,
-    "blurb": null,
+    "tagline": "Certified aircraft detailing for private aviation.",
+    "blurb": "JetSpa is a New Jersey based aircraft detailing company serving four of the busiest general aviation airports in the Northeast. Certified private aircraft appearance care with OEM-approved chemistry and coordinated airport access.",
     "websiteUrl": "https://jetspa.co",
     "category": "Aircraft Detailing",
     "region": "the Northeast",
-    "footerNote": null
+    "footerNote": "Every jet deserves a spa day."
   },
   "contact": {
     "phone": "+17148370004",
-    "phoneDisplay": "(714) 837-0004",
-    "email": "karangogna86@gmail.com",
-    "address": null
+    "phoneDisplay": "714 837 0004",
+    "email": "booking@jetspa.co",
+    "address": {
+      "street": "2 Industrial Drive",
+      "city": "Alpha",
+      "state": "NJ",
+      "zip": "08865"
+    }
   },
   "serviceArea": {
-    "baseCity": null,
+    "baseCity": "Alpha",
     "baseState": "NJ",
     "radiusMiles": null,
     "label": "the Northeast — NY, NJ, PA, CT, MD, DE, and VA"
@@ -66,7 +71,7 @@
   },
   "theme": {
     "preset": "noir",
-    "accentColor": "#c6a46c"
+    "accentColor": "#b4915c"
   },
   "modules": {
     "howItWorks": true,

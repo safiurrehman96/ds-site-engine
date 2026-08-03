@@ -1,0 +1,521 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { AviationHome } from '../schema';
+import MediaSlot from './MediaSlot.astro';
+import SectionLabel from './SectionLabel.astro';
+
+interface Props {
+  content: AviationHome['services'];
+  services: CollectionEntry<'services'>[];
+}
+
+const { content, services } = Astro.props;
+const bySlug = new Map(services.map((service) => [service.data.slug, service]));
+const serviceFor = (slug: string) => {
+  const service = bySlug.get(slug);
+  if (!service) throw new Error(`Homepage references missing service "${slug}".`);
+  return service;
+};
+const featured = serviceFor(content.featured.slug);
+const emergency = serviceFor(content.emergency.slug);
+---
+
+<section id="services" class="services ae-section">
+  <div class="ae-container">
+    <header class="section-head">
+      <div>
+        <SectionLabel>{content.eyebrow}</SectionLabel>
+        <h2>{content.heading}</h2>
+      </div>
+      <a class="ae-text-link" href="#service-index">All {services.length} services →</a>
+    </header>
+
+    <a class="featured" href={`/${featured.data.slug}`}>
+      <MediaSlot
+        image={featured.data.heroImage}
+        label={content.featured.imageLabel}
+        class="featured-media"
+        sizes="(min-width: 60rem) 60vw, 100vw"
+      />
+      <div class="featured-copy">
+        <div class="featured-meta"><span>{content.featured.label}</span><span>{content.featured.status}</span></div>
+        <h3>{featured.data.name}</h3>
+        <p>{content.featured.summary}</p>
+        <dl>
+          {content.featured.specs.map((spec) => <div><dt>{spec.label}</dt><dd>{spec.value}</dd></div>)}
+        </dl>
+        <span class="featured-link">View service detail <i>→</i></span>
+      </div>
+    </a>
+
+    <div id="service-index" class="group-label"><span>{content.standardLabel}</span><i></i><span>{content.standardMeta}</span></div>
+    <div class="service-list">
+      {content.standard.map((item) => {
+        const service = serviceFor(item.slug);
+        return (
+          <a class="service-row" href={`/${service.data.slug}`}>
+            <MediaSlot image={service.data.heroImage} label={item.imageLabel} class="row-media" sizes="8rem" />
+            <strong>{service.data.name}</strong>
+            <p>{item.summary}</p>
+            <span>Detail →</span>
+          </a>
+        );
+      })}
+    </div>
+
+    <div class="group-label class-label"><span>{content.classLabel}</span><i></i><span>{content.classMeta}</span></div>
+    <div class="class-grid">
+      {content.aircraftClasses.map((item) => {
+        const service = serviceFor(item.slug);
+        return (
+          <a href={`/${service.data.slug}`}>
+            <MediaSlot image={service.data.heroImage} label={item.imageLabel} class="class-media" sizes="33vw" />
+            <div class="class-copy">
+              <div><span>{item.category}</span><span>{item.scope}</span></div>
+              <strong>{service.data.name}</strong>
+              <p>{item.summary}</p>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+
+    <a class="emergency" href={`/${emergency.data.slug}`}>
+      <span><strong>{emergency.data.name}</strong><small>{content.emergency.summary}</small></span>
+      <span class="emergency-status"><i></i>{content.emergency.status} →</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .services {
+    background: var(--ae-ink);
+  }
+
+  .section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 3rem;
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid var(--ae-line);
+  }
+
+  h2 {
+    max-width: 39rem;
+    margin-top: 1.35rem;
+    font-size: clamp(2.35rem, 3.2vw, 2.75rem);
+    font-weight: 500;
+    letter-spacing: -0.026em;
+    line-height: 1.1;
+  }
+
+  .featured {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(26rem, 32.5rem);
+    margin-top: 3.5rem;
+    border: 1px solid var(--ae-line);
+    background: var(--ae-panel);
+  }
+
+  .featured :global(.featured-media) {
+    min-height: 28.75rem;
+    border: 0;
+  }
+
+  .featured-copy {
+    display: flex;
+    padding: 2.75rem 2.5rem;
+    border-left: 1px solid var(--ae-line);
+    flex-direction: column;
+  }
+
+  .featured-meta,
+  .class-copy > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--ae-muted);
+    font-family: var(--ae-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .featured-meta span:first-child,
+  .class-copy > div span:first-child {
+    color: var(--ae-accent);
+  }
+
+  .featured h3 {
+    margin-top: 1.2rem;
+    font-size: 2.1rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+  }
+
+  .featured-copy > p {
+    margin-top: 1rem;
+    color: var(--ae-muted);
+    line-height: 1.7;
+  }
+
+  dl {
+    margin: 1.75rem 0 0;
+    border-top: 1px solid var(--ae-line);
+  }
+
+  dl div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--ae-line-soft);
+    font-family: var(--ae-mono);
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+
+  dt {
+    color: #b6b3ae;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--ae-bone);
+    text-align: right;
+  }
+
+  .featured-link {
+    display: flex;
+    min-height: 3.25rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    font-family: var(--ae-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .featured-link i {
+    color: var(--ae-accent);
+    font-style: normal;
+  }
+
+  .group-label {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    margin-top: 2.75rem;
+    color: var(--ae-muted);
+    font-family: var(--ae-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .group-label i {
+    height: 1px;
+    flex: 1;
+    background: var(--ae-line);
+  }
+
+  .service-list {
+    margin-top: 0.4rem;
+  }
+
+  .service-row {
+    display: grid;
+    grid-template-columns: 8.25rem minmax(14rem, 1fr) 1.15fr 7rem;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.25rem 0.5rem;
+    border-bottom: 1px solid var(--ae-line-soft);
+    transition: background-color 160ms ease;
+  }
+
+  .service-row:hover {
+    background: var(--ae-panel);
+  }
+
+  .service-row :global(.row-media) {
+    min-height: 5.1rem;
+  }
+
+  .service-row strong {
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: -0.016em;
+    line-height: 1.2;
+  }
+
+  .service-row p {
+    color: var(--ae-muted);
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+  .service-row > span {
+    justify-self: end;
+    color: var(--ae-muted);
+    font-family: var(--ae-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .class-label {
+    margin-top: 3.5rem;
+  }
+
+  .class-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin-top: 1.1rem;
+    background: var(--ae-line);
+  }
+
+  .class-grid > a {
+    display: flex;
+    min-width: 0;
+    background: var(--ae-ink);
+    flex-direction: column;
+  }
+
+  .class-grid > a:hover {
+    background: var(--ae-panel);
+  }
+
+  .class-grid :global(.class-media) {
+    height: 10.625rem;
+    border: 0;
+  }
+
+  .class-copy {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.5rem 1.75rem 1.75rem;
+  }
+
+  .class-copy strong {
+    font-size: 1.35rem;
+    font-weight: 500;
+    letter-spacing: -0.016em;
+    line-height: 1.2;
+  }
+
+  .class-copy p {
+    color: var(--ae-muted);
+    font-size: 0.86rem;
+    line-height: 1.55;
+  }
+
+  .emergency {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1px;
+    padding: 1.8rem;
+    border-left: 2px solid var(--ae-accent);
+    background: var(--ae-panel);
+  }
+
+  .emergency > span:first-child {
+    display: flex;
+    align-items: baseline;
+    gap: 1.1rem;
+  }
+
+  .emergency strong {
+    font-size: 1.45rem;
+    font-weight: 500;
+  }
+
+  .emergency small {
+    color: var(--ae-muted);
+    font-size: 0.92rem;
+  }
+
+  .emergency-status {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: var(--ae-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .emergency-status i {
+    width: 0.38rem;
+    height: 0.38rem;
+    border-radius: 50%;
+    background: var(--ae-accent);
+  }
+
+  @media (max-width: 68rem) {
+    .featured {
+      grid-template-columns: 1fr 26rem;
+    }
+
+    .service-row {
+      grid-template-columns: 7rem 1fr 1fr;
+    }
+
+    .service-row > span {
+      display: none;
+    }
+
+    .emergency > span:first-child {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .services {
+      padding-block: 2rem;
+    }
+
+    .section-head {
+      display: block;
+      padding-bottom: 1.25rem;
+    }
+
+    .section-head .ae-text-link {
+      display: none;
+    }
+
+    h2 {
+      margin-top: 0.85rem;
+      font-size: 1.65rem;
+    }
+
+    .featured {
+      display: block;
+      margin-top: 1.25rem;
+    }
+
+    .featured :global(.featured-media) {
+      min-height: 9.4rem;
+      height: 9.4rem;
+    }
+
+    .featured-copy {
+      padding: 1.1rem 1rem 1.25rem;
+      border-top: 1px solid var(--ae-line);
+      border-left: 0;
+    }
+
+    .featured h3 {
+      margin-top: 0.75rem;
+      font-size: 1.4rem;
+    }
+
+    .featured-copy > p {
+      font-size: 0.86rem;
+    }
+
+    dl {
+      display: none;
+    }
+
+    .featured-link {
+      min-height: auto;
+      margin-top: 1rem;
+      padding: 0;
+      border: 0;
+    }
+
+    .group-label {
+      margin-top: 1.25rem;
+    }
+
+    .group-label span:last-child {
+      display: none;
+    }
+
+    .service-row {
+      display: flex;
+      min-height: 3.5rem;
+      align-items: center;
+      padding: 0.65rem 0;
+    }
+
+    .service-row :global(.row-media),
+    .service-row p {
+      display: none;
+    }
+
+    .service-row strong {
+      flex: 1;
+      font-size: 1rem;
+    }
+
+    .service-row::after {
+      color: var(--ae-muted);
+      content: '→';
+    }
+
+    .class-label {
+      margin-top: 1.75rem;
+    }
+
+    .class-grid {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .class-grid > a {
+      display: grid;
+      grid-template-columns: 6rem 1fr;
+    }
+
+    .class-grid :global(.class-media) {
+      height: 100%;
+      min-height: 6rem;
+    }
+
+    .class-copy {
+      gap: 0.45rem;
+      padding: 0.8rem;
+    }
+
+    .class-copy > div span:last-child,
+    .class-copy p {
+      display: none;
+    }
+
+    .class-copy strong {
+      font-size: 1rem;
+    }
+
+    .emergency {
+      display: block;
+      padding: 1rem;
+    }
+
+    .emergency strong {
+      font-size: 1rem;
+    }
+
+    .emergency small {
+      font-size: 0.78rem;
+    }
+
+    .emergency-status {
+      margin-top: 0.75rem;
+    }
+  }
+</style>

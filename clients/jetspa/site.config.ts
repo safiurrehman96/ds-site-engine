@@ -17,6 +17,8 @@
  * src/lib/site-config.ts.
  */
 export const siteConfig = {
+  template: 'aviation-editorial' as const,
+
   site: {
     // Stated as http:// in the client's own Privacy Policy; https assumed. Confirm.
     url: 'https://jetspa.co',
@@ -24,30 +26,27 @@ export const siteConfig = {
 
   brand: {
     name: 'JetSpa',
-    // Drafted from the client's own home-page copy, not invented. Needs sign-off.
     tagline: 'Certified aircraft detailing for private aviation.',
     blurb:
-      'JetSpa is a New Jersey based aircraft detailing company serving four of the busiest general aviation airports in the Northeast. Appearance care for private aviation exclusively — ADA-certified technicians, OEM-approved chemistry, and badge access at every field we work.',
+      'JetSpa is a New Jersey based aircraft detailing company serving four of the busiest general aviation airports in the Northeast. Certified private aircraft appearance care with OEM-approved chemistry and coordinated airport access.',
+    footerNote: 'Every jet deserves a spa day.',
     logoPath: './assets/logo.png',
   },
 
   contact: {
     phone: '+17148370004',
-    phoneDisplay: '(714) 837-0004',
-    email: 'karangogna86@gmail.com',
+    phoneDisplay: '714 837 0004',
+    email: 'booking@jetspa.co',
     address: {
-      // TODO(fact-needed): postal address not supplied. Renders in the footer and in
-      // LocalBusiness JSON-LD.
-      street: 'PLACEHOLDER — address not supplied',
-      city: 'PLACEHOLDER',
+      street: '2 Industrial Drive',
+      city: 'Alpha',
       state: 'NJ',
-      zip: '00000',
+      zip: '08865',
     },
   },
 
   serviceArea: {
-    // TODO(fact-needed): the export says only "New Jersey based".
-    baseCity: 'PLACEHOLDER',
+    baseCity: 'Alpha',
     baseState: 'NJ',
     // TODO(fact-needed): radius not supplied; 100 is a placeholder, not a claim.
     radiusMiles: 100,
@@ -89,7 +88,7 @@ export const siteConfig = {
 
   theme: {
     preset: 'noir' as const,
-    accentColor: '#c6a46c',
+    accentColor: '#b4915c',
   },
 
   modules: {

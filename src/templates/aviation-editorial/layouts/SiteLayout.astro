@@ -1,0 +1,69 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { getAreas, getHome, getServices } from '../../../lib/content';
+import { localBusinessJsonLd, webPageJsonLd, webSiteJsonLd } from '../../../lib/seo';
+import { siteConfig } from '../../../lib/site-config';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  ogImage?: string;
+  noindex?: boolean;
+  jsonLd?: Array<Record<string, unknown>>;
+}
+
+const { title, description, path, ogImage, noindex = false, jsonLd = [] } = Astro.props;
+const [home, services, areas] = await Promise.all([getHome(), getServices(), getAreas()]);
+const { contact, tracking, theme } = siteConfig;
+const graphs = [
+  webSiteJsonLd(siteConfig),
+  webPageJsonLd(siteConfig, { title, description, path }),
+  localBusinessJsonLd(siteConfig, areas.map((area) => ({ name: area.data.name, state: area.data.state }))),
+  ...jsonLd,
+];
+const hasTracking = !tracking.gtmId.includes('PLACEHOLDER');
+---
+
+<!doctype html>
+<html lang="en" style={`--ae-accent:${theme.accentColor}`}>
+  <head>
+    <SEOHead {title} {description} {path} {ogImage} {noindex} jsonLd={graphs} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-latin.woff2" crossorigin />
+    {
+      hasTracking && (
+        <script
+          is:inline
+          set:html={`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${tracking.gtmId}');`}
+        />
+      )
+    }
+  </head>
+  <body>
+    {
+      hasTracking && (
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${tracking.gtmId}`}
+            height="0"
+            width="0"
+            style="display:none;visibility:hidden"
+            title="Google Tag Manager"
+          />
+        </noscript>
+      )
+    }
+    <a class="ae-skip-link" href="#main">Skip to content</a>
+    <SiteHeader chrome={home.data.chrome} />
+    <main id="main" class="ae-page"><slot /></main>
+    <SiteFooter {services} {areas} />
+    <div class="ae-mobile-action" aria-label="Quick actions">
+      <a href="/get-quote">Request a Quote</a>
+      <a href={`tel:${contact.phone}`}>{home.data.chrome.mobileCallLabel}</a>
+    </div>
+  </body>
+</html>

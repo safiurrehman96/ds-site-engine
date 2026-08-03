@@ -1,0 +1,34 @@
+---
+import { getAreas, getHome, getServices } from '../../../lib/content';
+import { buildHomeTitle } from '../../../lib/seo';
+import { siteConfig } from '../../../lib/site-config';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import HomeHero from '../components/HomeHero.astro';
+import BrandIntroduction from '../components/BrandIntroduction.astro';
+import ServiceDirectory from '../components/ServiceDirectory.astro';
+import Differentiation from '../components/Differentiation.astro';
+import ProcessSequence from '../components/ProcessSequence.astro';
+import AirportCoverage from '../components/AirportCoverage.astro';
+import ProofSection from '../components/ProofSection.astro';
+import ConversionPanel from '../components/ConversionPanel.astro';
+
+const [homeEntry, services, areas] = await Promise.all([getHome(), getServices(), getAreas()]);
+const home = homeEntry.data;
+const title = buildHomeTitle(siteConfig);
+---
+
+<SiteLayout
+  {title}
+  description={home.metaDescription}
+  path="/"
+  ogImage={siteConfig.defaults.heroVideo.poster.src}
+>
+  <HomeHero hero={home.hero} credentials={home.credentials} />
+  <BrandIntroduction introduction={home.introduction} mediaBand={home.mediaBand} />
+  <ServiceDirectory content={home.services} {services} />
+  <Differentiation content={home.differentiation} />
+  <ProcessSequence content={home.process} />
+  <AirportCoverage content={home.coverage} {areas} />
+  <ProofSection content={home.proof} />
+  <ConversionPanel content={home.cta} />
+</SiteLayout>

@@ -9,6 +9,7 @@ import { glob } from 'astro/loaders';
 // Astro 7 deprecates the `z` re-export from `astro:content`; `astro/zod` is the
 // supported path and keeps the engine on a single zod instance (see config-schema.ts).
 import { z } from 'astro/zod';
+import { aviationHomeSchema } from './templates/aviation-editorial/schema';
 
 const BASE = './client/content';
 
@@ -244,33 +245,7 @@ const areas = defineCollection({
 
 const home = defineCollection({
   loader: glob({ base: BASE, pattern: 'home.md' }),
-  schema: z.object({
-    metaDescription,
-    /** Home is the one page whose H1 is authored, not formula-generated. */
-    heroHeadline: prose,
-    /** Optional hero body for headline-only compositions. */
-    heroIntro: prose.optional(),
-
-    intro: proseBlock,
-    /** Image beside the intro block. */
-    introImage: image,
-    trust: proseBlock,
-    /** Optional founder or differentiator block. */
-    about: proseBlock.optional(),
-
-    howItWorks: z
-      .object({
-        heading: prose,
-        intro: prose.optional(),
-        steps: z.array(z.object({ title: prose, body: prose })).min(1),
-      })
-      .optional(),
-
-    /** Intro above the home ServicesGrid. Authored, for the same reason as areas. */
-    servicesIntro: prose,
-    areasIntro: prose,
-    ctaHeadline: prose,
-  }),
+  schema: aviationHomeSchema,
 });
 
 const about = defineCollection({

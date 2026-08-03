@@ -11,6 +11,9 @@ import { z } from 'astro/zod';
 export const PRESETS = ['stealth', 'fresh', 'chrome', 'bold', 'noir'] as const;
 export type Preset = (typeof PRESETS)[number];
 
+export const TEMPLATES = ['aviation-editorial'] as const;
+export type Template = (typeof TEMPLATES)[number];
+
 const hexColor = z
   .string()
   .regex(/^#[0-9a-fA-F]{6}$/, 'accentColor must be a 6-digit hex value, e.g. "#0e7c86"');
@@ -24,6 +27,8 @@ const imageRef = z.object({
 });
 
 export const siteConfigSchema = z.object({
+  template: z.enum(TEMPLATES),
+
   site: z.object({
     /** Absolute production origin, no trailing slash. Drives canonicals + sitemap. */
     url: z.url().refine((u) => !u.endsWith('/'), 'site.url must not have a trailing slash'),
