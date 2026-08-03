@@ -44,14 +44,17 @@ introduction:
   primaryMedia:
     label: "Cabin detail · post-service walk-through"
     image:
-      src: "./assets/service-aircraft-interior-detailing.jpg"
-      alt: "A private jet cabin with cream leather seating and a polished table"
+      src: "./assets/intro-cabin.webp"
+      alt: "A private jet cabin after detailing, with cream leather club seats and a polished burl wood table"
   detailMedia:
     - label: "Technician at work"
       image:
-        src: "./assets/intro.jpg"
-        alt: "A technician machine-polishing an aircraft fuselage panel"
+        src: "./assets/intro-technician.webp"
+        alt: "A gloved technician machine-polishing a painted aircraft fuselage panel"
     - label: "COI & scope sheet"
+      image:
+        src: "./assets/intro-documents.webp"
+        alt: "Printed service documents and a pen on a dark desk"
 
 mediaBand:
   - label: "Crew on the ramp at first light · hangar doors open"
