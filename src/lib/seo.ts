@@ -144,6 +144,7 @@ function areaServedNodes(areas: Array<{ name: string; state?: string }>) {
 export function localBusinessJsonLd(
   config: SiteConfig,
   areas: Array<{ name: string; state?: string }>,
+  logoUrl?: string,
 ): Record<string, unknown> {
   const { brand, contact, serviceArea, hours, socials, seo } = config;
   const sameAs = Object.values(socials).filter((u): u is string => Boolean(u));
@@ -156,7 +157,11 @@ export function localBusinessJsonLd(
     url: config.site.url,
     telephone: contact.phone,
     email: contact.email,
-    image: `${config.site.url}${brand.logoPath.replace(/^\.\//, '/')}`,
+    // `logoUrl` is the built, absolute URL, resolved by the caller. Concatenating
+    // site.url + brand.logoPath here yields a 404: Astro emits hashed files under
+    // /_astro — the same trap ogImageUrl() documents. Kept as a parameter so this
+    // module stays free of astro:assets and remains unit-testable.
+    ...(logoUrl ? { image: logoUrl } : {}),
     address: {
       '@type': 'PostalAddress',
       streetAddress: contact.address.street,

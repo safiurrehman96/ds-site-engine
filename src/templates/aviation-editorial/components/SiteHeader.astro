@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import type { AviationHome } from '../schema';
+import Img from '../../../components/Img.astro';
 import { siteConfig } from '../../../lib/site-config';
 
 interface Props {
@@ -16,13 +17,23 @@ const isServicePage = services.some((service) => service.data.slug === currentPa
 const isAirportPage = areas.some((area) => area.data.slug === currentPath);
 ---
 
-<div class="utility">
-  <span><i aria-hidden="true"></i>{chrome.stationLabel}</span>
-  <span class="utility-contact"><span>{chrome.emergencyLabel}</span><a href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a></span>
-</div>
+<div class="site-head" data-site-head>
+  <div class="utility">
+    <span><i aria-hidden="true"></i>{chrome.stationLabel}</span>
+    <span class="utility-contact"><span>{chrome.emergencyLabel}</span><a href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a></span>
+  </div>
 
-<header>
-  <a class="brand" href="/" aria-label={`${brand.name} home`}><i aria-hidden="true"></i>{brand.name}</a>
+  <header>
+  <a class="brand" href="/" aria-label={`${brand.name} home`}>
+    <Img
+      src={brand.logoPath}
+      alt={brand.name}
+      widths={[160, 320]}
+      sizes="160px"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </a>
 
   <nav class="desktop-nav" aria-label="Main navigation">
     <details class:list={['desktop-menu', 'service-menu', isServicePage && 'active']}>
@@ -100,11 +111,45 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
         <a href="/faqs">FAQs</a>
         <a href="/get-quote">Request Quote</a>
       </nav>
-    </details>
-  </div>
-</header>
+      </details>
+    </div>
+  </header>
+</div>
+
+<div class="head-spacer" aria-hidden="true"></div>
 
 <script>
+  // Condense the header once the page has scrolled past the utility strip. Hysteresis
+  // (24px on, 8px off) rather than a single threshold: a bare `> 0` test flickers when
+  // the shrink itself changes document height near the top of the page.
+  const head = document.querySelector<HTMLElement>('[data-site-head]');
+
+  if (head) {
+    let condensed = false;
+    let ticking = false;
+
+    const sync = () => {
+      ticking = false;
+      const y = window.scrollY;
+      if (!condensed && y > 24) condensed = true;
+      else if (condensed && y < 8) condensed = false;
+      else return;
+      head.classList.toggle('condensed', condensed);
+    };
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(sync);
+      },
+      { passive: true },
+    );
+
+    sync(); // restored scroll position on a back-navigation starts mid-page
+  }
+
   const desktopMenus = document.querySelectorAll<HTMLDetailsElement>('.desktop-menu');
   const disclosures = document.querySelectorAll<HTMLDetailsElement>('.desktop-menu, .mobile-menu');
   const desktopQuery = window.matchMedia('(min-width: 68.01rem)');
@@ -159,10 +204,42 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
 </script>
 
 <style>
+  /**
+   * Fixed rather than sticky, with a spacer holding its resting height in flow.
+   *
+   * Sticky keeps the header in normal flow, so collapsing it shortens the document —
+   * near the top of the page the browser compensates by moving the scroll position,
+   * which re-crosses the condense threshold and the header oscillates mid-transition.
+   * Out of flow, the document height is constant and the collapse is a one-way trip.
+   */
+  .site-head {
+    position: fixed;
+    z-index: 60;
+    top: 0;
+    right: 0;
+    left: 0;
+    /* Header height, published so the dropdowns can measure their gap from the
+       header's bottom edge rather than from the summary they hang off. */
+    --ae-head-h: 5.75rem;
+    --ae-menu-gap: 0.85rem;
+  }
+
+  .site-head.condensed {
+    --ae-head-h: 4.25rem;
+  }
+
+  .head-spacer {
+    height: calc(2.25rem + 5.75rem + 2px); /* utility + header + their 1px borders */
+  }
+
   .utility {
     display: flex;
-    min-height: 2.25rem;
+    height: 2.25rem;
+    overflow: hidden;
     align-items: center;
+    transition:
+      height 200ms ease,
+      opacity 200ms ease;
     justify-content: space-between;
     gap: 2rem;
     padding-inline: var(--ae-gutter);
@@ -197,11 +274,20 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
     color: var(--ae-copy);
   }
 
+  /* border-width, not just colour: a transparent 1px border still occupies 1px, which
+     is the sliver of page background that showed above the condensed header. */
+  .site-head.condensed .utility {
+    height: 0;
+    border-bottom-width: 0;
+    opacity: 0;
+  }
+
   header {
     position: relative;
     z-index: 50;
     display: grid;
-    min-height: 5.125rem;
+    min-height: 5.75rem;
+    transition: min-height 200ms ease;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     gap: 2.5rem;
@@ -213,19 +299,22 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
   .brand {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    font-size: 1.35rem;
-    font-weight: 600;
-    letter-spacing: 0.22em;
-    line-height: 1;
-    text-transform: uppercase;
+    line-height: 0;
   }
 
-  .brand i {
-    width: 0.56rem;
-    height: 0.56rem;
-    background: var(--ae-accent);
-    transform: rotate(45deg);
+  .brand :global(img) {
+    width: auto;
+    height: 3.75rem;
+    transition: height 200ms ease;
+  }
+
+  .site-head.condensed header {
+    min-height: 4.25rem;
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.35);
+  }
+
+  .site-head.condensed .brand :global(img) {
+    height: 2.6rem;
   }
 
   .desktop-nav,
@@ -257,12 +346,15 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
     position: relative;
   }
 
+  /* Hover bridge: spans exactly the gap the dropdown was pushed down by, so the
+     pointer never crosses dead space between summary and panel. `100%` here is the
+     summary's height, so this tracks the header shrink with no second constant. */
   .desktop-menu[open]::after {
     position: absolute;
     top: 100%;
     right: -1rem;
     left: -1rem;
-    height: 1.5rem;
+    height: calc((var(--ae-head-h) - 100%) / 2 + var(--ae-menu-gap));
     content: '';
   }
 
@@ -303,8 +395,12 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
   .nav-dropdown {
     position: absolute;
     z-index: 60;
-    top: calc(100% + 1.4rem);
+    /* Measured from the header's bottom edge, not the summary: the summary sits
+       centred in the header, so a fixed offset from it drifts as the header shrinks
+       (it overhung the header bar at rest and floated free once condensed). */
+    top: calc(100% + (var(--ae-head-h) - 100%) / 2 + var(--ae-menu-gap));
     left: 50%;
+    transition: top 200ms ease;
     width: 22rem;
     margin: 0;
     padding: 0.5rem;
@@ -399,6 +495,10 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
 
     .desktop-menu {
       display: none;
+    }
+
+    .head-spacer {
+      height: calc(5.75rem + 1px); /* utility strip is hidden at this width */
     }
 
     .mobile-actions {
@@ -545,15 +645,20 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
       min-height: 3.75rem;
     }
 
-    .brand {
-      gap: 0.55rem;
-      font-size: 1.05rem;
-      letter-spacing: 0.2em;
+    .head-spacer {
+      height: calc(3.75rem + 1px);
     }
 
-    .brand i {
-      width: 0.48rem;
-      height: 0.48rem;
+    .brand :global(img) {
+      height: 2.75rem;
+    }
+
+    .site-head.condensed header {
+      min-height: 3.25rem;
+    }
+
+    .site-head.condensed .brand :global(img) {
+      height: 2.1rem;
     }
   }
 </style>

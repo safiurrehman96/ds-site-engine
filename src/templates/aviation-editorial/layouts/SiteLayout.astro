@@ -5,6 +5,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 import { getAreas, getHome, getServices } from '../../../lib/content';
 import { localBusinessJsonLd, webPageJsonLd, webSiteJsonLd } from '../../../lib/seo';
 import { siteConfig } from '../../../lib/site-config';
+import { imageUrl } from '../../../lib/assets';
 import '../styles/global.css';
 
 interface Props {
@@ -18,11 +19,14 @@ interface Props {
 
 const { title, description, path, ogImage, noindex = false, jsonLd = [] } = Astro.props;
 const [home, services, areas] = await Promise.all([getHome(), getServices(), getAreas()]);
-const { contact, tracking, theme } = siteConfig;
+const { brand, contact, tracking, theme } = siteConfig;
+// PNG rather than WebP: the logo carries transparency, and this URL is consumed by
+// crawlers rather than browsers.
+const logoUrl = new URL(await imageUrl(brand.logoPath, 512, 'png'), siteConfig.site.url).href;
 const graphs = [
   webSiteJsonLd(siteConfig),
   webPageJsonLd(siteConfig, { title, description, path }),
-  localBusinessJsonLd(siteConfig, areas.map((area) => ({ name: area.data.name, state: area.data.state }))),
+  localBusinessJsonLd(siteConfig, areas.map((area) => ({ name: area.data.name, state: area.data.state })), logoUrl),
   ...jsonLd,
 ];
 const hasTracking = !tracking.gtmId.includes('PLACEHOLDER');
