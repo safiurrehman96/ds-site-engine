@@ -5,7 +5,7 @@ order: 3
 shortName: "KABE"
 metaDescription: "Certified aircraft detailing at Lehigh Valley International Airport (KABE). Badge access, fast response, OEM-approved chemistry. Serving Allentown and PA."
 title: "Aircraft Detailing at Lehigh Valley Airport (KABE) | JetSpa"
-h1: "Aircraft Detailing at Lehigh Valley Airport (KABE)"
+h1: "Aircraft detailing at Lehigh Valley Airport (KABE)"
 
 heroIntro: |
   Lehigh Valley International Airport in Allentown, Pennsylvania is a hybrid facility handling both commercial passenger operations and a robust general aviation base. Roughly 50 to 60 aircraft movements a day mean less ramp congestion than Teterboro or White Plains, and that opens up flexibility on scheduling and hangar coordination for based aircraft. JetSpa holds badge access at KABE and services aircraft on the ramp for owners across the eastern Pennsylvania and northwest New Jersey corridor.
@@ -53,4 +53,38 @@ whyUs:
     - Written service record documenting every job
 
 ctaHeadline: "Ready to Schedule Service at KABE?"
+
+airport:
+  officialName: "Lehigh Valley International Airport"
+  locationLabel: "Allentown, Lehigh County, Pennsylvania"
+  iata: "ABE"
+  access: "badged"
+  heroSummary: "A mixed-use commercial and general aviation field with flexible scheduling for based aircraft across eastern Pennsylvania. JetSpa holds badge access at KABE and services piston, turboprop, and corporate aircraft."
+  facts:
+    - label: "Movements / day"
+      value: "50-60"
+    - label: "From JetSpa"
+      value: "15-20 min"
+    - label: "AOG response"
+      value: "1-3 hrs"
+  bandNote: "Commercial operations / general aviation / regional owners"
+  conditions:
+    - label: "Industrial"
+      title: "Mixed industrial and agricultural fallout"
+      body: "The field's surroundings create seasonal contamination patterns that require regular, surface-safe removal."
+    - label: "Cycles"
+      title: "More takeoff and landing exposure"
+      body: "Regional piston and turboprop operations put leading edges, bellies, props, and boots through frequent cycles."
+    - label: "Winter"
+      title: "Northeast deicing chemistry"
+      body: "Cold-weather operations leave residue on paint and boot systems that should be removed methodically."
+    - label: "Access"
+      title: "Flexible scheduling near our base"
+      body: "Lower ramp congestion generally creates more workable windows for hangar coordination and multi-day service."
+  referenceImpacts:
+    - "We coordinate directly with the appropriate ground staff for access, aircraft handling, and scheduling."
+    - "Programs are tailored for piston, turboprop, and corporate jet utilization patterns."
+    - "Regular decontamination counters winter chemistry, humidity, and regional pollution."
+    - "Lower traffic volume can provide more flexible ground-time windows for coating and boot work."
+  teaser: "A mixed-use Lehigh Valley field with flexible access for regional private aviation."
 ---

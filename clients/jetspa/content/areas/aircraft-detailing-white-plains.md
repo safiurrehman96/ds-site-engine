@@ -5,7 +5,7 @@ order: 4
 shortName: "KHPN"
 metaDescription: "Certified aircraft detailing at Westchester County / White Plains Airport (KHPN). Coordinated access, OEM-approved chemistry, and fully insured."
 title: "Aircraft Detailing at White Plains Airport (KHPN) | JetSpa"
-h1: "Aircraft Detailing at White Plains Airport (KHPN)"
+h1: "Aircraft detailing at White Plains Airport (KHPN)"
 
 heroIntro: |
   Westchester County Airport, known operationally as White Plains and coded KHPN, is one of the busiest corporate aviation gateways in the Northeast and a primary alternative to Teterboro for aircraft serving the greater New York region. With more than 400 aircraft movements per day, KHPN is home to serious corporate operators, charter fleets, and high-value private aircraft. JetSpa arranges escorted access at KHPN and services aircraft on the ramp with certified technicians and OEM-approved chemistry.
@@ -53,4 +53,38 @@ whyUs:
     - Written service record documenting every job
 
 ctaHeadline: "Ready to Schedule Service at KHPN?"
+
+airport:
+  officialName: "Westchester County Airport"
+  locationLabel: "White Plains, Westchester County, New York"
+  iata: "HPN"
+  access: "escorted"
+  heroSummary: "One of the Northeast's busiest corporate aviation gateways and a primary alternative to Teterboro for the greater New York region. JetSpa arranges escorted access at KHPN and coordinates directly with the FBO of record."
+  facts:
+    - label: "Movements / day"
+      value: "400+"
+    - label: "To Midtown"
+      value: "30 mi"
+    - label: "AOG response"
+      value: "1-3 hrs"
+  bandNote: "Corporate operators / charter fleets / private aviation"
+  conditions:
+    - label: "Exhaust"
+      title: "High-traffic ramp exposure"
+      body: "Frequent corporate and charter movements deposit soot and oil film on upper and aft surfaces."
+    - label: "Winter"
+      title: "Heavy deicing chemistry accumulation"
+      body: "Residue builds on paint and boots through the season and calls for controlled decontamination."
+    - label: "Summer"
+      title: "Coastal humidity accelerates oxidation"
+      body: "Warm, humid conditions increase exterior contamination and place more demand on protective coatings."
+    - label: "Visibility"
+      title: "A high-standard corporate corridor"
+      body: "Operators, brokers, and passengers expect based and transient aircraft to present at a consistently high level."
+  referenceImpacts:
+    - "Escorted access and FBO coordination are built into the confirmed service schedule."
+    - "Scope is matched to large corporate airframes, charter utilization, and between-leg demand."
+    - "Proactive decontamination and coating maintenance counter seasonal chemical exposure."
+    - "Competitive hangar space means multi-day work must be coordinated early with the FBO."
+  teaser: "A high-volume corporate aviation gateway serving Westchester and the greater New York region."
 ---

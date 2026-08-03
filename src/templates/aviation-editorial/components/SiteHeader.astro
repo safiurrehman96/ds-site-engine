@@ -1,13 +1,17 @@
 ---
+import type { CollectionEntry } from 'astro:content';
 import type { AviationHome } from '../schema';
 import { siteConfig } from '../../../lib/site-config';
 
 interface Props {
   chrome: AviationHome['chrome'];
+  areas: CollectionEntry<'areas'>[];
 }
 
-const { chrome } = Astro.props;
+const { chrome, areas } = Astro.props;
 const { brand, contact } = siteConfig;
+const currentPath = Astro.url.pathname.replace(/^\//, '').replace(/\/$/, '');
+const isAirportPage = areas.some((area) => area.data.slug === currentPath);
 ---
 
 <div class="utility">
@@ -20,7 +24,21 @@ const { brand, contact } = siteConfig;
 
   <nav class="desktop-nav" aria-label="Main navigation">
     <a href="/#services">Services</a>
-    <a href="/#airports">Airports</a>
+    <details class:list={['airport-menu', isAirportPage && 'active']}>
+      <summary>Airports <i aria-hidden="true"></i></summary>
+      <ul class="airport-dropdown">
+        {
+          areas.map((area) => (
+            <li>
+              <a href={`/${area.data.slug}`} aria-current={area.data.slug === currentPath ? 'page' : undefined}>
+                <span>{area.data.shortName}</span>
+                <span>{area.data.airport?.officialName ?? area.data.name}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </details>
     <a href="/about">About</a>
     <a href="/faqs">FAQs</a>
   </nav>
@@ -34,11 +52,23 @@ const { brand, contact } = siteConfig;
     <a class="phone" href={`tel:${contact.phone}`} aria-label={`Call ${brand.name}`}>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3h-2A1.5 1.5 0 0 0 3 4.6c.2 3.3 1.5 6.4 3.7 8.8 2.1 2.3 5 3.8 8.1 4.2h.1A1.5 1.5 0 0 0 16.5 16v-2a1.5 1.5 0 0 0-1.2-1.5l-2-.4a1.5 1.5 0 0 0-1.4.5l-.6.7a11 11 0 0 1-4-4l.7-.6a1.5 1.5 0 0 0 .4-1.4l-.4-2A1.5 1.5 0 0 0 6.5 3Z" /></svg>
     </a>
-    <details>
+    <details class="mobile-menu">
       <summary><span class="sr-only">Open navigation</span><i></i><i></i></summary>
       <nav aria-label="Mobile navigation">
         <a href="/#services">Services</a>
-        <a href="/#airports">Airports</a>
+        <details class="mobile-airports">
+          <summary>Airports <i aria-hidden="true"></i></summary>
+          <div>
+            {
+              areas.map((area) => (
+                <a href={`/${area.data.slug}`} aria-current={area.data.slug === currentPath ? 'page' : undefined}>
+                  <span>{area.data.shortName}</span>
+                  <span>{area.data.airport?.officialName ?? area.data.name}</span>
+                </a>
+              ))
+            }
+          </div>
+        </details>
         <a href="/about">About</a>
         <a href="/faqs">FAQs</a>
         <a href="/get-quote">Request Quote</a>
@@ -47,6 +77,24 @@ const { brand, contact } = siteConfig;
     </details>
   </div>
 </header>
+
+<script>
+  const disclosures = document.querySelectorAll<HTMLDetailsElement>('.airport-menu, .mobile-menu');
+
+  document.addEventListener('click', (event) => {
+    disclosures.forEach((disclosure) => {
+      if (!disclosure.contains(event.target as Node)) disclosure.open = false;
+    });
+  });
+
+  disclosures.forEach((disclosure) => {
+    disclosure.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      disclosure.open = false;
+      disclosure.querySelector<HTMLElement>(':scope > summary')?.focus();
+    });
+  });
+</script>
 
 <style>
   .utility {
@@ -143,6 +191,98 @@ const { brand, contact } = siteConfig;
     color: #fff;
   }
 
+  .airport-menu {
+    position: relative;
+  }
+
+  .airport-menu > summary {
+    display: flex;
+    cursor: pointer;
+    list-style: none;
+    align-items: center;
+    gap: 0.55rem;
+    padding-block: 0.4rem;
+    border-bottom: 1px solid transparent;
+    color: #b6b3ae;
+  }
+
+  .airport-menu > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .airport-menu > summary i {
+    width: 0.42rem;
+    height: 0.42rem;
+    border-right: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    transform: translateY(-0.12rem) rotate(45deg);
+    transition: transform 160ms ease;
+  }
+
+  .airport-menu[open] > summary,
+  .airport-menu.active > summary {
+    border-color: var(--ae-accent);
+    color: #fff;
+  }
+
+  .airport-menu[open] > summary i {
+    transform: translateY(0.12rem) rotate(225deg);
+  }
+
+  .airport-dropdown {
+    position: absolute;
+    z-index: 60;
+    top: calc(100% + 1.4rem);
+    left: 50%;
+    width: 22rem;
+    margin: 0;
+    padding: 0.5rem;
+    border: 1px solid var(--ae-line);
+    background: var(--ae-deck);
+    box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.45);
+    transform: translateX(-50%);
+    list-style: none;
+  }
+
+  .airport-dropdown li {
+    display: block;
+  }
+
+  .desktop-nav .airport-dropdown a {
+    display: grid;
+    min-height: 3.5rem;
+    padding: 0.75rem 0.9rem;
+    border-bottom: 1px solid var(--ae-line-soft);
+    grid-template-columns: 3.4rem 1fr;
+    gap: 0.8rem;
+    align-items: center;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .desktop-nav .airport-dropdown a:last-child {
+    border-bottom: 0;
+  }
+
+  .airport-dropdown a:hover,
+  .airport-dropdown a[aria-current='page'] {
+    border-color: var(--ae-line-soft);
+    background: var(--ae-panel);
+  }
+
+  .airport-dropdown a span:first-child {
+    color: var(--ae-accent);
+    font-family: var(--ae-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+  }
+
+  .airport-dropdown a span:last-child {
+    color: var(--ae-copy);
+    font-family: var(--ae-sans);
+    font-size: 0.88rem;
+  }
+
   .desktop-actions {
     justify-self: end;
     gap: 1.35rem;
@@ -190,6 +330,10 @@ const { brand, contact } = siteConfig;
       display: none;
     }
 
+    .airport-menu {
+      display: none;
+    }
+
     .mobile-actions {
       display: flex;
       align-items: center;
@@ -212,11 +356,11 @@ const { brand, contact } = siteConfig;
       stroke-width: 1.6;
     }
 
-    details {
+    .mobile-menu {
       position: static;
     }
 
-    summary {
+    .mobile-menu > summary {
       display: flex;
       width: 2.75rem;
       height: 2.75rem;
@@ -227,26 +371,26 @@ const { brand, contact } = siteConfig;
       list-style: none;
     }
 
-    summary::-webkit-details-marker {
+    .mobile-menu > summary::-webkit-details-marker {
       display: none;
     }
 
-    summary i {
+    .mobile-menu > summary i {
       width: 1.4rem;
       height: 1px;
       background: var(--ae-bone);
       transition: transform 160ms ease;
     }
 
-    details[open] summary i:first-of-type {
+    .mobile-menu[open] > summary i:first-of-type {
       transform: translateY(0.22rem) rotate(45deg);
     }
 
-    details[open] summary i:last-of-type {
+    .mobile-menu[open] > summary i:last-of-type {
       transform: translateY(-0.22rem) rotate(-45deg);
     }
 
-    details nav {
+    .mobile-menu > nav {
       position: absolute;
       top: 100%;
       right: 0;
@@ -258,7 +402,7 @@ const { brand, contact } = siteConfig;
       box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.35);
     }
 
-    details nav a {
+    .mobile-menu > nav > a {
       min-height: 3.25rem;
       padding-block: 1rem;
       border-bottom: 1px solid var(--ae-line-soft);
@@ -266,6 +410,64 @@ const { brand, contact } = siteConfig;
       font-size: 0.72rem;
       letter-spacing: 0.16em;
       text-transform: uppercase;
+    }
+
+    .mobile-airports {
+      border-bottom: 1px solid var(--ae-line-soft);
+    }
+
+    .mobile-airports > summary {
+      display: flex;
+      min-height: 3.25rem;
+      cursor: pointer;
+      list-style: none;
+      align-items: center;
+      justify-content: space-between;
+      padding-block: 1rem;
+      font-family: var(--ae-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .mobile-airports > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .mobile-airports > summary i::before {
+      color: var(--ae-accent);
+      content: '+';
+      font-style: normal;
+    }
+
+    .mobile-airports[open] > summary i::before {
+      content: '-';
+    }
+
+    .mobile-airports > div {
+      padding: 0 0 0.75rem 0.75rem;
+    }
+
+    .mobile-airports a {
+      display: grid;
+      min-height: 3.25rem;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid var(--ae-line-soft);
+      grid-template-columns: 3.5rem 1fr;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .mobile-airports a span:first-child {
+      color: var(--ae-accent);
+      font-family: var(--ae-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+    }
+
+    .mobile-airports a span:last-child {
+      color: var(--ae-copy);
+      font-size: 0.88rem;
     }
   }
 

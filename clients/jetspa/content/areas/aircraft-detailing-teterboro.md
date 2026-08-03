@@ -5,7 +5,7 @@ order: 1
 shortName: "KTEB"
 metaDescription: "Certified aircraft detailing at Teterboro Airport (KTEB). Badge access, OEM-approved chemistry, insured. Serving Signature, Meridian, Atlantic & Jet Aviation."
 title: "Aircraft Detailing at Teterboro Airport (KTEB) | JetSpa"
-h1: "Aircraft Detailing at Teterboro Airport (KTEB)"
+h1: "Aircraft detailing at Teterboro Airport (KTEB)"
 
 heroIntro: |
   Teterboro Airport is the busiest general aviation-only airport in the United States, handling more than 400 aircraft movements per day and hosting some of the highest-value aircraft based on the East Coast. When your aircraft is parked at Signature, Meridian, Atlantic Aviation, or Jet Aviation, you cannot afford to hand it to an uninsured contractor with off-brand chemistry and no badge access. JetSpa holds badge access at KTEB and services aircraft on the ramp at every major FBO on the field.
@@ -55,4 +55,38 @@ whyUs:
     That is the standard for every aircraft, every FBO, every service.
 
 ctaHeadline: "Ready to Schedule Service at KTEB?"
+
+airport:
+  officialName: "Teterboro Airport"
+  locationLabel: "Teterboro, Bergen County, New Jersey"
+  iata: "TEB"
+  access: "badged"
+  heroSummary: "The busiest general aviation-only airport in the United States, hosting some of the highest-value aircraft based on the East Coast. JetSpa holds badge access at KTEB and services aircraft on the ramp at every major FBO on the field."
+  facts:
+    - label: "Movements / day"
+      value: "400+"
+    - label: "To Midtown"
+      value: "12 mi"
+    - label: "AOG response"
+      value: "1-3 hrs"
+  bandNote: "Signature / Atlantic / Jet Aviation / Meridian"
+  conditions:
+    - label: "Exhaust"
+      title: "Constant ramp exposure to jet exhaust"
+      body: "Traffic density deposits soot and oil film on upper and aft surfaces faster than at quieter fields."
+    - label: "Winter"
+      title: "Deicing chemistry accumulation"
+      body: "Residue builds on paint and de-ice boots through the season and needs controlled decontamination, not pressure."
+    - label: "Summer"
+      title: "Humidity and coastal moisture accelerate oxidation"
+      body: "Aircraft based here need more frequent decontamination cycles and shorter coating renewal intervals than aircraft in drier climates."
+    - label: "Visibility"
+      title: "Every aircraft on this ramp is being looked at"
+      body: "Pilots, brokers, buyers, and prospective charter clients form impressions from what they see parked at KTEB."
+  referenceImpacts:
+    - "We coordinate hangar access and ground handling directly with the appropriate FBO desk."
+    - "Scope is written per airframe; charter volume keeps between-leg and AOG demand elevated."
+    - "Plan proactive decontamination and coating maintenance around the Northeast exposure cycle."
+    - "Coating and boot work needs 24 to 48 hours of ground time, set against your calendar on the scope call."
+  teaser: "New York City's primary business aviation gateway and one of the country's busiest general aviation fields."
 ---

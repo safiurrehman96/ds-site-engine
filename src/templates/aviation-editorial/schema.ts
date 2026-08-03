@@ -274,3 +274,27 @@ export const aviationFaqSchema = z.object({
 });
 
 export type AviationFaq = z.infer<typeof aviationFaqSchema>;
+
+export const aviationAirportSchema = z.object({
+  officialName: prose,
+  locationLabel: prose,
+  iata: prose,
+  access: z.enum(['badged', 'escorted']),
+  heroSummary: prose,
+  facts: z.array(z.object({ label: prose, value: prose })).min(3).max(4),
+  bandNote: prose,
+  conditions: z
+    .array(
+      z.object({
+        label: prose,
+        title: prose,
+        body: prose,
+      }),
+    )
+    .min(3)
+    .max(5),
+  referenceImpacts: z.array(prose).min(3).max(5),
+  teaser: prose,
+});
+
+export type AviationAirport = z.infer<typeof aviationAirportSchema>;

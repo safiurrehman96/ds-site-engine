@@ -1,0 +1,492 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getAreas, getHome, getServices, proseBlocks } from '../../../lib/content';
+import { canonical } from '../../../lib/seo';
+import { siteConfig } from '../../../lib/site-config';
+import MediaSlot from '../components/MediaSlot.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+interface Props {
+  entry: CollectionEntry<'areas'>;
+}
+
+const { entry } = Astro.props;
+const area = entry.data;
+const airport = area.airport;
+if (!airport || !area.localDetail) {
+  throw new Error(`Airport payload "${area.slug}" is missing aviation airport content.`);
+}
+
+const [areas, services, homeEntry] = await Promise.all([getAreas(), getServices(), getHome()]);
+const home = homeEntry.data;
+const { contact, defaults } = siteConfig;
+const code = area.shortName ?? airport.iata;
+const currentUrl = canonical(siteConfig, `/${area.slug}`);
+const allFacts = [
+  ...airport.facts.slice(0, 2),
+  { label: 'Field access', value: airport.access === 'badged' ? 'Badged' : 'Escorted' },
+  ...airport.facts.slice(2),
+];
+
+const detailBlocks = proseBlocks(area.localDetail.body);
+const referenceIntro = detailBlocks.find((block) => block.kind === 'text');
+const referencePoints = detailBlocks.find((block) => block.kind === 'points');
+const guaranteeBlock = proseBlocks(area.whyUs.body).find((block) => block.kind === 'list');
+const guaranteeItems = guaranteeBlock?.kind === 'list' ? guaranteeBlock.items : [];
+const localParagraphs = area.localCopy.body.split(/\n\s*\n/).filter(Boolean);
+
+const serviceBySlug = new Map(services.map((service) => [service.data.slug, service]));
+const serviceFor = (slug: string) => {
+  const service = serviceBySlug.get(slug);
+  if (!service) throw new Error(`Airport page references missing service "${slug}".`);
+  return service;
+};
+const standardServices = [home.services.featured, ...home.services.standard, home.services.emergency];
+const timings: Record<string, string> = {
+  'aircraft-ceramic-coating': '24-48 hr ground',
+  'aircraft-exterior-detailing': 'Ramp or hangar',
+  'aircraft-interior-detailing': 'Overnight',
+  'brightwork-polishing': 'Per surface',
+  'de-ice-boot-refurbishment': '24-48 hr ground',
+  'aog-emergency-cleaning': '1-3 hrs on site',
+};
+const serviceSummaries: Record<string, string> = {
+  'aircraft-ceramic-coating': '1, 2, or 5 year warranty tiers with documented prep and product records.',
+  'aircraft-exterior-detailing': 'Trip cleans and dry wash through full cut and polish.',
+  'aircraft-interior-detailing': 'Carpet extraction, leather care, galley, and lavatory work.',
+  'brightwork-polishing': 'Leading edges, spinners, exhaust stacks, and polished aluminum.',
+  'de-ice-boot-refurbishment': 'Rubber boot systems conditioned, protected, and re-blacked.',
+  'aog-emergency-cleaning': 'Turnaround-critical interior cleaning across the greater Northeast.',
+};
+const otherAreas = areas.filter((candidate) => candidate.data.slug !== area.slug);
+const airportJsonLd = {
+  '@type': 'Airport',
+  '@id': `${currentUrl}#airport`,
+  name: airport.officialName,
+  iataCode: airport.iata,
+  icaoCode: code,
+  address: airport.locationLabel,
+  url: currentUrl,
+};
+const breadcrumbJsonLd = {
+  '@type': 'BreadcrumbList',
+  '@id': `${currentUrl}#breadcrumb`,
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteConfig.site.url}/` },
+    { '@type': 'ListItem', position: 2, name: 'Airports', item: `${siteConfig.site.url}/#airports` },
+    { '@type': 'ListItem', position: 3, name: code },
+  ],
+};
+---
+
+<SiteLayout
+  title={area.title ?? `${area.h1} | ${siteConfig.brand.name}`}
+  description={area.metaDescription}
+  path={`/${area.slug}`}
+  ogImage={area.localCopy.image?.src ?? defaults.heroVideo.poster.src}
+  jsonLd={[airportJsonLd, breadcrumbJsonLd]}
+>
+  <nav class="airport-switcher" aria-label="Choose airport">
+    <div class="crumbs"><a href="/">Home</a><span>/</span><a href="/#airports">Airports</a><span>/</span><strong>{code}</strong></div>
+    <div class="switcher-links">
+      {
+        areas.map((candidate) => (
+          <a
+            href={`/${candidate.data.slug}`}
+            aria-current={candidate.data.slug === area.slug ? 'page' : undefined}
+            aria-label={`${candidate.data.airport?.officialName ?? candidate.data.name}, ${candidate.data.shortName}`}
+          >
+            {candidate.data.shortName}
+          </a>
+        ))
+      }
+    </div>
+  </nav>
+
+  <section class="airport-hero">
+    <div class="hero-copy">
+      <SectionLabel>{airport.locationLabel}</SectionLabel>
+      <div class="airport-code"><strong>{code}</strong><span>ICAO {code}<br />IATA {airport.iata}</span></div>
+      <h1>{area.h1}</h1>
+      <p>{airport.heroSummary}</p>
+      <div class="hero-actions">
+        <a class="ae-button ae-button--primary" href="/get-quote">Request a Quote</a>
+        <a class="ae-button" href={`tel:${contact.phone}`}>AOG · {contact.phoneDisplay}</a>
+      </div>
+    </div>
+    <div class="hero-aside">
+      <MediaSlot
+        image={area.localCopy.image}
+        label={`On the ramp · ${code}`}
+        class="hero-media"
+        eager
+        sizes="(min-width: 68rem) 30vw, 100vw"
+      />
+      <dl class="facts">
+        {
+          allFacts.map((fact) => (
+            <div>
+              <dt>{fact.label}</dt>
+              <dd class:list={[fact.label === 'Field access' && 'status']}>
+                {fact.label === 'Field access' && <i aria-hidden="true" />}{fact.value}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <div class="image-band">
+    <MediaSlot
+      image={defaults.socialImage}
+      label={`Exterior detail on the ramp · ${code}`}
+      class="band-media"
+      sizes="100vw"
+    />
+    <span>{airport.bandNote}</span>
+  </div>
+
+  <section class="conditions ae-section">
+    <div class="ae-container conditions-grid">
+      <div class="conditions-intro">
+        <SectionLabel>Field conditions</SectionLabel>
+        <h2>{area.localCopy.heading}</h2>
+        {localParagraphs.slice(0, 3).map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+      <div class="condition-list">
+        {
+          airport.conditions.map((condition) => (
+            <article>
+              <div>
+                <span>{condition.label}</span>
+                <MediaSlot label={`${condition.label} condition · ${code}`} showCaption={false} />
+              </div>
+              <div><h3>{condition.title}</h3><p>{condition.body}</p></div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="airport-services ae-section">
+    <div class="ae-container">
+      <header class="section-head">
+        <div><SectionLabel>{`Available at ${code}`}</SectionLabel><h2>Every service we offer, on your ramp</h2></div>
+        <p>Single engine piston through super-corporate jets and BBJ</p>
+      </header>
+
+      <div class="group-label"><span>By aircraft class</span><i /><span>03</span></div>
+      <div class="class-grid">
+        {
+          home.services.aircraftClasses.map((item) => {
+            const service = serviceFor(item.slug);
+            return (
+              <a href={`/${service.data.slug}`}>
+                <MediaSlot image={service.data.heroImage} label={item.imageLabel} showCaption={false} />
+                <div><h3>{service.data.name}</h3><p>{item.summary}</p><span>Service page →</span></div>
+              </a>
+            );
+          })
+        }
+      </div>
+
+      <div class="group-label service-label"><span>By service</span><i /><span>06</span></div>
+      <div class="service-grid">
+        {
+          standardServices.map((item) => {
+            const service = serviceFor(item.slug);
+            return (
+              <a href={`/${service.data.slug}`}>
+                <MediaSlot image={service.data.heroImage} label={item.imageLabel} showCaption={false} />
+                <div>
+                  <span>{timings[item.slug]}</span>
+                  <h3>{service.data.name}</h3>
+                  <p>{serviceSummaries[item.slug]}</p>
+                  <strong>Service page →</strong>
+                </div>
+              </a>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="reference ae-section">
+    <div class="ae-container">
+      <header><SectionLabel>Field reference</SectionLabel><h2>{area.localDetail.heading}</h2>{referenceIntro?.kind === 'text' && <p>{referenceIntro.text}</p>}</header>
+      <MediaSlot label={`Ramp line and FBO apron · ${code}`} class="reference-media" />
+      <div class="reference-head"><span>Item</span><span>Detail</span><span>What it means for service</span></div>
+      <div class="reference-rows">
+        {
+          referencePoints?.kind === 'points' && referencePoints.items.map((point, index) => (
+            <article><h3>{point.label}</h3><p>{point.body}</p><aside>{airport.referenceImpacts[index]}</aside></article>
+          ))
+        }
+      </div>
+      <div class="reference-note"><span>FBO-coordinated scheduling</span><span>Ground time 24-48 hrs for coating and boot work</span></div>
+    </div>
+  </section>
+
+  <section class="guarantee ae-section">
+    <div class="ae-container guarantee-grid">
+      <header><SectionLabel>The JetSpa guarantee</SectionLabel><h2>Every aircraft we service at {code} carries the same commitments</h2><p>That is the standard for every aircraft, every FBO, every service.</p></header>
+      <div class="guarantee-items">
+        {guaranteeItems.map((item, index) => <article><span>0{index + 1}</span><p>{item}</p></article>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="airport-conversion">
+    <MediaSlot label={`${code} ramp at dusk · aircraft under FBO lights`} class="conversion-media" />
+    <div class="conversion-copy">
+      <SectionLabel>{`Schedule at ${code}`}</SectionLabel>
+      <h2>{area.ctaHeadline}</h2>
+      <p>Send your aircraft type, FBO, and preferred service window. We will coordinate access and arrive with everything required to complete the confirmed scope.</p>
+      <div><a class="ae-button ae-button--primary" href="/get-quote">Request a Quote</a><a class="ae-button" href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a></div>
+      <nav aria-label="Related services">
+        <span>Related services</span>
+        <a href="/aircraft-ceramic-coating">Aircraft ceramic coating <i>→</i></a>
+        <a href="/corporate-jet-detailing">Corporate jet detailing <i>→</i></a>
+        <a href="/aog-emergency-cleaning">AOG emergency cleaning <i>→</i></a>
+      </nav>
+    </div>
+  </section>
+
+  <section class="other-airports">
+    <header><h2>Other fields we cover</h2><span>Coordinated access at all four</span></header>
+    <div>
+      {
+        otherAreas.map((candidate) => (
+          <a href={`/${candidate.data.slug}`}>
+            <strong>{candidate.data.shortName}</strong>
+            <span>{candidate.data.airport?.officialName ?? candidate.data.name}</span>
+            <p>{candidate.data.airport?.teaser}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .airport-switcher {
+    display: flex;
+    min-height: 3.25rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 0 var(--ae-gutter);
+    border-bottom: 1px solid var(--ae-line-soft);
+    font-family: var(--ae-mono);
+    font-size: 0.67rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .crumbs,
+  .switcher-links {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .crumbs { color: var(--ae-faint); }
+  .crumbs strong { color: var(--ae-copy); font-weight: 400; }
+  .switcher-links { gap: 1.4rem; }
+  .switcher-links a { padding: 1rem 0 0.75rem; color: var(--ae-muted); border-bottom: 1px solid transparent; }
+  .switcher-links a[aria-current='page'] { border-color: var(--ae-accent); color: var(--ae-bone); }
+
+  .airport-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 26.25rem;
+    gap: 4rem;
+    align-items: start;
+    margin-bottom: 4rem;
+    padding: 5rem var(--ae-gutter) 0;
+  }
+
+  .hero-copy { padding-bottom: 0; }
+  .airport-code { display: flex; align-items: flex-end; gap: 1.75rem; margin-top: 1.4rem; }
+  .airport-code strong { font-family: var(--ae-mono); font-size: clamp(4.5rem, 7vw, 6.5rem); font-weight: 400; letter-spacing: -0.04em; line-height: 0.84; }
+  .airport-code span { padding-bottom: 0.4rem; color: var(--ae-muted); font-family: var(--ae-mono); font-size: 0.67rem; letter-spacing: 0.16em; line-height: 1.9; text-transform: uppercase; }
+  .hero-copy h1 { max-width: 48rem; margin-top: 1.9rem; font-size: clamp(2.5rem, 3.7vw, 3.2rem); font-weight: 500; letter-spacing: -0.026em; line-height: 1.06; }
+  .hero-copy > p { max-width: 45rem; margin-top: 1.5rem; color: var(--ae-copy); font-size: 1.05rem; line-height: 1.65; }
+  .hero-actions { display: flex; gap: 1rem; margin-top: 2rem; }
+
+  .hero-aside { display: flex; align-self: start; flex-direction: column; gap: 1.5rem; }
+  .hero-aside :global(.hero-media) { height: auto; min-height: 0; aspect-ratio: 7 / 5; flex: none; }
+  .facts { margin: 0; padding-left: 2rem; border-left: 1px solid var(--ae-line); }
+  .facts div { display: flex; min-height: 3.1rem; align-items: center; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--ae-line-soft); }
+  .facts div:last-child { border-bottom: 0; }
+  .facts dt { color: var(--ae-muted); font-size: 0.9rem; }
+  .facts dd { margin: 0; font-family: var(--ae-mono); font-size: 0.82rem; }
+  .facts .status { display: flex; align-items: center; gap: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase; }
+  .facts .status i { width: 0.35rem; height: 0.35rem; border-radius: 50%; background: var(--ae-accent); }
+
+  .image-band { position: relative; height: 27.5rem; border-block: 1px solid var(--ae-line); }
+  .image-band :global(.band-media) { height: 100%; border: 0; }
+  .image-band > span { position: absolute; z-index: 2; right: var(--ae-gutter); bottom: 1.5rem; color: var(--ae-copy); font-family: var(--ae-mono); font-size: 0.67rem; letter-spacing: 0.16em; text-transform: uppercase; }
+
+  .conditions-grid { display: grid; grid-template-columns: minmax(20rem, 30rem) 1fr; gap: 5rem; align-items: start; }
+  .conditions-intro { position: sticky; top: 2rem; }
+  .conditions h2, .section-head h2, .reference h2, .guarantee h2 { margin-top: 1.35rem; font-size: clamp(2.2rem, 3.1vw, 2.7rem); font-weight: 500; letter-spacing: -0.024em; line-height: 1.12; }
+  .conditions-intro p { margin-top: 1.15rem; color: var(--ae-muted); line-height: 1.7; }
+  .condition-list { border-top: 1px solid var(--ae-line); }
+  .condition-list article { display: grid; grid-template-columns: 15rem 1fr; gap: 2.5rem; padding: 1.75rem 0; border-bottom: 1px solid var(--ae-line-soft); }
+  .condition-list article > div:first-child > span { display: block; margin-bottom: 0.7rem; color: var(--ae-accent); font-family: var(--ae-mono); font-size: 0.67rem; letter-spacing: 0.17em; text-transform: uppercase; }
+  .condition-list :global(.media) { min-height: 9.4rem; }
+  .condition-list article > div:last-child { padding-top: 2rem; }
+  .condition-list h3 { font-size: 1.18rem; font-weight: 500; line-height: 1.35; }
+  .condition-list p { margin-top: 0.55rem; color: var(--ae-muted); font-size: 0.92rem; line-height: 1.65; }
+
+  .airport-services { border-top: 1px solid var(--ae-line); background: var(--ae-deck); }
+  .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 3rem; padding-bottom: 1.4rem; border-bottom: 1px solid var(--ae-line); }
+  .section-head > p { max-width: 20rem; color: var(--ae-muted); font-family: var(--ae-mono); font-size: 0.67rem; letter-spacing: 0.14em; line-height: 1.8; text-align: right; text-transform: uppercase; }
+  .group-label { display: flex; align-items: center; gap: 1rem; margin-top: 1.6rem; color: var(--ae-muted); font-family: var(--ae-mono); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; }
+  .group-label i { height: 1px; flex: 1; background: var(--ae-line); }
+  .class-grid, .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 1rem; background: var(--ae-line); }
+  .class-grid > a { display: flex; min-width: 0; background: var(--ae-ink); flex-direction: column; }
+  .class-grid :global(.media) { height: 10.6rem; min-height: 0; border: 0; }
+  .class-grid > a > div { display: flex; flex: 1; padding: 1.35rem 1.5rem 1.5rem; flex-direction: column; }
+  .class-grid h3, .service-grid h3 { font-size: 1.25rem; font-weight: 500; line-height: 1.25; }
+  .class-grid p, .service-grid p { margin-top: 0.55rem; color: var(--ae-muted); font-size: 0.86rem; line-height: 1.55; }
+  .class-grid div > span { margin-top: auto; padding-top: 1rem; color: var(--ae-copy); font-family: var(--ae-mono); font-size: 0.63rem; letter-spacing: 0.14em; text-transform: uppercase; }
+  .service-label { margin-top: 3rem; }
+  .service-grid > a { position: relative; min-height: 17.5rem; overflow: hidden; border-bottom: 2px solid transparent; background: var(--ae-ink); transition: border-color 160ms ease; }
+  .service-grid > a:hover, .service-grid > a:focus-visible { border-bottom-color: var(--ae-accent); }
+  .service-grid :global(.media) { position: absolute; inset: 0; height: 100%; border: 0; }
+  .service-grid > a > div { position: relative; z-index: 2; display: flex; min-height: 17.5rem; padding: 5rem 1.25rem 1.25rem; background: linear-gradient(180deg, rgba(8,9,10,.04) 15%, rgba(8,9,10,.82) 58%, rgba(8,9,10,.98) 100%); flex-direction: column; justify-content: flex-end; }
+  .service-grid div > span { margin-bottom: 0.55rem; color: var(--ae-accent); font-family: var(--ae-mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; }
+  .service-grid strong { margin-top: 0.85rem; color: var(--ae-copy); font-family: var(--ae-mono); font-size: 0.63rem; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; }
+
+  .reference { background: var(--ae-bone); color: var(--ae-paper-ink); }
+  .reference header { padding-bottom: 1.6rem; border-bottom: 1px solid rgba(21,23,26,.2); }
+  .reference header > p { max-width: 44rem; margin-top: 1.1rem; color: var(--ae-paper-copy); }
+  .reference :global(.section-label) { color: #765a30; }
+  .reference :global(.reference-media) { height: 18.75rem; margin-top: 2.5rem; border-color: rgba(21,23,26,.2); }
+  .reference-head, .reference-rows article { display: grid; grid-template-columns: 11.25rem 1fr 18.75rem; gap: 3rem; }
+  .reference-head { padding: 2rem 0 0.75rem; color: #5f5d59; font-family: var(--ae-mono); font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; }
+  .reference-rows article { padding: 1.65rem 0; border-top: 1px solid rgba(21,23,26,.16); align-items: start; }
+  .reference-rows h3 { font-size: 1.15rem; font-weight: 500; }
+  .reference-rows p { color: var(--ae-paper-copy); line-height: 1.7; }
+  .reference-rows aside { color: #5f5d59; font-family: var(--ae-mono); font-size: 0.75rem; line-height: 1.75; }
+  .reference-note { display: flex; justify-content: space-between; gap: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(21,23,26,.2); color: #5f5d59; font-family: var(--ae-mono); font-size: 0.67rem; letter-spacing: 0.14em; text-transform: uppercase; }
+  .reference-note span:last-child { color: #765a30; }
+
+  .guarantee-grid { display: grid; grid-template-columns: 26rem 1fr; gap: 5rem; }
+  .guarantee header > p { margin-top: 1.35rem; color: var(--ae-copy); font-size: 1.05rem; }
+  .guarantee-items { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; border: 1px solid var(--ae-line); background: var(--ae-line); }
+  .guarantee-items article { padding: 1.45rem 1.55rem; background: var(--ae-ink); }
+  .guarantee-items span { color: var(--ae-accent); font-family: var(--ae-mono); font-size: 0.66rem; letter-spacing: 0.16em; }
+  .guarantee-items p { margin-top: 0.65rem; color: var(--ae-copy); font-size: 0.9rem; line-height: 1.6; }
+
+  .airport-conversion { display: grid; grid-template-columns: minmax(0, 1fr) 38.75rem; border-top: 1px solid var(--ae-line); background: var(--ae-deck); }
+  .airport-conversion :global(.conversion-media) { min-height: 28rem; border: 0; }
+  .conversion-copy { display: flex; padding: 4.5rem var(--ae-gutter) 3.5rem; border-left: 1px solid var(--ae-line); flex-direction: column; }
+  .conversion-copy h2 { margin-top: 1.4rem; font-size: clamp(2.25rem, 3.2vw, 2.75rem); font-weight: 500; line-height: 1.08; }
+  .conversion-copy > p { margin-top: 1.1rem; color: var(--ae-muted); line-height: 1.7; }
+  .conversion-copy > div { display: flex; gap: 0.8rem; margin-top: 1.8rem; }
+  .conversion-copy nav { margin-top: auto; padding-top: 2.5rem; }
+  .conversion-copy nav > span { color: var(--ae-muted); font-family: var(--ae-mono); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; }
+  .conversion-copy nav a { display: flex; min-height: 2.75rem; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--ae-line-soft); color: var(--ae-copy); font-size: 0.9rem; }
+  .conversion-copy nav i { color: var(--ae-accent); font-style: normal; }
+
+  .other-airports { padding: 4rem var(--ae-gutter); border-top: 1px solid var(--ae-line); }
+  .other-airports header { display: flex; align-items: baseline; justify-content: space-between; gap: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--ae-line); }
+  .other-airports h2 { font-size: 1.5rem; font-weight: 500; }
+  .other-airports header span { color: var(--ae-muted); font-family: var(--ae-mono); font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; }
+  .other-airports > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 1.5rem; background: var(--ae-line); }
+  .other-airports a { display: flex; min-width: 0; padding: 1.5rem; background: var(--ae-ink); flex-direction: column; }
+  .other-airports strong { font-family: var(--ae-mono); font-size: 1.75rem; font-weight: 400; }
+  .other-airports a > span { margin-top: 0.4rem; font-weight: 500; }
+  .other-airports a p { margin-top: 0.6rem; color: var(--ae-muted); font-size: 0.86rem; line-height: 1.55; }
+
+  @media (max-width: 68rem) {
+    .airport-hero { grid-template-columns: minmax(0, 1fr) 22rem; gap: 2.5rem; }
+    .conditions-grid { grid-template-columns: 20rem 1fr; gap: 3rem; }
+    .condition-list article { grid-template-columns: 11rem 1fr; gap: 1.5rem; }
+    .reference-head, .reference-rows article { grid-template-columns: 9rem 1fr 14rem; gap: 1.5rem; }
+    .guarantee-grid { grid-template-columns: 20rem 1fr; gap: 3rem; }
+    .airport-conversion { grid-template-columns: 1fr 30rem; }
+  }
+
+  @media (max-width: 47.99rem) {
+    .airport-switcher { min-height: 2.75rem; overflow-x: auto; justify-content: center; padding: 0 var(--ae-gutter); }
+    .crumbs { display: none; }
+    .switcher-links { width: 100%; justify-content: space-between; gap: 1rem; }
+    .switcher-links a { min-height: 2.75rem; padding: 0.85rem 0 0.55rem; }
+    .airport-hero { display: block; margin-bottom: 0; padding: 1.65rem var(--ae-gutter) 0; }
+    .hero-copy { padding-bottom: 1.5rem; }
+    .airport-code { margin-top: 1rem; gap: 1.2rem; }
+    .airport-code strong { font-size: 3.6rem; }
+    .hero-copy h1 { margin-top: 1.25rem; font-size: 1.75rem; }
+    .hero-copy > p { margin-top: 0.9rem; font-size: 0.94rem; line-height: 1.65; }
+    .hero-actions { flex-direction: column; gap: 0.6rem; margin-top: 1.25rem; }
+    .hero-aside { gap: 0; }
+    .hero-aside :global(.hero-media) { display: none; }
+    .facts { display: grid; margin: 0 calc(var(--ae-gutter) * -1); padding: 0; border-left: 0; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--ae-line); }
+    .facts div { display: block; min-height: 5rem; padding: 0.9rem var(--ae-gutter); border: 0; background: var(--ae-deck); }
+    .facts dt { font-family: var(--ae-mono); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; }
+    .facts dd { margin-top: 0.3rem; }
+    .image-band { height: 14.4rem; }
+    .image-band > span { display: none; }
+    .conditions { padding-block: 2.2rem; }
+    .conditions-grid { display: block; }
+    .conditions-intro { position: static; }
+    .conditions h2, .section-head h2, .reference h2, .guarantee h2 { margin-top: 0.85rem; font-size: 1.6rem; }
+    .conditions-intro p { margin-top: 0.85rem; font-size: 0.9rem; }
+    .condition-list { margin-top: 1.5rem; }
+    .condition-list article { display: block; padding: 1.15rem 0; }
+    .condition-list :global(.media) { min-height: 10rem; }
+    .condition-list article > div:last-child { padding-top: 0.9rem; }
+    .airport-services { padding-block: 2.2rem; }
+    .section-head { display: block; }
+    .section-head > p { margin-top: 0.8rem; text-align: left; }
+    .class-grid { display: block; margin-top: 0.8rem; background: transparent; }
+    .class-grid > a { display: grid; min-height: 7.5rem; border-bottom: 1px solid var(--ae-line); grid-template-columns: 8rem 1fr; }
+    .class-grid :global(.media) { height: 100%; min-height: 7.5rem; }
+    .class-grid > a > div { padding: 1rem; }
+    .class-grid p { display: none; }
+    .class-grid h3 { font-size: 1rem; }
+    .service-label { margin-top: 2rem; }
+    .service-grid { grid-template-columns: 1fr 1fr; }
+    .service-grid > a, .service-grid > a > div { min-height: 13.5rem; }
+    .service-grid > a > div { padding: 0.85rem; }
+    .service-grid h3 { font-size: 0.98rem; }
+    .service-grid p { display: none; }
+    .reference { padding-block: 2.2rem; }
+    .reference :global(.reference-media) { height: 12rem; margin-top: 1.5rem; }
+    .reference-head { display: none; }
+    .reference-rows { margin-top: 1rem; }
+    .reference-rows article { display: block; padding: 1.2rem 0; }
+    .reference-rows p { margin-top: 0.55rem; font-size: 0.9rem; }
+    .reference-rows aside { margin-top: 0.75rem; padding-left: 0.9rem; border-left: 1px solid #765a30; }
+    .reference-note { display: block; font-size: 0.6rem; }
+    .reference-note span { display: block; }
+    .reference-note span:last-child { margin-top: 0.5rem; }
+    .guarantee { padding-block: 2.2rem; }
+    .guarantee-grid { display: block; }
+    .guarantee header > p { font-size: 0.92rem; }
+    .guarantee-items { margin-top: 1.5rem; }
+    .guarantee-items article { padding: 1rem; }
+    .guarantee-items p { font-size: 0.8rem; }
+    .airport-conversion { display: block; }
+    .airport-conversion :global(.conversion-media) { display: none; }
+    .conversion-copy { padding: 2.2rem var(--ae-gutter); border-left: 0; }
+    .conversion-copy h2 { font-size: 1.75rem; }
+    .conversion-copy > p { font-size: 0.9rem; }
+    .conversion-copy > div { flex-direction: column; }
+    .conversion-copy nav { padding-top: 1.75rem; }
+    .other-airports { padding: 2rem var(--ae-gutter); }
+    .other-airports header span { display: none; }
+    .other-airports > div { display: block; margin-top: 0.8rem; background: transparent; }
+    .other-airports a { display: grid; padding: 1rem 0; border-bottom: 1px solid var(--ae-line); grid-template-columns: 4.5rem 1fr; align-items: baseline; }
+    .other-airports strong { font-size: 1.2rem; }
+    .other-airports a > span { margin: 0; }
+    .other-airports a p { display: none; }
+  }
+</style>

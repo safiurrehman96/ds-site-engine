@@ -11,6 +11,7 @@ import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import {
   aviationAboutSchema,
+  aviationAirportSchema,
   aviationFaqSchema,
   aviationHomeSchema,
 } from './templates/aviation-editorial/schema';
@@ -244,6 +245,8 @@ const areas = defineCollection({
     beforeAfter,
 
     ctaHeadline: prose,
+    /** Structured operational data for aviation-editorial airport pages. */
+    airport: aviationAirportSchema.optional(),
   }),
 });
 

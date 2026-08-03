@@ -5,7 +5,7 @@ order: 2
 shortName: "KMMU"
 metaDescription: "Certified aircraft detailing at Morristown Airport (KMMU). Badge access, OEM-approved chemistry, and $1.5M hangar liability. Serving the KMMU corridor."
 title: "Aircraft Detailing at Morristown Airport (KMMU) | JetSpa"
-h1: "Aircraft Detailing at Morristown Airport (KMMU)"
+h1: "Aircraft detailing at Morristown Airport (KMMU)"
 
 heroIntro: |
   Morristown Municipal Airport handles roughly 200 aircraft movements per day and is the second busiest general aviation airport in New Jersey. It is home to corporate flight departments, charter operators, and privately owned aircraft ranging from light jets to super-corporate airframes. When your aircraft is based at KMMU, the appearance care team you choose reflects the standard your operator and passengers expect. JetSpa holds badge access at KMMU and services aircraft on the ramp with certified technicians and OEM-approved chemistry.
@@ -53,4 +53,38 @@ whyUs:
     - Written service record documenting every job
 
 ctaHeadline: "Ready to Schedule Service at KMMU?"
+
+airport:
+  officialName: "Morristown Municipal Airport"
+  locationLabel: "Morristown, Morris County, New Jersey"
+  iata: "MMU"
+  access: "badged"
+  heroSummary: "A high-activity corporate aviation field serving flight departments, charter operators, and private aircraft across northern New Jersey. JetSpa holds badge access at KMMU and works with certified technicians and OEM-approved chemistry."
+  facts:
+    - label: "Movements / day"
+      value: "~200"
+    - label: "To Midtown"
+      value: "30 mi"
+    - label: "AOG response"
+      value: "1-3 hrs"
+  bandNote: "Corporate flight departments / charter / private aviation"
+  conditions:
+    - label: "Winter"
+      title: "Heavy deicing chemistry exposure"
+      body: "Cold-weather operations leave residue on paint, leading edges, and boot systems that needs controlled removal."
+    - label: "Summer"
+      title: "Humidity accelerates oxidation"
+      body: "Warm, humid conditions and airborne particulate increase exterior contamination and cabin wear."
+    - label: "Dispatch"
+      title: "Tight maintenance and flight windows"
+      body: "Corporate operators need appearance work coordinated around active maintenance and dispatch calendars."
+    - label: "Standards"
+      title: "Work that holds up under scrutiny"
+      body: "The finished aircraft should meet the standard an operator, passenger, or buyer expects on inspection."
+  referenceImpacts:
+    - "We coordinate with the appropriate FBO for hangar access, ground handling, and scheduling."
+    - "Service scope is matched to the airframe, from piston and turboprop aircraft through large corporate jets."
+    - "Proactive decontamination and coating maintenance counter seasonal chemical exposure."
+    - "Multi-day coating and boot work is coordinated against your operating calendar."
+  teaser: "A major New Jersey corporate aviation base serving light aircraft through large business jets."
 ---
