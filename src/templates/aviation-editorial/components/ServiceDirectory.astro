@@ -54,7 +54,13 @@ const emergency = serviceFor(content.emergency.slug);
         const service = serviceFor(item.slug);
         return (
           <a class="service-row" href={`/${service.data.slug}`}>
-            <MediaSlot image={service.data.heroImage} label={item.imageLabel} class="row-media" sizes="8rem" />
+            <MediaSlot
+              image={service.data.heroImage}
+              label={item.imageLabel}
+              class="row-media"
+              sizes="12rem"
+              showCaption={false}
+            />
             <strong>{service.data.name}</strong>
             <p>{item.summary}</p>
             <span>Detail →</span>
@@ -232,7 +238,7 @@ const emergency = serviceFor(content.emergency.slug);
 
   .service-row {
     display: grid;
-    grid-template-columns: 8.25rem minmax(14rem, 1fr) 1.15fr 7rem;
+    grid-template-columns: 12rem minmax(14rem, 1fr) 1.15fr 7rem;
     align-items: center;
     gap: 1.5rem;
     padding: 1.25rem 0.5rem;
@@ -245,7 +251,10 @@ const emergency = serviceFor(content.emergency.slug);
   }
 
   .service-row :global(.row-media) {
-    min-height: 5.1rem;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 132 / 82;
   }
 
   .service-row strong {
@@ -369,7 +378,7 @@ const emergency = serviceFor(content.emergency.slug);
     }
 
     .service-row {
-      grid-template-columns: 7rem 1fr 1fr;
+      grid-template-columns: 10.2rem 1fr 1fr;
     }
 
     .service-row > span {

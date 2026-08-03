@@ -7,9 +7,17 @@ interface Props {
   class?: string;
   eager?: boolean;
   sizes?: string;
+  showCaption?: boolean;
 }
 
-const { label, image, class: className, eager = false, sizes = '100vw' } = Astro.props;
+const {
+  label,
+  image,
+  class: className,
+  eager = false,
+  sizes = '100vw',
+  showCaption = true,
+} = Astro.props;
 ---
 
 <figure class:list={['media', className]} data-placeholder={image ? 'false' : 'true'}>
@@ -24,7 +32,7 @@ const { label, image, class: className, eager = false, sizes = '100vw' } = Astro
       />
     ) : null
   }
-  <figcaption>{image ? label : `[ image ] ${label}`}</figcaption>
+  {showCaption && <figcaption>{image ? label : `[ image ] ${label}`}</figcaption>}
 </figure>
 
 <style>
