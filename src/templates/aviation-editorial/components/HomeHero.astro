@@ -81,6 +81,13 @@ const poster = await imageUrl(heroVideo.poster.src);
   .hero-media video {
     object-fit: cover;
     filter: saturate(0.8) contrast(1.05);
+    /* The jet sits ~56% down the source frame, so a plain centre crop reads low.
+       Lift the video box (and grow it by the same amount so the bottom still
+       covers) to optically centre the aircraft. Percentages keep this correct
+       at every section height, including the shorter mobile band. */
+    top: -20%;
+    bottom: auto;
+    height: 120%;
   }
 
   .scrim {
