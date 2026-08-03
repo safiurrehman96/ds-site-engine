@@ -1,5 +1,0 @@
-Authored legal overrides go here as privacy-policy.md and tos.md.
-
-Kleen uses the generated Detailer Systems template (legal.source: 'template' in
-site.config.ts), so this directory is intentionally empty. It exists because the
-glob loader warns on every build when its base directory is missing.

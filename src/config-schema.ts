@@ -82,15 +82,15 @@ export const siteConfigSchema = z.object({
 
   ghl: z.object({
     /**
-     * Booking is a vehicle-type chooser, not a single link: Kleen exposes one GHL
-     * calendar per vehicle class. `/booking` renders these as a selector.
+     * Booking may require multiple calendars for different vehicle or aircraft
+     * classes. `/booking` renders these as a selector.
      */
     bookingUrls: z
       .array(z.object({ label: z.string().min(1), url: z.url() }))
       .min(1),
     /** GHL form/funnel URL that `/get-quote` links out to. Never rebuilt in Astro. */
     quoteUrl: z.url(),
-    /** Optional "leave us a review" destination (Kleen links one from /faqs). */
+    /** Optional "leave us a review" destination. */
     reviewUrl: z.url().optional(),
     /**
      * Embed the GHL form/calendar inline on /booking and /get-quote instead of

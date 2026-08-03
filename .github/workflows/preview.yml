@@ -8,7 +8,7 @@
 # pulls and swaps on its own.
 #
 # Webhooks live in one repo secret, DOKPLOY_PREVIEW_WEBHOOKS, a JSON map:
-#   { "jetspa": "https://dokploy.../api/deploy/...", "kleen": "..." }
+#   { "jetspa": "https://dokploy.../api/deploy/..." }
 
 name: preview
 on:

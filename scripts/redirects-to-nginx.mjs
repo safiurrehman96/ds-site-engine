@@ -1,7 +1,7 @@
 /**
  * Translates a Netlify/Cloudflare `_redirects` file into nginx rules.
  *
- *   node scripts/redirects-to-nginx.mjs clients/kleen/_redirects out.conf
+ *   node scripts/redirects-to-nginx.mjs clients/example/_redirects out.conf
  *
  * nginx serves dist/ directly and ignores `_redirects`, so without this step a
  * migration 301 silently does nothing (see README "Also before the first deploy").

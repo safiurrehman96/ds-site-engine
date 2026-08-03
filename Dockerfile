@@ -1,7 +1,7 @@
 # One image per client application in Dokploy: same repo, same Dockerfile,
 # differing only by the DS_CLIENT build arg (and the git ref the app is pinned to).
 #
-#   docker build --build-arg DS_CLIENT=kleen -t ds-kleen .
+#   docker build --build-arg DS_CLIENT=jetspa -t ds-jetspa .
 #
 # The site is fully static, so everything client-specific happens in the build
 # stage; the runtime stage is nginx serving dist/.

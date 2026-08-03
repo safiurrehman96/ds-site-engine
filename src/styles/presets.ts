@@ -374,7 +374,7 @@ function toHex([r, g, b]: [number, number, number]): string {
  * Moves a colour away from its backgrounds until it clears `min` against all of them.
  *
  * A mid-tone accent that looks right as a button fill is often just under AA as
- * small text — Kleen's teal lands at 4.32:1 on the `chrome` paper. Deriving a
+ * small text — some saturated accents land just below AA on light paper. Deriving a
  * text-safe variant fixes that class of problem for every accent an agent might
  * pick, instead of hand-tuning each preset's palette against one client's colour.
  *

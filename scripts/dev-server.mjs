@@ -107,7 +107,7 @@ export async function restartDevServer(reason) {
    * (collections/, generated content modules) and node_modules/.vite carried over
    * from a server that ran a different client, the new server logs a clean
    * "Syncing content → Synced content" and still comes up missing entries. Torture
-   * test that settled it: alternating `pnpm use kleen` / `pnpm use jetspa` with a
+   * test that settled it: alternating between two client payloads with a
    * store-only wipe went 200/500/200/500; with the full wipe it holds 200 across
    * every switch. Everything removed here is a cache astro rebuilds on boot.
    */

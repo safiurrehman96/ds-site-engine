@@ -121,7 +121,7 @@ const services = defineCollection({
     beforeAfter,
 
     intro: proseBlock,
-    /** "What Is {Service}" educational block. Absent on Kleen's simpler pages. */
+    /** Optional "What Is {Service}" educational block. */
     explainer: proseBlock.optional(),
 
     /**
@@ -151,7 +151,7 @@ const services = defineCollection({
     processSteps: z
       .array(
         z.object({
-          /** Optional: Kleen's service-page steps are single sentences with no lead-in. */
+          /** Optional when a process step is a single sentence with no lead-in. */
           title: prose.optional(),
           body: prose,
           image: image.optional(),
@@ -175,10 +175,10 @@ const services = defineCollection({
 
     /**
      * Internal-linking block ("We Detail Every Vehicle Type"). Schema extension —
-     * Kleen uses this slot where the spec's San Mob template uses `whyItMatters`.
+     * Some payloads use this slot instead of `whyItMatters`.
      */
     crossSell: proseBlock,
-    /** "Why {Service} Matters" local-conditions block. Optional; absent on Kleen. */
+    /** Optional "Why {Service} Matters" local-conditions block. */
     whyItMatters: proseBlock.optional(),
 
     faqs: z.array(z.object({ q: prose, a: prose })).min(1),
@@ -248,14 +248,14 @@ const home = defineCollection({
     metaDescription,
     /** Home is the one page whose H1 is authored, not formula-generated. */
     heroHeadline: prose,
-    /** Optional hero body. Kleen's home hero is headline-only. */
+    /** Optional hero body for headline-only compositions. */
     heroIntro: prose.optional(),
 
     intro: proseBlock,
     /** Image beside the intro block. */
     introImage: image,
     trust: proseBlock,
-    /** Founder/differentiator block. Optional — Kleen keeps this on /about only. */
+    /** Optional founder or differentiator block. */
     about: proseBlock.optional(),
 
     howItWorks: z
@@ -319,8 +319,8 @@ const faqs = defineCollection({
 
 /**
  * Recipe D — /booking. The calendar list itself comes from ghl.bookingUrls; only the
- * words around it live here. Kleen's chooser is by vehicle type, JetSpa's is by
- * aircraft class, so none of this copy can sit in the route.
+ * words around it live here. Choosers vary by payload, so none of this copy can sit
+ * in the route.
  */
 const booking = defineCollection({
   loader: glob({ base: BASE, pattern: 'booking.md' }),

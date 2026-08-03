@@ -13,7 +13,8 @@
  * The honest record of what is missing is clients/jetspa/source/intake.json, where
  * those fields are null. Fill intake first, then mirror the value here.
  *
- * Payloads import nothing — see clients/kleen/site.config.ts for why.
+ * Payloads import nothing; validation happens at the engine boundary in
+ * src/lib/site-config.ts.
  */
 export const siteConfig = {
   site: {

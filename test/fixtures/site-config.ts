@@ -2,9 +2,9 @@ import type { SiteConfig } from '../../src/config-schema';
 
 /**
  * The subset of SiteConfig the pure lib functions read. Cast rather than fully
- * authored: a complete valid config belongs to the payload fixtures (clients/kleen),
- * and duplicating it here would drift. Tests that need a field not present below
- * should add it, not widen the cast.
+ * authored: complete valid configs belong to client payloads, and duplicating one
+ * here would drift. Tests that need a field not present below should add it, not
+ * widen the cast.
  */
 export const testConfig = {
   brand: {

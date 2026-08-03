@@ -9,7 +9,7 @@ visible on a page, it comes from the payload's markdown or `site.config.ts`.
 `client/` is a **symlink**, not a directory. It points at whichever payload is active:
 
 ```
-pnpm use kleen        # repoint client/ → clients/kleen
+pnpm use jetspa       # repoint client/ → clients/jetspa
 pnpm use              # re-link from DS_CLIENT, or keep the current link
 ```
 
@@ -18,7 +18,7 @@ pnpm use              # re-link from DS_CLIENT, or keep the current link
 client. In CI, set `DS_CLIENT` instead of running `pnpm use`:
 
 ```
-DS_CLIENT=kleen pnpm build
+DS_CLIENT=jetspa pnpm build
 ```
 
 Why a symlink rather than an env-driven path: thirty engine files import the payload
@@ -32,7 +32,7 @@ stay put — the link moves instead.
 > touching a watched file, nothing invalidates, and the next request throws
 > `Missing payload file` for a file that is plainly on disk.
 >
-> This matters because the link also moves as a **side effect** — `DS_CLIENT=kleen pnpm
+> This matters because the link also moves as a **side effect** — `DS_CLIENT=jetspa pnpm
 > build` or `pnpm run stress` in another terminal repoints the shared link, so the dev
 > server you are looking at can go stale from a command you did not run. Set
 > `DS_NO_DEV_RESTART=1` to be warned instead of restarted.

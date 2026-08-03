@@ -1,9 +1,0 @@
-# Cloudflare Pages redirects. Format: <from> <to> <status>
-#
-# Add one 301 per URL that changes when migrating a client off the GHL builder.
-# Kleen's live URLs already match the engine's conventions exactly (verified against
-# kleencarcare.com/sitemap.xml), so it needs none.
-#
-# Example:
-#   /old-city-slug        /new-city-slug-va       301
-#   /services/detailing   /auto-detailing         301

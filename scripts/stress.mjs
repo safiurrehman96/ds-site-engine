@@ -34,9 +34,8 @@ const PORT = 4405;
  * Pages sampled per preset: home plus one service page exercise every component.
  *
  * The service slug is read from the active client's intake rather than hardcoded —
- * `/auto-detailing/` exists only on Kleen, and against any other payload the audit
- * scored a 404 as a page and reported four threshold failures that had nothing to do
- * with the site.
+ * A hardcoded service route only exists on one payload; against another payload the
+ * audit scores a 404 and reports threshold failures unrelated to the site.
  */
 function sampleRoutes() {
   const slug = process.env.DS_CLIENT ?? path.basename(fsSync.readlinkSync('client'));

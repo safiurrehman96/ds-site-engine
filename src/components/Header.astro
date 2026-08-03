@@ -25,7 +25,7 @@ const serviceLinks = services.map((s) => ({ href: `/${s.data.slug}`, label: s.da
 const areaLinks = areas.map((a) => ({
   href: `/${a.data.slug}`,
   // shortName wins in nav where it exists — long area names ("Teterboro Airport
-  // (KTEB)") wrap the dropdown. Kleen sets none, so the label is unchanged.
+  // (KTEB)") wrap the dropdown while short city names remain unchanged.
   label: a.data.isHeadquarters ? `${a.data.name} HQ` : (a.data.shortName ?? areaLabel(a.data)),
 }));
 ---

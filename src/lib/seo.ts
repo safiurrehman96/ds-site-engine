@@ -25,7 +25,7 @@ export function buildTitle(
  *
  * Deviation from the spec §10 formula, deliberately: applying the city formula to
  * home produces a title identical to the HQ area page (`/` and `/sterling-va` both
- * became "Mobile Auto Detailing in Sterling, VA | Kleen Car Care"), so the two pages
+ * became "Mobile Auto Detailing in Sterling, VA | Acme Detailing"), so the two pages
  * compete for the same query. The live GHL site has this same collision. Pointing
  * home at the region keeps one page per target term.
  */

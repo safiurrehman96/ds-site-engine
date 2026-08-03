@@ -10,7 +10,7 @@
  * in a generated site.config.ts.
  *
  * Never reuse another client's photography as a stand-in. Beyond the licensing
- * question, Kleen's hero poster has a competitor's branding visible in it — exactly
+ * question, source photography can carry another company's branding — exactly
  * the kind of thing that gets noticed after launch, not before.
  *
  * Requires ffmpeg for the hero video (`brew install ffmpeg`); images use sharp, which
