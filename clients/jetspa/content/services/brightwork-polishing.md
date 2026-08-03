@@ -9,8 +9,8 @@ h1: "Brightwork Polishing"
 shortDescription: "Brightwork polishing is the appearance care work performed on the bare polished aluminum and stainless surfaces of the aircraft, primarily the leading edges of"
 
 heroImage:
-  src: "./assets/service-brightwork-polishing.jpg"
-  alt: "A high-gloss aircraft surface reflecting hangar lighting"
+  src: "./assets/brightwork-hero.webp"
+  alt: "A mirror-polished aluminium wing leading edge reflecting hangar lighting"
 
 heroIntro: |
   Brightwork is the polished bare metal surface on your aircraft: leading edges, exhaust stacks, spinner surfaces, and polished aluminum panels. It requires specialized compounds, aviation-grade wool and foam, and a technique that will not damage adjacent painted surfaces. Standard car polish products contaminate it, and general auto detailers cannot restore it. JetSpa brings brightwork back to mirror condition using aviation-approved chemistry and technique.
@@ -43,32 +43,32 @@ processSteps:
     body: |
       Our team inspects the brightwork surfaces, identifies oxidation depth, pitting, and existing damage, then confirms the scope in writing.
     image:
-      src: "./assets/service-brightwork-polishing.jpg"
-      alt: "Assessment — placeholder detailing photo"
+      src: "./assets/brightwork-01-assessment.webp"
+      alt: "An inspection light raking across an oxidised aluminium leading edge"
   - title: "Masking"
     body: |
       All painted surfaces adjacent to brightwork are masked to prevent cutting compound contamination. This step alone separates professional brightwork from amateur work.
     image:
-      src: "./assets/service-corporate-jet-detailing.jpg"
-      alt: "Masking — placeholder detailing photo"
+      src: "./assets/brightwork-02-masking.webp"
+      alt: "Masking tape laid along the boundary between painted fuselage and bare polished aluminium"
   - title: "Cutting compound"
     body: |
       Aviation-grade cutting compound is applied with wool pads to remove oxidation and pitting. This is the most labor-intensive stage.
     image:
-      src: "./assets/service-de-ice-boot-refurbishment.jpg"
-      alt: "Cutting compound — placeholder detailing photo"
+      src: "./assets/brightwork-03-cutting.webp"
+      alt: "A wool pad and cutting compound working an oxidised aluminium leading edge"
   - title: "Refining polish"
     body: |
       Intermediate polish refines the surface and removes hazing left by the cutting stage.
     image:
-      src: "./assets/service-piston-aircraft-detailing.jpg"
-      alt: "Refining polish — placeholder detailing photo"
+      src: "./assets/brightwork-04-refining.webp"
+      alt: "A foam pad refining a brightwork panel, hazed half against duller unworked metal"
   - title: "Finishing polish and seal"
     body: |
       Final polish brings the brightwork to mirror condition, followed by aviation-approved sealant to slow the return of oxidation.
     image:
-      src: "./assets/service-turboprop-aircraft-detailing.jpg"
-      alt: "Finishing polish and seal — placeholder detailing photo"
+      src: "./assets/brightwork-05-finish.webp"
+      alt: "A microfibre cloth drawn across a mirror-finished aluminium leading edge"
 
 crossSell:
   heading: "Add-On Services"

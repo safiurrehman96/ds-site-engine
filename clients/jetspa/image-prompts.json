@@ -1,0 +1,98 @@
+{
+  "_readme": "Prompt manifest for scripts/generate-images.mjs. Run: pnpm run images jetspa. Entries whose `out` file already exists are skipped, so adding a slot costs only that slot. `usedBy` is documentation for the repoint step — the script never edits content.",
+  "style": "STYLE: Photorealistic editorial photograph, 3:2 landscape, muted desaturated color grade with deep blacks and warm brass-champagne highlights, hard directional hangar light, documentary rather than glossy advertising. No text, no logos, no brand names on tools or bottles, no tail numbers or registration markings, no readable labels anywhere. No faces — technicians shown from the shoulders down only. High detail, natural imperfections.",
+  "defaults": {
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "resizeWidth": 1200
+  },
+  "images": [
+    {
+      "id": "brightwork-hero",
+      "out": "brightwork-hero.webp",
+      "alt": "A mirror-polished aluminium wing leading edge reflecting hangar lighting",
+      "usedBy": ["content/services/brightwork-polishing.md → heroImage"],
+      "resizeWidth": 1400,
+      "prompt": "Wide shot of a mirror-polished bare aluminum wing leading edge on a business jet, running diagonally through the frame. The metal is flawless and reflective, throwing a clean inverted reflection of the hangar's overhead light bars and the dark hangar floor. Adjacent white painted surface visible above the polish line, showing the crisp boundary between paint and brightwork. Shot on a 50mm lens at f/4."
+    },
+    {
+      "id": "brightwork-01-assessment",
+      "out": "brightwork-01-assessment.webp",
+      "alt": "An inspection light raking across an oxidised aluminium leading edge",
+      "usedBy": ["content/services/brightwork-polishing.md → processSteps[0] Assessment"],
+      "prompt": "Close view of a technician's gloved hand holding a small LED inspection light at a shallow angle against a dull, lightly oxidized aluminum leading edge, the raking beam revealing fine pitting and cloudiness in the metal. Half the frame is the hazy untreated surface. Shot on an 85mm lens at f/2.8."
+    },
+    {
+      "id": "brightwork-02-masking",
+      "out": "brightwork-02-masking.webp",
+      "alt": "Masking tape laid along the boundary between painted fuselage and bare polished aluminium",
+      "usedBy": ["content/services/brightwork-polishing.md → processSteps[1] Masking"],
+      "prompt": "Gloved hands laying a crisp line of masking tape along the boundary where white painted fuselage meets bare polished aluminum, the tape edge perfectly straight and tight to the seam. Rivet line visible running parallel. Shot on a 100mm macro lens at f/4."
+    },
+    {
+      "id": "brightwork-03-cutting",
+      "out": "brightwork-03-cutting.webp",
+      "alt": "A wool pad and cutting compound working an oxidised aluminium leading edge",
+      "usedBy": ["content/services/brightwork-polishing.md → processSteps[2] Cutting compound"],
+      "prompt": "A rotary polisher with a heavily loaded wool pad working a dark, oxidized aluminum leading edge, thick grey-black compound residue smeared across the metal and flecked onto the wool. The most physical stage — the surface looks worked, not finished. Motion blur in the pad. Shot on a 50mm lens at f/3.5."
+    },
+    {
+      "id": "brightwork-04-refining",
+      "out": "brightwork-04-refining.webp",
+      "alt": "A foam pad refining a brightwork panel, hazed half against duller unworked metal",
+      "usedBy": ["content/services/brightwork-polishing.md → processSteps[3] Refining polish"],
+      "prompt": "A foam polishing pad on an aluminum leading edge, the metal now uniformly bright but still faintly hazed, with a light film of white polish. A clear diagonal division across the panel between the hazy refined half and a duller section still to be worked. Shot on an 85mm lens at f/2.8."
+    },
+    {
+      "id": "brightwork-05-finish",
+      "out": "brightwork-05-finish.webp",
+      "alt": "A microfibre cloth drawn across a mirror-finished aluminium leading edge",
+      "usedBy": ["content/services/brightwork-polishing.md → processSteps[4] Finishing polish and seal"],
+      "prompt": "Gloved hands drawing a clean microfiber cloth across a fully mirror-finished aluminum leading edge, the metal reflecting the hangar lights and the technician's dark sleeve like a mirror. Deep, liquid gloss. Shot on a 50mm lens at f/4."
+    },
+    {
+      "id": "deice-hero",
+      "out": "deice-hero.webp",
+      "alt": "A freshly conditioned black de-ice boot on a twin turboprop wing leading edge",
+      "usedBy": ["content/services/de-ice-boot-refurbishment.md → heroImage"],
+      "resizeWidth": 1400,
+      "prompt": "Wide shot of the black rubber pneumatic de-ice boot bonded along the leading edge of a twin turboprop's wing, running diagonally through the frame from lower left to upper right, with the propeller and engine nacelle softly out of focus behind. No people, no hands, no cloths — the work is complete and the surface is untouched. The rubber is freshly conditioned: deep matte black, flawlessly uniform, with the characteristic ribbed inflation tube texture faintly visible and a soft sheen along its curve. Shot on a 50mm lens at f/3.5."
+    },
+    {
+      "id": "deice-01-assessment",
+      "out": "deice-01-assessment.webp",
+      "alt": "Close view of aged de-ice boot rubber showing surface cracking",
+      "usedBy": ["content/services/de-ice-boot-refurbishment.md → processSteps[0] Assessment"],
+      "prompt": "Extreme close-up of aged de-ice boot rubber, greyed and chalky from UV exposure, with a visible network of fine surface cracks. A gloved fingertip rests at the edge of the frame indicating one crack. The degradation is the subject. Shot on a 100mm macro lens at f/4."
+    },
+    {
+      "id": "deice-02-cleaning",
+      "out": "deice-02-cleaning.webp",
+      "alt": "A cloth wiping a de-ice boot, leaving a clean dark stripe through chalky rubber",
+      "usedBy": ["content/services/de-ice-boot-refurbishment.md → processSteps[1] Surface cleaning"],
+      "prompt": "Gloved hands wiping a de-ice boot with a saturated white cloth, a clean dark stripe emerging behind the wipe against the surrounding grey chalky rubber. Visible wet sheen on the cleaned portion. Shot on an 85mm lens at f/2.8."
+    },
+    {
+      "id": "deice-03-first-coat",
+      "out": "deice-03-first-coat.webp",
+      "alt": "Boot conditioner applied with an applicator pad, treated rubber deep black beside untreated grey",
+      "usedBy": ["content/services/de-ice-boot-refurbishment.md → processSteps[2] First conditioning coat"],
+      "prompt": "A gloved hand applying black rubber conditioner with a foam applicator pad to a pneumatic de-ice boot — the wide black rubber strip bonded along the leading edge of an aircraft wing, NOT footwear of any kind. The wing and its riveted aluminium skin fill the upper half of the frame. A single even stroke has transformed the treated area to deep uniform black while the untreated rubber ahead of the pad is still dull chalky grey. Plain unlabeled amber bottle out of focus in the background. Shot on a 50mm lens at f/2.8."
+    },
+    {
+      "id": "deice-04-coats",
+      "out": "deice-04-coats.webp",
+      "alt": "A wing leading edge boot between conditioning coats, applicator and cloths resting alongside",
+      "usedBy": ["content/services/de-ice-boot-refurbishment.md → processSteps[3] Subsequent coats"],
+      "prompt": "Overhead angled view along the full length of a wing leading edge boot mid-process, the rubber now evenly dark and satin, with an applicator pad and folded cloths resting on a clean shop towel on the wing surface beside it. Quiet, methodical, between-coats moment. Shot on a 35mm lens at f/4."
+    },
+    {
+      "id": "deice-05-cure",
+      "out": "deice-05-cure.webp",
+      "alt": "A twin turboprop parked alone in a dim hangar during the post-service cure",
+      "usedBy": ["content/services/de-ice-boot-refurbishment.md → processSteps[4] Cure and documentation"],
+      "prompt": "A twin turboprop aircraft parked completely alone in a closed, dimly lit hangar overnight. Absolutely no people anywhere in the frame, no hands, no figures, no tools or cloths in use — the hangar is empty and the work is finished. The black rubber de-ice boot along the wing leading edge runs through the foreground, deep matte black and freshly conditioned, with the aircraft receding into shadow behind it. Still, silent, grounded — the aircraft is waiting out its 24-hour cure. Shot on a 24mm lens at f/5.6, deep focus."
+    }
+  ]
+}

@@ -19,6 +19,7 @@
     "prestress": "node scripts/use-client.mjs",
     "stress": "node scripts/stress.mjs",
     "poststress": "node scripts/finish-dev-restart.mjs",
+    "images": "node scripts/generate-images.mjs",
     "import": "node scripts/import-notion.mjs",
     "intake": "node scripts/check-intake.mjs",
     "placeholders": "node scripts/make-placeholder-assets.mjs",

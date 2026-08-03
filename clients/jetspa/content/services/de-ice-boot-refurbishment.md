@@ -9,8 +9,8 @@ h1: "De-Ice Boot Refurbishment"
 shortDescription: "De-ice boot refurbishment is the conditioning and restoration process performed on the rubber pneumatic boots that mechanically break up ice on aircraft leading edges."
 
 heroImage:
-  src: "./assets/service-de-ice-boot-refurbishment.jpg"
-  alt: "A high-gloss aircraft leading-edge surface reflecting hangar lighting"
+  src: "./assets/deice-hero.webp"
+  alt: "A freshly conditioned black de-ice boot on a twin turboprop wing leading edge"
 
 heroIntro: |
   De-ice boots are the black rubber pneumatic surfaces on the leading edges of your wings, horizontal stabilizer, and vertical fin. They are safety equipment. When they deteriorate, they crack, lose flexibility, and fail to shed ice at the exact moment your aircraft needs them to. Refurbishing de-ice boots requires manufacturer-approved conditioners, correct technique, and a 24 to 48 hour ground time after service. JetSpa refurbishes de-ice boots to full function using OEM-approved chemistry.
@@ -42,32 +42,32 @@ processSteps:
     body: |
       Our team inspects each boot surface for cracks, delamination, or damage that requires replacement rather than refurbishment. Findings are documented before work begins.
     image:
-      src: "./assets/service-de-ice-boot-refurbishment.jpg"
-      alt: "Assessment — placeholder detailing photo"
+      src: "./assets/deice-01-assessment.webp"
+      alt: "Close view of aged de-ice boot rubber showing surface cracking"
   - title: "Surface cleaning"
     body: |
       Each boot is cleaned with manufacturer-approved rubber cleaner to remove contamination, hydraulic bleed, and residue from prior products.
     image:
-      src: "./assets/service-piston-aircraft-detailing.jpg"
-      alt: "Surface cleaning — placeholder detailing photo"
+      src: "./assets/deice-02-cleaning.webp"
+      alt: "A cloth wiping a de-ice boot, leaving a clean dark stripe through chalky rubber"
   - title: "First conditioning coat"
     body: |
       OEM-approved boot conditioner is applied evenly across the boot surface. This coat restores flexibility and begins UV protection.
     image:
-      src: "./assets/service-turboprop-aircraft-detailing.jpg"
-      alt: "First conditioning coat — placeholder detailing photo"
+      src: "./assets/deice-03-first-coat.webp"
+      alt: "Boot conditioner applied with an applicator pad, treated rubber deep black beside untreated grey"
   - title: "Subsequent coats"
     body: |
       Additional coats are applied per manufacturer specification, with appropriate flash time between coats.
     image:
-      src: "./assets/service-aircraft-ceramic-coating.jpg"
-      alt: "Subsequent coats — placeholder detailing photo"
+      src: "./assets/deice-04-coats.webp"
+      alt: "A wing leading edge boot between conditioning coats, applicator and cloths resting alongside"
   - title: "Cure and documentation"
     body: |
       The aircraft cannot fly for 24 to 48 hours after boot refurbishment to allow full cure. We inspect the boots post-cure and provide a written service record.
     image:
-      src: "./assets/service-aircraft-exterior-detailing.jpg"
-      alt: "Cure and documentation — placeholder detailing photo"
+      src: "./assets/deice-05-cure.webp"
+      alt: "A twin turboprop parked alone in a dim hangar during the post-service cure"
 
 crossSell:
   heading: "Add-On Services"
