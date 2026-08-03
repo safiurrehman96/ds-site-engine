@@ -2,12 +2,25 @@
   "_readme": "Prompt manifest for scripts/generate-images.mjs. Run: pnpm run images jetspa. Entries whose `out` file already exists are skipped, so adding a slot costs only that slot. `usedBy` is documentation for the repoint step — the script never edits content.",
   "style": "STYLE: Photorealistic editorial photograph, 3:2 landscape, muted desaturated color grade with deep blacks and warm brass-champagne highlights, hard directional hangar light, documentary rather than glossy advertising. No text, no logos, no brand names on tools or bottles, no tail numbers or registration markings, no readable labels anywhere. No faces — technicians shown from the shoulders down only. High detail, natural imperfections.",
   "defaults": {
-    "model": "gpt-image-2",
-    "size": "1536x1024",
+    "provider": "kie",
+    "model": {
+      "kie": "gpt-image-2-text-to-image",
+      "openai": "gpt-image-2"
+    },
+    "aspectRatio": "3:2",
+    "resolution": "2K",
     "quality": "high",
     "resizeWidth": 1200
   },
   "images": [
+    {
+      "id": "why-credentials",
+      "out": "why-credentials.webp",
+      "alt": "A certification card and airport access badge on a lanyard, laid on a dark desk",
+      "usedBy": ["content/home.md → differentiation.media"],
+      "resizeWidth": 1000,
+      "prompt": "Overhead flat-lay photograph on a dark charcoal desk surface, shot from directly above with a slight rotation. A laminated ID-sized credential card attached to a plain black woven lanyard coiled loosely beside it, next to a second airport access badge in a clear plastic holder. The printed content on both cards is deliberately soft and out of focus — abstract grey lines of type, a blurred portrait area, no readable words, numbers, seals, signatures, or organisation names anywhere. A brass-toned metal clip catches the light at the edge of the lanyard. Single soft directional light from the upper left, gentle shadow falloff to the right, shallow depth of field. Muted color grade with a warm brass-champagne cast."
+    },
     {
       "id": "brightwork-hero",
       "out": "brightwork-hero.webp",

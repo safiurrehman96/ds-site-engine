@@ -129,6 +129,9 @@ differentiation:
   intro: "The difference between a professional aircraft detailer and someone with a bottle of ceramic coating is measured in liability, chemistry, and credential. Every technician on our team clears all three bars."
   media:
     label: "ADA certification card & badge lanyard"
+    image:
+      src: "./assets/why-credentials.webp"
+      alt: "A certification card and airport access badge on a lanyard, laid on a dark desk"
   issuedLabel: "Issued with every service"
   issuedItems:
     - "COI — $200K general / $1.5M hangar"
