@@ -9,8 +9,8 @@ h1: "Aircraft Ceramic Coating"
 shortDescription: "Aircraft ceramic coating is a semi-permanent chemical sealant that bonds to the aircraft's clear coat, creating a durable hydrophobic layer that protects agains"
 
 heroImage:
-  src: "./assets/service-aircraft-ceramic-coating.jpg"
-  alt: "A gloved hand applying coating to a dark blue fuselage panel"
+  src: "./assets/ceramic-hero.webp"
+  alt: "Water beading tightly on a freshly ceramic-coated aircraft panel"
 
 heroIntro: |
   Ceramic coating an aircraft is not the same job as coating a car. The chemistry has to be OEM approved, the surface prep has to hold up at 45,000 feet, and the aircraft cannot fly for 24 to 48 hours after application. Get any of that wrong and you have a coating failure at cruise altitude, a delamination claim, and a manufacturer warranty question you did not need to answer. JetSpa applies aircraft ceramic coatings the way the airframe manufacturer would want them applied.

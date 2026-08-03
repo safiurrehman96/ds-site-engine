@@ -487,6 +487,36 @@
         "content/services/piston-aircraft-detailing.md → processSteps[4] Walkthrough and documentation"
       ],
       "prompt": "Two people standing at the tail of a finished light aircraft outdoors at the end of the day, shown from the shoulders down, one running a hand along the polished horizontal stabiliser while the other holds a single sheet of paper. Long low sun, the aircraft's paint throwing warm reflections. Shot on a 50mm lens at f/4."
+    },
+    {
+      "id": "ceramic-hero",
+      "out": "ceramic-hero.webp",
+      "alt": "Water beading tightly on a freshly ceramic-coated aircraft panel",
+      "resizeWidth": 1400,
+      "usedBy": [
+        "content/services/aircraft-ceramic-coating.md → heroImage"
+      ],
+      "prompt": "Extreme close-up of tight, perfectly spherical water beads standing high on a freshly ceramic-coated white painted aircraft panel, each bead holding a pinpoint reflection of the hangar lights. The beads sit proud of the surface rather than spreading — the visual signature of a cured coating. A riveted panel seam runs diagonally through the lower frame for scale. Shallow depth of field, beads sharp in the centre falling off to soft at the edges. Shot on a 100mm macro lens at f/4."
+    },
+    {
+      "id": "interior-hero",
+      "out": "interior-hero.webp",
+      "alt": "A finished jet cabin looking forward, club seats squared and belts laid flat",
+      "resizeWidth": 1400,
+      "usedBy": [
+        "content/services/aircraft-interior-detailing.md → heroImage"
+      ],
+      "prompt": "A finished private jet cabin photographed from the aft looking FORWARD toward the cockpit bulkhead, the opposite direction to a standard cabin view. Two pairs of cream leather club seats face each other across a polished burl wood table, seats squared up and belts laid flat and symmetrical. Low warm evening sun comes through the oval windows on the left, throwing a row of long ovals across the carpet and up the seat backs. Immaculate, still, no people, nothing out of place. Shot on a 35mm lens at f/2.8."
+    },
+    {
+      "id": "exterior-hero",
+      "out": "exterior-hero.webp",
+      "alt": "The polished forward fuselage of a business jet mirroring the ramp at dusk",
+      "resizeWidth": 1400,
+      "usedBy": [
+        "content/services/aircraft-exterior-detailing.md → heroImage"
+      ],
+      "prompt": "Tight three-quarter view of the forward fuselage and nose of a business jet after a full exterior detail, shot from a low angle close to the skin. The paint is so deep that the ramp, the hangar edge and the dusk sky are all legible as a mirror reflection curving across the fuselage — the reflection is the subject, not the aircraft. Cockpit windows dark, no people, no markings. Shot on a 50mm lens at f/4."
     }
   ]
 }
