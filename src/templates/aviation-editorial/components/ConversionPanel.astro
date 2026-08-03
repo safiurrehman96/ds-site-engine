@@ -1,11 +1,11 @@
 ---
-import type { AviationAbout, AviationHome } from '../schema';
+import type { AviationAbout, AviationFaq, AviationHome } from '../schema';
 import { siteConfig } from '../../../lib/site-config';
 import MediaSlot from './MediaSlot.astro';
 import SectionLabel from './SectionLabel.astro';
 
 interface Props {
-  content: AviationHome['cta'] | AviationAbout['cta'];
+  content: AviationHome['cta'] | AviationAbout['cta'] | AviationFaq['cta'];
 }
 
 const { content } = Astro.props;

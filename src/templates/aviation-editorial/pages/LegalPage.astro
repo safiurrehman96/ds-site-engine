@@ -1,0 +1,494 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Inline from '../../../components/Inline.astro';
+import { getLegalDoc, proseBlocks } from '../../../lib/content';
+import { siteConfig } from '../../../lib/site-config';
+import SectionLabel from '../components/SectionLabel.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+interface Props {
+  document: 'privacy-policy' | 'tos';
+}
+
+const { document } = Astro.props;
+const entry = await getLegalDoc(document);
+if (!entry) {
+  throw new Error(`The aviation-editorial template requires client/content/legal/${document}.md.`);
+}
+
+const doc: CollectionEntry<'legal'>['data'] = entry.data;
+const { brand, contact, legal } = siteConfig;
+const lastUpdated = legal.effectiveDate.includes('PLACEHOLDER')
+  ? new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(new Date())
+  : legal.effectiveDate;
+const prefix = document === 'tos' ? 'tos' : 'pp';
+const disclaimer =
+  document === 'tos'
+    ? 'These Terms are a template. They should be reviewed and customised by a qualified legal professional before being treated as binding.'
+    : 'This Privacy Policy is a template. It should be reviewed and customised by a qualified legal professional before it is treated as binding.';
+const sectionBlocks = (section: (typeof doc.sections)[number]) =>
+  proseBlocks((section.body ?? []).join('\n\n'));
+---
+
+<SiteLayout title={`${doc.title} | ${brand.name}`} description={doc.metaDescription} path={`/${document}`}>
+  <div class="breadcrumb">
+    <div><a href="/">Home</a><span>/</span><span>Legal</span><span>/</span><strong>{doc.title}</strong></div>
+    <div><span>Last updated</span><strong>{lastUpdated}</strong></div>
+  </div>
+
+  <header class="legal-masthead">
+    <div>
+      <SectionLabel>Legal</SectionLabel>
+      <h1>{doc.title}</h1>
+      <p class="updated">Last updated · {lastUpdated}</p>
+      {doc.intro.map((paragraph) => <p class="intro"><Inline text={paragraph} /></p>)}
+    </div>
+    <aside class="disclaimer">
+      <p>Disclaimer</p>
+      <span>{disclaimer}</span>
+    </aside>
+  </header>
+
+  <div class="legal-layout">
+    <aside class="contents">
+      <p>Contents</p>
+      <nav aria-label={`${doc.title} sections`}>
+        {
+          doc.sections.map((section, index) => (
+            <a href={`#${prefix}-${index}`}>
+              <span>{section.heading}</span><span aria-hidden="true">→</span>
+            </a>
+          ))
+        }
+      </nav>
+      <div class="questions">
+        Questions<br />
+        <a href={`mailto:${contact.email}`}>{contact.email}</a><br />
+        <a href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a>
+      </div>
+    </aside>
+
+    <article class="document">
+      {
+        doc.sections.map((section, index) => (
+          <section id={`${prefix}-${index}`} class="legal-section">
+            <h2>{section.heading}</h2>
+            {sectionBlocks(section).map((block) =>
+              block.kind === 'text' ? (
+                <p><Inline text={block.text} /></p>
+              ) : block.kind === 'list' ? (
+                <ul>
+                  {block.items.map((item) => <li>{item}</li>)}
+                </ul>
+              ) : (
+                <dl class="definition-list">
+                  {block.items.map((item) => (
+                    <div>
+                      <dt>{item.label}</dt>
+                      <dd><Inline text={item.body} /></dd>
+                    </div>
+                  ))}
+                </dl>
+              ),
+            )}
+            {section.bullets && (
+              <ul>
+                {section.bullets.map((bullet) => (
+                  <li>{bullet.term && <strong>{bullet.term}: </strong>}{bullet.text}</li>
+                ))}
+              </ul>
+            )}
+          </section>
+        ))
+      }
+
+      <section class="legal-section contact-section">
+        <h2>{doc.contact?.heading ?? 'Contact Us'}</h2>
+        <p><Inline text={doc.contact?.intro ?? `Questions about this ${doc.title} should be directed to:`} /></p>
+        <dl class="contact-grid">
+          <div><dt>Company</dt><dd>{brand.legalName ?? brand.name}</dd></div>
+          <div><dt>Email</dt><dd><a href={`mailto:${contact.email}`}>{contact.email}</a></dd></div>
+          <div><dt>Phone</dt><dd><a href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a></dd></div>
+        </dl>
+      </section>
+    </article>
+  </div>
+</SiteLayout>
+
+<style>
+  .breadcrumb {
+    display: flex;
+    min-height: 3.25rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 0 var(--ae-gutter);
+    border-bottom: 1px solid var(--ae-line-soft);
+    font-family: var(--ae-mono);
+    font-size: 0.67rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .breadcrumb > div {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--ae-faint);
+  }
+
+  .breadcrumb strong {
+    color: var(--ae-copy);
+    font-weight: 400;
+  }
+
+  .legal-masthead {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 23.75rem;
+    gap: 4rem;
+    padding: 5.25rem var(--ae-gutter) 3.5rem;
+    border-bottom: 1px solid var(--ae-line);
+  }
+
+  .legal-masthead > div {
+    max-width: 48rem;
+  }
+
+  h1 {
+    margin-top: 1.6rem;
+    font-size: clamp(3.25rem, 4.5vw, 3.75rem);
+    font-weight: 500;
+    letter-spacing: -0.028em;
+    line-height: 1.02;
+  }
+
+  .updated {
+    margin-top: 1.15rem;
+    color: var(--ae-muted);
+    font-family: var(--ae-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .intro {
+    max-width: 44rem;
+    margin-top: 1.5rem;
+    color: var(--ae-copy);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  .intro :global(a),
+  .document :global(a) {
+    color: var(--ae-bone);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--ae-accent) 65%, transparent);
+    text-underline-offset: 0.2rem;
+  }
+
+  .disclaimer {
+    align-self: center;
+    padding: 0.25rem 0 0.25rem 1.75rem;
+    border-left: 2px solid var(--ae-accent);
+  }
+
+  .disclaimer p,
+  .contents > p {
+    color: var(--ae-accent);
+    font-family: var(--ae-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .disclaimer span {
+    display: block;
+    margin-top: 0.75rem;
+    color: var(--ae-copy);
+    font-size: 0.96rem;
+    line-height: 1.7;
+  }
+
+  .legal-layout {
+    display: grid;
+    grid-template-columns: 20rem minmax(0, 1fr);
+  }
+
+  .contents {
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    max-height: 100vh;
+    padding: 3rem 2rem 3rem var(--ae-gutter);
+    border-right: 1px solid var(--ae-line);
+    background: var(--ae-deck);
+  }
+
+  .contents > p {
+    color: var(--ae-muted);
+  }
+
+  .contents nav {
+    display: flex;
+    margin-top: 1rem;
+    flex-direction: column;
+  }
+
+  .contents nav a {
+    display: flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid var(--ae-line-soft);
+    color: var(--ae-copy);
+    font-size: 0.9rem;
+    line-height: 1.35;
+  }
+
+  .contents nav a:hover {
+    color: #fff;
+  }
+
+  .contents nav a span:last-child {
+    color: var(--ae-faint);
+    font-family: var(--ae-mono);
+    font-size: 0.7rem;
+  }
+
+  .questions {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--ae-line);
+    color: var(--ae-muted);
+    font-family: var(--ae-mono);
+    font-size: 0.7rem;
+    line-height: 1.9;
+  }
+
+  .questions a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    color: var(--ae-bone);
+  }
+
+  .document {
+    padding: 1.25rem var(--ae-gutter) 3.5rem;
+  }
+
+  .legal-section {
+    max-width: 54rem;
+    padding: 2.25rem 0 1.85rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    scroll-margin-top: 1rem;
+  }
+
+  .legal-section h2 {
+    font-size: 1.62rem;
+    font-weight: 500;
+    letter-spacing: -0.018em;
+    line-height: 1.2;
+  }
+
+  .legal-section > p {
+    max-width: 44rem;
+    margin-top: 1rem;
+    color: var(--ae-muted);
+    line-height: 1.75;
+  }
+
+  .legal-section > ul {
+    max-width: 44rem;
+    margin: 1.1rem 0 0;
+    padding: 0;
+    border-top: 1px solid var(--ae-line-soft);
+    list-style: none;
+  }
+
+  .legal-section > ul li {
+    position: relative;
+    padding: 0.75rem 0 0.75rem 2rem;
+    border-bottom: 1px solid var(--ae-line-soft);
+    color: var(--ae-copy);
+    line-height: 1.6;
+  }
+
+  .legal-section > ul li::before {
+    position: absolute;
+    left: 0.25rem;
+    color: var(--ae-accent);
+    content: '·';
+    font-family: var(--ae-mono);
+  }
+
+  .definition-list {
+    max-width: 48rem;
+    margin: 1.25rem 0 0;
+  }
+
+  .definition-list div {
+    display: grid;
+    grid-template-columns: 12.5rem minmax(0, 1fr);
+    gap: 1.75rem;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid var(--ae-line-soft);
+  }
+
+  .definition-list dt {
+    color: var(--ae-accent);
+    font-family: var(--ae-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .definition-list dd {
+    margin: 0;
+    color: var(--ae-muted);
+    line-height: 1.75;
+  }
+
+  .contact-grid {
+    display: grid;
+    max-width: 48rem;
+    margin: 1.5rem 0 0;
+    border: 1px solid var(--ae-line);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--ae-line);
+  }
+
+  .contact-grid div {
+    padding: 1.15rem 1.3rem;
+    background: var(--ae-ink);
+  }
+
+  .contact-grid dt {
+    color: var(--ae-muted);
+    font-family: var(--ae-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .contact-grid dd {
+    margin: 0.5rem 0 0;
+    font-size: 0.96rem;
+  }
+
+  @media (max-width: 60rem) {
+    .legal-masthead {
+      grid-template-columns: minmax(0, 1fr) 19rem;
+      gap: 2.5rem;
+    }
+
+    .legal-layout {
+      grid-template-columns: 16rem minmax(0, 1fr);
+    }
+
+    .definition-list div {
+      grid-template-columns: 9rem minmax(0, 1fr);
+    }
+
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .breadcrumb {
+      display: none;
+    }
+
+    .legal-masthead {
+      display: block;
+      padding: 1.75rem var(--ae-gutter) 1.5rem;
+    }
+
+    h1 {
+      margin-top: 0.9rem;
+      font-size: 2.15rem;
+    }
+
+    .updated {
+      margin-top: 0.8rem;
+      font-size: 0.64rem;
+    }
+
+    .intro {
+      margin-top: 1rem;
+      font-size: 0.94rem;
+      line-height: 1.65;
+    }
+
+    .disclaimer {
+      margin-top: 1.4rem;
+      padding-left: 1rem;
+    }
+
+    .disclaimer span {
+      font-size: 0.86rem;
+    }
+
+    .legal-layout {
+      display: block;
+    }
+
+    .contents {
+      position: static;
+      overflow: visible;
+      max-height: none;
+      padding: 1.25rem var(--ae-gutter);
+      border-right: 0;
+      border-bottom: 1px solid var(--ae-line);
+    }
+
+    .contents nav {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 1rem;
+    }
+
+    .contents nav a {
+      min-height: 3rem;
+      font-size: 0.78rem;
+    }
+
+    .questions {
+      display: none;
+    }
+
+    .document {
+      padding: 0 var(--ae-gutter) 2rem;
+    }
+
+    .legal-section {
+      padding: 1.75rem 0 1.4rem;
+    }
+
+    .legal-section h2 {
+      font-size: 1.35rem;
+    }
+
+    .legal-section > p,
+    .legal-section > ul li,
+    .definition-list dd {
+      font-size: 0.9rem;
+    }
+
+    .definition-list div {
+      display: block;
+      padding: 1rem 0;
+    }
+
+    .definition-list dd {
+      margin-top: 0.5rem;
+    }
+
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

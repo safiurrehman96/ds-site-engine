@@ -1,0 +1,787 @@
+---
+import { getFaqs } from '../../../lib/content';
+import { faqPageJsonLd } from '../../../lib/seo';
+import { siteConfig } from '../../../lib/site-config';
+import ConversionPanel from '../components/ConversionPanel.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+const faqEntry = await getFaqs();
+const faq = faqEntry.data;
+const { contact } = siteConfig;
+const allFaqs = faq.groups.flatMap((group) => group.faqs);
+const questionCount = (count: number) => `${count} ${count === 1 ? 'question' : 'questions'}`;
+---
+
+<SiteLayout
+  title={`FAQs | ${siteConfig.brand.name}`}
+  description={faq.metaDescription}
+  path="/faqs"
+  jsonLd={[faqPageJsonLd(allFaqs)]}
+>
+  <section class="masthead">
+    <div class="masthead-copy">
+      <SectionLabel>{faq.masthead.eyebrow}</SectionLabel>
+      <h1>{faq.masthead.headline}</h1>
+      <p class="lead">{faq.masthead.lead}</p>
+      <p class="support">
+        {faq.masthead.body} <a href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a>.
+      </p>
+    </div>
+    <div class="facts" aria-label="Fast answers">
+      <p class="facts-label">Fast answers</p>
+      <dl>
+        {
+          faq.masthead.fastAnswers.map((fact) => (
+            <div>
+              <dt>{fact.label}</dt>
+              <dd>{fact.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <div class="faq-layout">
+    <aside class="contents">
+      <p>Contents</p>
+      <nav aria-label="FAQ sections">
+        {
+          faq.groups.map((group) => (
+            <a href={`#faq-${group.id}`}>
+              <span>{group.shortHeading ?? group.heading}</span>
+              <span>{String(group.faqs.length).padStart(2, '0')}</span>
+            </a>
+          ))
+        }
+      </nav>
+      <div class="rail-contact">
+        Speak to a technician<br />
+        <a href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a><br />
+        <a href={`mailto:${contact.email}`}>{contact.email}</a>
+      </div>
+    </aside>
+
+    <div class="groups">
+      <p class="mobile-contents">Contents · {faq.groups.length} sections</p>
+      {
+        faq.groups.map((group) => (
+          <details class="group" id={`faq-${group.id}`} open>
+            <summary>
+              <span>{group.shortHeading ?? group.heading}</span>
+              <span class="mobile-count">{String(group.faqs.length).padStart(2, '0')}</span>
+              <span class="toggle" aria-hidden="true" />
+            </summary>
+            <div class="group-heading">
+              <h2>{group.heading}</h2>
+              {group.status ? (
+                <span class="status"><i />{group.status}</span>
+              ) : (
+                <span>{questionCount(group.faqs.length)}</span>
+              )}
+            </div>
+            <div class="questions">
+              {
+                group.faqs.map((item) => (
+                  <article class="question">
+                    <h3>{item.q}</h3>
+                    <div class="answer">
+                      <p>{item.a}</p>
+                      {item.metrics && (
+                        <dl class="metrics">
+                          {item.metrics.map((metric) => (
+                            <div>
+                              <dd>{metric.value}</dd>
+                              <dt>{metric.label}</dt>
+                            </div>
+                          ))}
+                        </dl>
+                      )}
+                      {item.items && (
+                        <dl class:list={['items', item.layout === 'cards' && 'items--cards']}>
+                          {item.items.map((entry) => (
+                            <div>
+                              <dt>{entry.label}</dt>
+                              <dd>{entry.value}</dd>
+                            </div>
+                          ))}
+                        </dl>
+                      )}
+                      {item.link && <a class="ae-text-link" href={item.link.href}>{item.link.label} →</a>}
+                    </div>
+                  </article>
+                ))
+              }
+            </div>
+          </details>
+        ))
+      }
+
+      <section class="cadence">
+        <div class="cadence-label">
+          <span>{faq.cadence.eyebrow}</span>
+          <span>{faq.cadence.note}</span>
+        </div>
+        <div class="cadence-table" role="table" aria-label="Recommended detailing cadence">
+          <div class="cadence-head" role="row">
+            <span role="columnheader">Class</span>
+            <span role="columnheader">Full detail</span>
+            <span role="columnheader">Between services</span>
+          </div>
+          {
+            faq.cadence.rows.map((row) => (
+              <div class="cadence-row" role="row">
+                <strong role="cell">{row.aircraftClass}</strong>
+                <span role="cell">{row.fullDetail}</span>
+                <span role="cell">{row.betweenServices}</span>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <ConversionPanel content={faq.cta} />
+</SiteLayout>
+
+<script>
+  const groups = [...document.querySelectorAll<HTMLDetailsElement>('.group')];
+  const mobile = window.matchMedia('(max-width: 47.99rem)');
+
+  const syncGroups = () => {
+    if (mobile.matches) {
+      groups.forEach((group, index) => {
+        group.open = index === 0;
+      });
+    } else {
+      groups.forEach((group) => {
+        group.open = true;
+      });
+    }
+  };
+
+  groups.forEach((group) => {
+    group.addEventListener('toggle', () => {
+      if (!mobile.matches || !group.open) return;
+      groups.forEach((other) => {
+        if (other !== group) other.open = false;
+      });
+    });
+  });
+  mobile.addEventListener('change', syncGroups);
+  syncGroups();
+</script>
+
+<style>
+  .masthead {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 22.5rem;
+    gap: 5rem;
+    padding: 5.75rem var(--ae-gutter) 4rem;
+    border-bottom: 1px solid var(--ae-line);
+  }
+
+  .masthead-copy {
+    max-width: 48rem;
+  }
+
+  h1 {
+    margin-top: 1.6rem;
+    font-size: clamp(3.5rem, 5vw, 4.2rem);
+    font-weight: 500;
+    letter-spacing: -0.028em;
+    line-height: 1.02;
+  }
+
+  .lead {
+    max-width: 42rem;
+    margin-top: 1.75rem;
+    color: var(--ae-copy);
+    font-size: 1.18rem;
+    line-height: 1.55;
+  }
+
+  .support {
+    max-width: 39rem;
+    margin-top: 1rem;
+    color: var(--ae-muted);
+  }
+
+  .support a {
+    padding-bottom: 0.15rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--ae-accent) 65%, transparent);
+    color: var(--ae-bone);
+  }
+
+  .facts {
+    padding-left: 2rem;
+    border-left: 1px solid var(--ae-line);
+  }
+
+  .facts-label,
+  .contents > p,
+  .mobile-contents {
+    color: var(--ae-muted);
+    font-family: var(--ae-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .facts dl {
+    margin: 1rem 0 0;
+  }
+
+  .facts dl div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--ae-line-soft);
+  }
+
+  .facts dl div:last-child {
+    border-bottom: 0;
+  }
+
+  .facts dt {
+    color: var(--ae-copy);
+  }
+
+  .facts dd {
+    margin: 0;
+    font-family: var(--ae-mono);
+    font-size: 0.8rem;
+  }
+
+  .faq-layout {
+    display: grid;
+    grid-template-columns: 17.5rem minmax(0, 1fr);
+  }
+
+  .groups {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #faq-booking { order: 1; }
+  #faq-services { order: 2; }
+  #faq-trust { order: 3; }
+  #faq-downtime { order: 4; }
+  .cadence { order: 5; }
+  #faq-aog { order: 6; }
+  #faq-coverage { order: 7; }
+
+  .contents {
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    max-height: 100vh;
+    padding: 3.5rem 2rem 3.5rem var(--ae-gutter);
+    border-right: 1px solid var(--ae-line);
+    background: var(--ae-deck);
+  }
+
+  .contents nav {
+    display: flex;
+    margin-top: 1.25rem;
+    flex-direction: column;
+  }
+
+  .contents nav a {
+    display: flex;
+    min-height: 3.25rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid var(--ae-line-soft);
+    color: var(--ae-copy);
+    font-size: 0.9rem;
+    line-height: 1.35;
+  }
+
+  .contents nav a:hover {
+    color: #fff;
+  }
+
+  .contents nav a span:last-child {
+    color: var(--ae-faint);
+    font-family: var(--ae-mono);
+    font-size: 0.7rem;
+  }
+
+  .rail-contact {
+    margin-top: 2.25rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--ae-line);
+    color: var(--ae-muted);
+    font-family: var(--ae-mono);
+    font-size: 0.7rem;
+    line-height: 1.9;
+  }
+
+  .rail-contact a {
+    color: var(--ae-bone);
+  }
+
+  .group {
+    padding: 3rem var(--ae-gutter) 0;
+    border-bottom: 1px solid var(--ae-line);
+    scroll-margin-top: 1rem;
+  }
+
+  .group:nth-child(even) {
+    background: var(--ae-deck);
+  }
+
+  .group summary,
+  .mobile-contents {
+    display: none;
+  }
+
+  .group-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-bottom: 1.1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  }
+
+  .group-heading h2 {
+    font-size: 1.75rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .group-heading > span {
+    color: var(--ae-muted);
+    font-family: var(--ae-mono);
+    font-size: 0.67rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--ae-bone) !important;
+  }
+
+  .status i {
+    width: 0.38rem;
+    height: 0.38rem;
+    border-radius: 50%;
+    background: var(--ae-accent);
+  }
+
+  .question {
+    display: grid;
+    grid-template-columns: minmax(16rem, 1fr) minmax(24rem, 1.5fr);
+    gap: 2.5rem;
+    padding: 1.85rem 0;
+    border-bottom: 1px solid var(--ae-line-soft);
+  }
+
+  .question:last-child {
+    border-bottom: 0;
+  }
+
+  .question h3 {
+    max-width: 22rem;
+    font-size: 1.3rem;
+    font-weight: 500;
+    letter-spacing: -0.014em;
+    line-height: 1.3;
+  }
+
+  .answer > p {
+    max-width: 41rem;
+    color: var(--ae-muted);
+    line-height: 1.75;
+  }
+
+  .metrics,
+  .items {
+    display: flex;
+    max-width: 41rem;
+    margin: 1.25rem 0 0;
+    gap: 1px;
+    background: var(--ae-line);
+  }
+
+  .metrics div,
+  .items--cards div {
+    flex: 1;
+    padding: 1.05rem 1.2rem;
+    background: var(--ae-ink);
+  }
+
+  .metrics dd {
+    margin: 0;
+    font-family: var(--ae-mono);
+    font-size: 1.55rem;
+    letter-spacing: -0.02em;
+  }
+
+  .metrics dt {
+    margin-top: 0.35rem;
+    color: var(--ae-muted);
+    font-family: var(--ae-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .items:not(.items--cards) {
+    display: block;
+    background: transparent;
+    border-top: 1px solid var(--ae-line);
+  }
+
+  .items:not(.items--cards) div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--ae-line-soft);
+  }
+
+  .items dt {
+    color: var(--ae-accent);
+    font-family: var(--ae-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .items dd {
+    margin: 0.5rem 0 0;
+    color: var(--ae-copy);
+    font-size: 0.9rem;
+  }
+
+  .items:not(.items--cards) dt {
+    color: var(--ae-copy);
+    font-family: var(--ae-sans);
+    font-size: 0.9rem;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .items:not(.items--cards) dd {
+    margin: 0;
+    color: var(--ae-muted);
+    font-family: var(--ae-mono);
+    font-size: 0.75rem;
+    text-align: right;
+  }
+
+  .answer .ae-text-link {
+    display: block;
+    margin-top: 1rem;
+  }
+
+  .cadence {
+    padding: 3.25rem var(--ae-gutter) 3.5rem;
+    background: var(--ae-bone);
+    color: var(--ae-paper-ink);
+  }
+
+  .cadence-label,
+  .cadence-head,
+  .cadence-row {
+    display: grid;
+    grid-template-columns: 12.5rem 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .cadence-label {
+    display: flex;
+    justify-content: space-between;
+    color: #765a30;
+    font-family: var(--ae-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .cadence-label span:last-child {
+    color: #6c6a66;
+  }
+
+  .cadence-table {
+    margin-top: 1.6rem;
+    border-top: 1px solid rgba(21, 23, 26, 0.2);
+  }
+
+  .cadence-head,
+  .cadence-row {
+    padding: 1.1rem 0;
+    border-bottom: 1px solid rgba(21, 23, 26, 0.14);
+    align-items: baseline;
+  }
+
+  .cadence-head {
+    color: #6c6a66;
+    font-family: var(--ae-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .cadence-row strong {
+    font-family: var(--ae-mono);
+    font-size: 1.25rem;
+    font-weight: 400;
+  }
+
+  .cadence-row span {
+    color: var(--ae-paper-copy);
+  }
+
+  @media (max-width: 64rem) {
+    .masthead {
+      gap: 3rem;
+    }
+
+    .faq-layout {
+      grid-template-columns: 15rem minmax(0, 1fr);
+    }
+
+    .question {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .question h3 {
+      max-width: 36rem;
+    }
+
+    .cadence-label,
+    .cadence-head,
+    .cadence-row {
+      grid-template-columns: 9rem 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .masthead {
+      display: block;
+      padding: 1.65rem var(--ae-gutter) 1.25rem;
+    }
+
+    h1 {
+      margin-top: 0.85rem;
+      font-size: 2rem;
+    }
+
+    .lead {
+      margin-top: 0.9rem;
+      font-size: 0.96rem;
+      line-height: 1.6;
+    }
+
+    .support {
+      display: none;
+    }
+
+    .facts {
+      display: contents;
+    }
+
+    .facts-label {
+      display: none;
+    }
+
+    .facts dl {
+      display: grid;
+      margin: 1.25rem calc(var(--ae-gutter) * -1) -1.25rem;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      border-top: 1px solid var(--ae-line);
+      background: var(--ae-line);
+    }
+
+    .facts dl div {
+      display: block;
+      padding: 0.85rem var(--ae-gutter);
+      border: 0;
+      background: var(--ae-deck);
+    }
+
+    .facts dt {
+      color: var(--ae-muted);
+      font-family: var(--ae-mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .facts dd {
+      margin-top: 0.3rem;
+      font-size: 0.86rem;
+    }
+
+    .faq-layout {
+      display: block;
+    }
+
+    .contents {
+      display: none;
+    }
+
+    .group-heading {
+      position: absolute;
+      overflow: hidden;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      border: 0;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .groups {
+      padding-top: 1.1rem;
+    }
+
+    .group {
+      order: initial !important;
+    }
+
+    .cadence {
+      order: 10;
+    }
+
+    .mobile-contents {
+      display: block;
+      padding: 0 var(--ae-gutter) 0.4rem;
+    }
+
+    .group,
+    .group:nth-child(even) {
+      margin: 0 var(--ae-gutter);
+      padding: 0;
+      border-bottom: 1px solid var(--ae-line);
+      background: transparent;
+    }
+
+    .group summary {
+      display: grid;
+      min-height: 3.5rem;
+      cursor: pointer;
+      list-style: none;
+      grid-template-columns: auto 1fr 1rem;
+      gap: 0.65rem;
+      align-items: center;
+      font-size: 1.03rem;
+      font-weight: 500;
+      line-height: 1.25;
+    }
+
+    .group summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .mobile-count {
+      color: var(--ae-faint);
+      font-family: var(--ae-mono);
+      font-size: 0.66rem;
+    }
+
+    .toggle::before {
+      color: var(--ae-muted);
+      content: '+';
+      font-family: var(--ae-mono);
+    }
+
+    .group[open] .toggle::before {
+      color: var(--ae-accent);
+      content: '-';
+    }
+
+    .question {
+      gap: 0.5rem;
+      padding: 1rem 0;
+    }
+
+    .question h3 {
+      font-size: 1rem;
+    }
+
+    .answer > p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    .metrics,
+    .items {
+      margin-top: 0.8rem;
+    }
+
+    .metrics dd {
+      font-size: 1.15rem;
+    }
+
+    .items--cards {
+      display: block;
+    }
+
+    .items--cards div {
+      display: grid;
+      grid-template-columns: 1.5rem 1fr;
+      gap: 0.7rem;
+      padding: 0.75rem 0.85rem;
+      border-bottom: 1px solid var(--ae-line-soft);
+    }
+
+    .items--cards dd {
+      margin: 0;
+    }
+
+    .cadence {
+      margin-top: 1.5rem;
+      padding: 1.6rem var(--ae-gutter) 1.5rem;
+    }
+
+    .cadence-label span:last-child,
+    .cadence-head {
+      display: none;
+    }
+
+    .cadence-table {
+      margin-top: 1rem;
+    }
+
+    .cadence-row {
+      display: grid;
+      padding: 0.85rem 0;
+      grid-template-columns: 1fr auto;
+      gap: 0.25rem 1rem;
+    }
+
+    .cadence-row strong {
+      font-size: 1.08rem;
+    }
+
+    .cadence-row span {
+      font-size: 0.88rem;
+    }
+
+    .cadence-row span:first-of-type {
+      color: #5f5d59;
+      font-family: var(--ae-mono);
+      font-size: 0.7rem;
+    }
+
+    .cadence-row span:last-child {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

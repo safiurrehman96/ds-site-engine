@@ -36,6 +36,8 @@ export const siteConfigSchema = z.object({
 
   brand: z.object({
     name: z.string().min(1),
+    /** Registered entity name for legal documents and structured business records. */
+    legalName: z.string().min(1).optional(),
     /** Short positioning line used in the footer brand column and OG fallbacks. */
     tagline: z.string().min(1),
     /** Longer footer blurb (spec §04, brand column). */

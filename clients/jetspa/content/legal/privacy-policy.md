@@ -1,6 +1,6 @@
 ---
 title: "Privacy Policy"
-metaDescription: "JetSpa Privacy Policy. How we collect, use, and protect information from visitors to http://jetspa.co and customers of our aircraft detailing services."
+metaDescription: "JetSpa Privacy Policy. How we collect, use, and protect information from website visitors and aircraft detailing customers."
 intro:
   - |
     JetSpa ("we," "us," or "our") is committed to protecting the privacy of visitors to https://jetspa.co and the customers who engage our services. This Privacy Policy explains what information we collect, how we use it, and what rights you have with respect to that information.
@@ -52,7 +52,7 @@ sections:
         - Opt out of marketing communications
         - Withdraw consent where consent is the legal basis for processing
       - |
-        To exercise any of these rights, contact us at karangogna86@gmail.com or [(714) 837-0004](tel:+17148370004).
+        To exercise any of these rights, contact us by email or phone using the details below.
   - heading: "Children's Privacy"
     body:
       - |

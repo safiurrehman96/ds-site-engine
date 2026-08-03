@@ -26,6 +26,7 @@ export const siteConfig = {
 
   brand: {
     name: 'JetSpa',
+    legalName: 'JetSpa LLC',
     tagline: 'Certified aircraft detailing for private aviation.',
     blurb:
       'JetSpa is a New Jersey based aircraft detailing company serving four of the busiest general aviation airports in the Northeast. Certified private aircraft appearance care with OEM-approved chemistry and coordinated airport access.',

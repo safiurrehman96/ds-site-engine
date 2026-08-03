@@ -225,3 +225,52 @@ export const aviationAboutSchema = z.object({
 });
 
 export type AviationAbout = z.infer<typeof aviationAboutSchema>;
+
+export const aviationFaqSchema = z.object({
+  metaDescription: prose.max(160),
+  masthead: z.object({
+    eyebrow: prose,
+    headline: prose,
+    lead: prose,
+    body: prose,
+    fastAnswers: z.array(z.object({ label: prose, value: prose })).min(2).max(6),
+  }),
+  groups: z
+    .array(
+      z.object({
+        id: z.string().min(1),
+        heading: prose,
+        shortHeading: prose.optional(),
+        status: prose.optional(),
+        faqs: z
+          .array(
+            z.object({
+              q: prose,
+              a: prose,
+              layout: z.enum(['cards', 'rows']).optional(),
+              items: z.array(z.object({ label: prose, value: prose })).min(1).optional(),
+              metrics: z.array(z.object({ value: prose, label: prose })).min(1).max(3).optional(),
+              link: z.object({ label: prose, href: z.string().min(1) }).optional(),
+            }),
+          )
+          .min(1),
+      }),
+    )
+    .min(1),
+  cadence: z.object({
+    eyebrow: prose,
+    note: prose,
+    rows: z
+      .array(
+        z.object({
+          aircraftClass: prose,
+          fullDetail: prose,
+          betweenServices: prose,
+        }),
+      )
+      .min(1),
+  }),
+  cta: ctaSchema,
+});
+
+export type AviationFaq = z.infer<typeof aviationFaqSchema>;

@@ -9,7 +9,11 @@ import { glob } from 'astro/loaders';
 // Astro 7 deprecates the `z` re-export from `astro:content`; `astro/zod` is the
 // supported path and keeps the engine on a single zod instance (see config-schema.ts).
 import { z } from 'astro/zod';
-import { aviationAboutSchema, aviationHomeSchema } from './templates/aviation-editorial/schema';
+import {
+  aviationAboutSchema,
+  aviationFaqSchema,
+  aviationHomeSchema,
+} from './templates/aviation-editorial/schema';
 
 const BASE = './client/content';
 
@@ -255,23 +259,7 @@ const about = defineCollection({
 
 const faqs = defineCollection({
   loader: glob({ base: BASE, pattern: 'faqs.md' }),
-  schema: z.object({
-    metaDescription,
-    heroHeadline: prose,
-    heroIntro: prose,
-    /** Site-level FAQs are grouped; service-page FAQs are flat. */
-    groups: z
-      .array(
-        z.object({
-          heading: prose,
-          faqs: z.array(z.object({ q: prose, a: prose })).min(1),
-        }),
-      )
-      .min(1),
-    ctaHeadline: prose,
-    /** Sub-headline under the closing CTA. Shown only when no reviewUrl is set. */
-    ctaBody: prose.optional(),
-  }),
+  schema: aviationFaqSchema,
 });
 
 /**
