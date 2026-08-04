@@ -53,13 +53,23 @@ const accessLabel = (area: (typeof areas)[number]) => {
         <h2>Aircraft and service details</h2>
         <span>Response within your timeline</span>
       </header>
-      <div class="embed-note"><span>Form embed slot</span><p>Secure quote request iframe</p></div>
-      <div class="embed-slot" role="region" aria-label="Quote request form placeholder">
-        <div>
-          <span>Quote request</span>
-          <strong>Form iframe reserved</strong>
-          <p>The secure aircraft and service details form will load in this space.</p>
-        </div>
+      <div class="embed-slot">
+        <iframe
+          src="https://links.detailersystems.com/widget/form/0lSelgJYNTFjjGxzuKW4"
+          style="width:100%;height:100%;border:none;border-radius:0px"
+          id="inline-0lSelgJYNTFjjGxzuKW4"
+          data-layout="{'id':'INLINE'}"
+          data-trigger-type="alwaysShow"
+          data-trigger-value=""
+          data-activation-type="alwaysActivated"
+          data-activation-value=""
+          data-deactivation-type="neverDeactivate"
+          data-deactivation-value=""
+          data-form-name="Jet Detailing Form"
+          data-height="849"
+          data-layout-iframe-id="inline-0lSelgJYNTFjjGxzuKW4"
+          data-form-id="0lSelgJYNTFjjGxzuKW4"
+          title="Jet Detailing Form"></iframe>
       </div>
       <p class="confidentiality">Tail numbers and aircraft details are kept confidential.</p>
     </div>
@@ -118,6 +128,9 @@ const accessLabel = (area: (typeof areas)[number]) => {
       </div>
     </div>
   </section>
+
+  {/* is:inline keeps Astro's bundler from rewriting this third-party URL. */}
+  <script is:inline src="https://links.detailersystems.com/js/form_embed.js"></script>
 </SiteLayout>
 
 <style>
@@ -245,85 +258,27 @@ const accessLabel = (area: (typeof areas)[number]) => {
     text-transform: uppercase;
   }
 
-  .embed-note {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-top: 0.9rem;
-    color: var(--ae-faint);
-    font-family: var(--ae-mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-
-  .embed-note span {
-    padding: 0.22rem 0.45rem;
-    border: 1px solid color-mix(in srgb, var(--ae-accent) 50%, transparent);
-    color: var(--ae-accent);
-  }
-
+  /*
+   * Reserves the form's stated height (data-height="849") so there is no layout shift
+   * before the vendor script loads and takes over sizing. Deliberately px, not rem:
+   * the iframe's contents are a fixed pixel layout we do not control, so this must
+   * not ride the fluid root on wide screens.
+   *
+   * The reserve is only a floor — once the script sets a real height the iframe is
+   * centred in it, rather than pinned to the top with the slack below.
+   */
   .embed-slot {
-    position: relative;
-    display: grid;
-    min-height: 42rem;
+    display: flex;
+    min-height: 849px;
     margin-top: 1.75rem;
-    overflow: hidden;
-    border: 1px solid var(--ae-line);
-    background:
-      linear-gradient(var(--ae-line-soft) 1px, transparent 1px),
-      linear-gradient(90deg, var(--ae-line-soft) 1px, transparent 1px),
-      var(--ae-deck);
-    background-size: 3rem 3rem;
-    place-items: center;
+    flex-direction: column;
+    justify-content: center;
   }
 
-  .embed-slot::before,
-  .embed-slot::after {
-    position: absolute;
-    background: var(--ae-line);
-    content: '';
-  }
-
-  .embed-slot::before { width: 1px; height: 100%; }
-  .embed-slot::after { width: 100%; height: 1px; }
-
-  .embed-slot > div {
-    z-index: 1;
-    width: min(26rem, calc(100% - 3rem));
-    padding: 2rem;
-    border: 1px solid var(--ae-line);
-    background: var(--ae-ink);
-    text-align: center;
-  }
-
-  .embed-slot span,
-  .embed-slot strong {
+  /* No min-height here: it would override the script's measured height and hold the
+     iframe taller than its content, which is what pinned the form to the top. */
+  .embed-slot iframe {
     display: block;
-    font-family: var(--ae-mono);
-    text-transform: uppercase;
-  }
-
-  .embed-slot span {
-    color: var(--ae-accent);
-    font-size: 0.66rem;
-    letter-spacing: 0.2em;
-  }
-
-  .embed-slot strong {
-    margin-top: 0.9rem;
-    color: var(--ae-bone);
-    font-size: 0.82rem;
-    font-weight: 400;
-    letter-spacing: 0.14em;
-  }
-
-  .embed-slot p {
-    max-width: 20rem;
-    margin: 1rem auto 0;
-    color: var(--ae-muted);
-    font-size: 0.9rem;
-    line-height: 1.6;
   }
 
   .confidentiality {
@@ -595,15 +550,10 @@ const accessLabel = (area: (typeof areas)[number]) => {
     }
 
     .form-column header span { display: none; }
-    .embed-note p { display: none; }
 
     .embed-slot {
-      min-height: 31rem;
       margin-top: 1.25rem;
-      background-size: 2rem 2rem;
     }
-
-    .embed-slot > div { padding: 1.5rem 1rem; }
 
     .quote-rail {
       padding: 1.65rem var(--ae-gutter) 1.5rem;
