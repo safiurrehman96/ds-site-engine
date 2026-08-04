@@ -1,0 +1,110 @@
+---
+/**
+ * The Detailer Systems credit strip that sits at the very bottom of every site
+ * this engine builds. It is deliberately engine-owned rather than payload-owned:
+ * the logo, the wording and the destination are ours on every client, and only
+ * the brand name and year change.
+ *
+ * The GHL original is a centred column — logo, then a paragraph, then legal
+ * links, then the copyright line — and this reproduces that layout.
+ */
+import { Image } from 'astro:assets';
+import dsLogo from '../assets/ds-logo.webp';
+import { siteConfig } from '../lib/site-config';
+
+const { brand } = siteConfig;
+const year = new Date().getFullYear();
+---
+
+<section class="agency-credit" aria-label="Website credit">
+  <a
+    class="logo"
+    href="https://detailersystems.com"
+    target="_blank"
+    rel="noreferrer noopener"
+  >
+    <Image
+      src={dsLogo}
+      alt="Detailer Systems - Platform developed for detailing operators"
+      widths={[142, 284]}
+      sizes="142px"
+      loading="lazy"
+    />
+  </a>
+
+  <p class="blurb">
+    Website proudly developed and managed by Detailer Systems.<br />
+    The all-in-one marketing platform helping car detailers get more bookings.
+  </p>
+
+  <p class="legal-links">
+    <a href="/privacy-policy">Privacy Policy</a> | <a href="/tos">Terms of Service</a>
+  </p>
+
+  <p class="rights">All Rights Reserved | Detailer Systems | {brand.name} © {year}</p>
+</section>
+
+<style>
+  .agency-credit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.65rem var(--ae-gutter, 1.5rem) 0.85rem;
+    border-top: 1px solid var(--ae-line-soft, rgba(255, 255, 255, 0.08));
+    background: var(--ae-ink, #0b0c0d);
+    color: var(--ae-muted, #93969a);
+    text-align: center;
+  }
+
+  .logo {
+    display: block;
+    line-height: 0;
+  }
+
+  .logo :global(img) {
+    width: auto;
+    height: 2.1rem;
+  }
+
+  .blurb {
+    margin-top: 0.5rem;
+    max-width: 20rem;
+    font-size: 0.6rem;
+    line-height: 1.45;
+  }
+
+  .legal-links {
+    margin-top: 0.4rem;
+    font-size: 0.68rem;
+  }
+
+  .legal-links a {
+    color: var(--ae-copy, #c9c6c1);
+    text-decoration: underline;
+  }
+
+  .legal-links a:hover {
+    color: #fff;
+  }
+
+  .rights {
+    margin-top: 0.3rem;
+    color: var(--ae-faint, #7f8286);
+    font-family: var(--ae-mono, monospace);
+    font-size: 0.52rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 47.99rem) {
+    .logo :global(img) {
+      height: 1.85rem;
+    }
+
+    .legal-links a {
+      display: inline-flex;
+      min-height: 2.75rem;
+      align-items: center;
+    }
+  }
+</style>
