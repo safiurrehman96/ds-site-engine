@@ -66,8 +66,8 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
         }
       </ul>
     </details>
-    <a href="/about">About</a>
-    <a href="/faqs">FAQs</a>
+    <a href="/about" aria-current={currentPath === 'about' ? 'page' : undefined}>About</a>
+    <a href="/faqs" aria-current={currentPath === 'faqs' ? 'page' : undefined}>FAQs</a>
   </nav>
 
   <div class="desktop-actions">
@@ -81,7 +81,7 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
     <details class="mobile-menu">
       <summary><span class="sr-only">Open navigation</span><i></i><i></i></summary>
       <nav aria-label="Mobile navigation">
-        <details class="mobile-submenu mobile-services">
+        <details class:list={['mobile-submenu', 'mobile-services', isServicePage && 'active']}>
           <summary>Services <i aria-hidden="true"></i></summary>
           <div>
             {
@@ -94,7 +94,7 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
             }
           </div>
         </details>
-        <details class="mobile-submenu mobile-airports">
+        <details class:list={['mobile-submenu', 'mobile-airports', isAirportPage && 'active']}>
           <summary>Airports <i aria-hidden="true"></i></summary>
           <div>
             {
@@ -107,8 +107,8 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
             }
           </div>
         </details>
-        <a href="/about">About</a>
-        <a href="/faqs">FAQs</a>
+        <a href="/about" aria-current={currentPath === 'about' ? 'page' : undefined}>About</a>
+        <a href="/faqs" aria-current={currentPath === 'faqs' ? 'page' : undefined}>FAQs</a>
         <a href="/get-quote">Request Quote</a>
       </nav>
       </details>
@@ -382,8 +382,11 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
     transition: transform 160ms ease;
   }
 
+  /* Direct children only — .desktop-nav also contains the dropdown links, which carry
+     their own aria-current and are styled separately. */
   .desktop-menu[open] > summary,
-  .desktop-menu.active > summary {
+  .desktop-menu.active > summary,
+  .desktop-nav > a[aria-current='page'] {
     border-color: var(--ae-accent);
     color: #fff;
   }
@@ -583,6 +586,12 @@ const isAirportPage = areas.some((area) => area.data.slug === currentPath);
 
     .mobile-submenu {
       border-bottom: 1px solid var(--ae-line-soft);
+    }
+
+    /* Mirrors the desktop active state so the current section is marked in both navs. */
+    .mobile-menu > nav > a[aria-current='page'],
+    .mobile-submenu.active > summary {
+      color: var(--ae-accent);
     }
 
     .mobile-submenu > summary {
