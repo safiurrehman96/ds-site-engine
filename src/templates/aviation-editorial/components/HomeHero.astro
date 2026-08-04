@@ -100,7 +100,7 @@ const poster = await imageUrl(heroVideo.poster.src);
     position: relative;
     display: grid;
     min-height: 47.5rem;
-    grid-template-columns: minmax(0, 43.75rem) 1fr;
+    grid-template-columns: minmax(0, calc(43.75rem + var(--ae-slack))) 1fr;
     margin-inline: auto;
   }
 

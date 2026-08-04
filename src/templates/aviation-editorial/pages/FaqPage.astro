@@ -260,7 +260,7 @@ const questionCount = (count: number) => `${count} ${count === 1 ? 'question' : 
 
   .faq-layout {
     display: grid;
-    grid-template-columns: 17.5rem minmax(0, 1fr);
+    grid-template-columns: calc(17.5rem + var(--ae-slack)) minmax(0, 1fr);
   }
 
   .groups {
@@ -348,7 +348,8 @@ const questionCount = (count: number) => `${count} ${count === 1 ? 'question' : 
   }
 
   .group {
-    padding: 3rem var(--ae-gutter) 0;
+    /* Left edge sits against the contents rail, so only the right takes the gutter. */
+    padding: 3rem var(--ae-gutter) 0 var(--ae-gutter-base);
     border-bottom: 1px solid var(--ae-line);
     scroll-margin-top: 1rem;
   }
@@ -508,7 +509,7 @@ const questionCount = (count: number) => `${count} ${count === 1 ? 'question' : 
   }
 
   .cadence {
-    padding: 3.25rem var(--ae-gutter) 3.5rem;
+    padding: 3.25rem var(--ae-gutter) 3.5rem var(--ae-gutter-base);
     background: var(--ae-bone);
     color: var(--ae-paper-ink);
   }

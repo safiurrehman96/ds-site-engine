@@ -213,7 +213,7 @@ const accessLabel = (area: (typeof areas)[number]) => {
 
   .quote-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 28.75rem;
+    grid-template-columns: minmax(0, 1fr) calc(28.75rem + var(--ae-slack));
     align-items: stretch;
   }
 

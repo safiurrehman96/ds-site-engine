@@ -509,9 +509,12 @@ const graph = [
   .faq-rows p { max-width: 45rem; color: var(--ae-paper-copy); font-size: .92rem; line-height: 1.75; }
   .faq-rows p + p { margin-top: .8rem; }
 
-  .conversion { display: grid; grid-template-columns: minmax(0, 1fr) minmax(28rem, 38.75rem); border-top: 1px solid var(--ae-line); background: var(--ae-ink); }
-  .conversion :global(.conversion-media) { min-height: 30rem; border: 0; }
-  .conversion-copy { display: flex; min-width: 0; padding: 4rem var(--ae-gutter) 3rem; border-left: 1px solid var(--ae-line); flex-direction: column; }
+  .conversion { display: grid; grid-template-columns: minmax(0, 1fr) minmax(28rem, calc(38.75rem + var(--ae-slack))); border-top: 1px solid var(--ae-line); background: var(--ae-ink); }
+  /* Capped for the same reason as the airport panel: an unconstrained figure lets the
+     column's width drive the row height via the image's intrinsic ratio. */
+  .conversion :global(.conversion-media) { min-height: 30rem; max-height: 40rem; border: 0; }
+  /* Slack split evenly so the copy centres in the panel rather than hugging its left edge. */
+  .conversion-copy { display: flex; min-width: 0; padding: 4rem calc(var(--ae-gutter-base) + var(--ae-slack) / 2) 3rem; border-left: 1px solid var(--ae-line); flex-direction: column; }
   .conversion-copy h2 { margin-top: 1.3rem; font-size: clamp(2.2rem, 3.2vw, 2.75rem); font-weight: 500; line-height: 1.08; }
   .conversion-copy > p { margin-top: 1rem; color: var(--ae-muted); line-height: 1.7; }
   .conversion-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.7rem; }

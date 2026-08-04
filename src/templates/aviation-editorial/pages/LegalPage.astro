@@ -214,7 +214,7 @@ const sectionBlocks = (section: (typeof doc.sections)[number]) =>
 
   .legal-layout {
     display: grid;
-    grid-template-columns: 20rem minmax(0, 1fr);
+    grid-template-columns: calc(20rem + var(--ae-slack)) minmax(0, 1fr);
   }
 
   .contents {
@@ -296,7 +296,8 @@ const sectionBlocks = (section: (typeof doc.sections)[number]) =>
   }
 
   .document {
-    padding: 1.25rem var(--ae-gutter) 3.5rem;
+    /* Left edge sits against the contents rail, so only the right takes the gutter. */
+    padding: 1.25rem var(--ae-gutter) 3.5rem var(--ae-gutter-base);
   }
 
   .legal-section {

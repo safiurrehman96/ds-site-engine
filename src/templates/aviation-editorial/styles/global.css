@@ -37,6 +37,21 @@
     scroll-padding-top: 5rem;
   }
 
+  /*
+   * The layout is authored in rem against a 90rem (1440px) ceiling, so on 1440px+
+   * displays type and rhythm stop growing while the viewport keeps going and the
+   * page reads undersized. Past that ceiling the root scales linearly with the
+   * viewport — 16px at 1440px, ~20px at 2560px, capped at 24px — which carries the
+   * container, gutters, section padding and every clamp() maximum up with it.
+   * rem-based media queries are unaffected: they resolve against the browser's
+   * initial 16px, not this value.
+   */
+  @media (min-width: 90rem) {
+    html {
+      font-size: clamp(1rem, 0.5rem + 0.5556vw, 1.5rem);
+    }
+  }
+
   body,
   h1,
   h2,
@@ -78,10 +93,44 @@
     --ae-accent-dark: #6e5a38;
     --ae-line: rgba(255, 255, 255, 0.12);
     --ae-line-soft: rgba(255, 255, 255, 0.08);
-    --ae-gutter: clamp(1.125rem, 2.8vw, 2.5rem);
+    /*
+     * The measure every section's content is bound to. It is in rem, so it rides
+     * the fluid root above 1440px rather than freezing at a pixel width.
+     */
+    --ae-measure: 90rem;
+    /*
+     * Most sections are deliberately full-bleed — their borders and backgrounds
+     * span the viewport — and inset their content with this gutter instead of
+     * nesting inside .ae-container. So past the measure the gutter takes up the
+     * slack, centring content at --ae-measure everywhere at once while the bleed
+     * is preserved. Below that the clamp wins and nothing changes.
+     */
+    --ae-gutter-base: clamp(1.125rem, 2.8vw, 2.5rem);
+    --ae-gutter: max(var(--ae-gutter-base), (100vw - var(--ae-measure)) / 2);
+    /*
+     * How much the gutter has grown past its base. Fixed-width grid tracks that
+     * carry the gutter as their own padding (rather than inheriting it from a
+     * parent) must add this, or the wider gutter eats into their content instead
+     * of the surrounding slack. Zero below the measure.
+     */
+    --ae-slack: calc(var(--ae-gutter) - var(--ae-gutter-base));
     --ae-section: clamp(4rem, 7.2vw, 6.5rem);
     --ae-sans: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     --ae-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  }
+
+  /*
+   * Section rhythm is deliberately damped past the measure. Left in rem it would
+   * track the fluid root and grow a full 1.5x along with the type, which reads as
+   * dead space rather than breathing room on a large display. Stated in px it
+   * detaches from the root scale and settles at 128px — picking up from exactly
+   * the 104px the base clamp reaches at 1440px, so the handover is seamless.
+   * This must live in the same layer as the declaration above to override it.
+   */
+  @media (min-width: 90rem) {
+    :root {
+      --ae-section: clamp(104px, 7.2vw, 128px);
+    }
   }
 
   body {
@@ -117,7 +166,12 @@
   }
 
   .ae-container {
-    width: min(100%, 90rem);
+    /*
+     * Grows with the gutter so the padding is absorbed rather than stacked on top
+     * of the cap — the content box lands on --ae-measure, matching the full-bleed
+     * sections that inset with the gutter alone.
+     */
+    width: min(100%, calc(var(--ae-measure) + 2 * var(--ae-gutter)));
     margin-inline: auto;
     padding-inline: var(--ae-gutter);
   }

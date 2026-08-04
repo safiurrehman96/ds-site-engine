@@ -393,9 +393,12 @@ const breadcrumbJsonLd = {
   .guarantee-items span { color: var(--ae-accent); font-family: var(--ae-mono); font-size: 0.66rem; letter-spacing: 0.16em; }
   .guarantee-items p { margin-top: 0.65rem; color: var(--ae-copy); font-size: 0.9rem; line-height: 1.6; }
 
-  .airport-conversion { display: grid; grid-template-columns: minmax(0, 1fr) 38.75rem; border-top: 1px solid var(--ae-line); background: var(--ae-deck); }
-  .airport-conversion :global(.conversion-media) { min-height: 28rem; border: 0; }
-  .conversion-copy { display: flex; padding: 4.5rem var(--ae-gutter) 3.5rem; border-left: 1px solid var(--ae-line); flex-direction: column; }
+  .airport-conversion { display: grid; grid-template-columns: minmax(0, 1fr) calc(38.75rem + var(--ae-slack)); border-top: 1px solid var(--ae-line); background: var(--ae-deck); }
+  /* Unconstrained, this figure takes its height from the image's intrinsic ratio, so on
+     very wide screens the column's width alone inflates the whole row. */
+  .airport-conversion :global(.conversion-media) { min-height: 28rem; max-height: 40rem; border: 0; }
+  /* Slack split evenly so the copy centres in the panel rather than hugging its left edge. */
+  .conversion-copy { display: flex; padding: 4.5rem calc(var(--ae-gutter-base) + var(--ae-slack) / 2) 3.5rem; border-left: 1px solid var(--ae-line); flex-direction: column; }
   .conversion-copy h2 { margin-top: 1.4rem; font-size: clamp(2.25rem, 3.2vw, 2.75rem); font-weight: 500; line-height: 1.08; }
   .conversion-copy > p { margin-top: 1.1rem; color: var(--ae-muted); line-height: 1.7; }
   .conversion-copy > div { display: flex; gap: 0.8rem; margin-top: 1.8rem; }
