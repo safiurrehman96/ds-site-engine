@@ -54,7 +54,6 @@ const accessLabel = (area: (typeof areas)[number]) => {
         <span>Response within your timeline</span>
       </header>
       <div class="embed-slot">
-        {/* Previous form embed — kept for reference, replaced by Phone Verification form below.
         <iframe
           src="https://links.detailersystems.com/widget/form/0lSelgJYNTFjjGxzuKW4"
           style="width:100%;height:100%;border:none;border-radius:0px"
@@ -71,23 +70,6 @@ const accessLabel = (area: (typeof areas)[number]) => {
           data-layout-iframe-id="inline-0lSelgJYNTFjjGxzuKW4"
           data-form-id="0lSelgJYNTFjjGxzuKW4"
           title="Jet Detailing Form"></iframe>
-        */}
-        <iframe
-          src="https://links.detailersystems.com/widget/form/ix6dydx2YTBOkM1qgRCF"
-          style="width:100%;height:100%;border:none;border-radius:8px"
-          id="inline-ix6dydx2YTBOkM1qgRCF"
-          data-layout="{'id':'INLINE'}"
-          data-trigger-type="alwaysShow"
-          data-trigger-value=""
-          data-activation-type="alwaysActivated"
-          data-activation-value=""
-          data-deactivation-type="neverDeactivate"
-          data-deactivation-value=""
-          data-form-name="Phone Verification"
-          data-height="1249"
-          data-layout-iframe-id="inline-ix6dydx2YTBOkM1qgRCF"
-          data-form-id="ix6dydx2YTBOkM1qgRCF"
-          title="Phone Verification"></iframe>
       </div>
       <p class="confidentiality">Tail numbers and aircraft details are kept confidential.</p>
     </div>
@@ -277,7 +259,7 @@ const accessLabel = (area: (typeof areas)[number]) => {
   }
 
   /*
-   * Reserves the form's stated height (data-height="1249") so there is no layout shift
+   * Reserves the form's stated height (data-height="849") so there is no layout shift
    * before the vendor script loads and takes over sizing. Deliberately px, not rem:
    * the iframe's contents are a fixed pixel layout we do not control, so this must
    * not ride the fluid root on wide screens.
@@ -287,7 +269,7 @@ const accessLabel = (area: (typeof areas)[number]) => {
    */
   .embed-slot {
     display: flex;
-    min-height: 1249px;
+    min-height: 849px;
     margin-top: 1.75rem;
     flex-direction: column;
     justify-content: center;
