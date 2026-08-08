@@ -35,8 +35,8 @@ export const siteConfig = {
   },
 
   contact: {
-    phone: '+17148370004',
-    phoneDisplay: '714 837 0004',
+    phone: '+18665159066',
+    phoneDisplay: '(866) 515-9066',
     email: 'booking@jetspa.co',
     address: {
       street: '2 Industrial Drive',
